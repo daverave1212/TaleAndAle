@@ -1,0 +1,6 @@
+name=LotsOfUtils
+description=Contains lots of random utility classes and function
+author=Dave Doublee
+website=http://www.stencyl.com
+version=1.0
+compatibility=all

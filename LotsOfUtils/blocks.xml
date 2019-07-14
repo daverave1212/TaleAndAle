@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<palette>
+	<block tag="completely-useless-block-utils" spec="This block does absolutely nothing" code="trace('rekt');" type="action" color="red" returns="void">		
+	</block>
+</palette>
+
+
+
+
+
+
+
+
+
