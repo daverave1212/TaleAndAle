@@ -41,16 +41,7 @@ import box2D.dynamics.B2Fixture;
 import box2D.dynamics.joints.B2Joint;
 import box2D.collision.shapes.B2Shape;
 
-import motion.Actuate;
-import motion.easing.Back;
-import motion.easing.Cubic;
-import motion.easing.Elastic;
-import motion.easing.Expo;
-import motion.easing.Linear;
-import motion.easing.Quad;
-import motion.easing.Quart;
-import motion.easing.Quint;
-import motion.easing.Sine;
+import com.stencyl.utils.motion.*;
 
 import com.stencyl.graphics.shaders.BasicShader;
 import com.stencyl.graphics.shaders.GrayscaleShader;
@@ -246,23 +237,23 @@ class Style
 	public static function setWidth(?a : Actor, ?img : ImageX, w : Float){
 		var newPercent = w / a.getWidth();
 		trace("Got new percent as " + newPercent);
-		a.growTo(newPercent, 1, 0, Linear.easeNone);
+		a.growTo(newPercent, 1, 0, Easing.linear);
 	}
 
 	public static function setHeight(?a : Actor, ?img : ImageX, h : Float){
 		var newPercent = h / a.getHeight();
 		trace("Got new percent as " + newPercent);
-		a.growTo(1, h, 0, Linear.easeNone);
+		a.growTo(1, h, 0, Easing.linear);
 		
 	}
 	
 	// Percent single dimensions
 	public static function setWidthPercent(?a : Actor, ?img : ImageX, w : Float){
-		a.growTo((w * getScreenWidth() / 100) / a.getWidth(), 1, 0, Linear.easeNone);
+		a.growTo((w * getScreenWidth() / 100) / a.getWidth(), 1, 0, Easing.linear);
 	}
 
 	public static function setHeightPercent(?a : Actor, ?img : ImageX, h : Float){
-		a.growTo(1, (h * getScreenHeight() / 100) / a.getHeight(), 0, Linear.easeNone);
+		a.growTo(1, (h * getScreenHeight() / 100) / a.getHeight(), 0, Easing.linear);
 	}
 
 

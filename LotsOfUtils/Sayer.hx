@@ -40,16 +40,7 @@ import box2D.dynamics.B2Body;
 import box2D.dynamics.B2Fixture;
 import box2D.dynamics.joints.B2Joint;
 
-import motion.Actuate;
-import motion.easing.Back;
-import motion.easing.Cubic;
-import motion.easing.Elastic;
-import motion.easing.Expo;
-import motion.easing.Linear;
-import motion.easing.Quad;
-import motion.easing.Quart;
-import motion.easing.Quint;
-import motion.easing.Sine;
+import com.stencyl.utils.motion.*;
 
 
 /*
@@ -115,7 +106,7 @@ class Sayer
 			if(textBoxes[thisTextBox] != null){			// When jumping scenes
 				textBoxes[thisTextBox].stopDrawing();
 			}
-			cb.growTo(0.7, 0.7, 0.05, Linear.easeNone);
+			cb.growTo(0.7, 0.7, 0.05, Easing.linear);
 			runLater(50, function(timeTask:TimedTask):Void{
 				recycleActor(cb);
 			}, null);
@@ -123,12 +114,12 @@ class Sayer
 	}
 	
 	private static function createChatBubbleActor(x : Float, y : Float){
-		var cb = createRecycledActorOnLayer(chatBubbleActorType, 0, 0, 1, "Say");
+		var cb = U.createActor(chatBubbleActorType, "Say");
 		cb.setX(x - originXOffset);
 		cb.setY(y - originYOffset + 5);
-		cb.moveBy(0, -5, 0.03, Linear.easeNone);
-		cb.growTo(0.7, 0.7, 0, Linear.easeNone);
-		cb.growTo(1, 1, 0.03, Linear.easeNone);
+		cb.moveBy(0, -5, 0.03, Easing.linear);
+		cb.growTo(0.7, 0.7, 0, Easing.linear);
+		cb.growTo(1, 1, 0.03, Easing.linear);
 		return cb;
 	}
 	

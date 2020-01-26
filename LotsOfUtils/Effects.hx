@@ -40,16 +40,7 @@ import box2D.dynamics.B2Body;
 import box2D.dynamics.B2Fixture;
 import box2D.dynamics.joints.B2Joint;
 
-import motion.Actuate;
-import motion.easing.Back;
-import motion.easing.Cubic;
-import motion.easing.Elastic;
-import motion.easing.Expo;
-import motion.easing.Linear;
-import motion.easing.Quad;
-import motion.easing.Quart;
-import motion.easing.Quint;
-import motion.easing.Sine;
+import com.stencyl.utils.motion.*;
 
 import U.*;
 
@@ -85,7 +76,7 @@ class Effects
 		}
 		var maxDistance = Math.max(Math.abs(deltaX), Math.abs(deltaY));	// 60 - 360 px
 		var time =  maxDistance / speed;
-		missile.moveTo(to.x, to.y, time, Quad.easeIn);
+		missile.moveTo(to.x, to.y, time, Easing.quadIn);
 		doAfter(Std.int(1000 * time), function(){
 			recycleActor(missile);
 			if(doThis != null) doThis();

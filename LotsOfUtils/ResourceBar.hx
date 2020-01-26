@@ -26,16 +26,7 @@ import com.stencyl.utils.Utils;
 import nme.ui.Mouse;
 import nme.display.Graphics;
 
-import motion.Actuate;
-import motion.easing.Back;
-import motion.easing.Cubic;
-import motion.easing.Elastic;
-import motion.easing.Expo;
-import motion.easing.Linear;
-import motion.easing.Quad;
-import motion.easing.Quart;
-import motion.easing.Quint;
-import motion.easing.Sine;
+import com.stencyl.utils.motion.*;
 
 /*
 	How to use:
@@ -144,7 +135,7 @@ class ResourceBar
 		if(m != null){
 			maxValue = m;
 		}
-		actor.growTo(1, 1, 0, Linear.easeNone);
+		actor.growTo(1, 1, 0, Easing.linear);
 		isIncreasing = false;
 		isDecreasing = false;
 		currentPercent = 100;
@@ -160,7 +151,7 @@ class ResourceBar
 	private function scaleTo(value : Float){
 		var newPercent = value.whatPercentOf(maxValue);
 		var newWidth = initialWidth * (newPercent / 100);
-		actor.growTo(newPercent/100, 1, 0, Linear.easeNone);
+		actor.growTo(newPercent/100, 1, 0, Easing.linear);
 		var deltaWidth = initialWidth - newWidth;
 		if(isLeftToRight){
 			actor.setX(initialX - deltaWidth/2);

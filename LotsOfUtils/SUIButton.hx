@@ -42,16 +42,7 @@ import box2D.dynamics.B2Body;
 import box2D.dynamics.B2Fixture;
 import box2D.dynamics.joints.B2Joint;
 
-import motion.Actuate;
-import motion.easing.Back;
-import motion.easing.Cubic;
-import motion.easing.Elastic;
-import motion.easing.Expo;
-import motion.easing.Linear;
-import motion.easing.Quad;
-import motion.easing.Quart;
-import motion.easing.Quint;
-import motion.easing.Sine;
+import com.stencyl.utils.motion.*;
 
 import U.*;
 using U;
@@ -194,13 +185,13 @@ class SUIButton
 	
 	public function setWidth(w : Float){
 		var perc = w / originalWidth;
-		actor.growTo(perc, currentHeightPerc, 0, Linear.easeNone);
+		actor.growTo(perc, currentHeightPerc, 0, Easing.linear);
 		currentWidthPerc = perc;
 	}
 	
 	public function setHeight(h : Float){
 		var perc = h / originalHeight;
-		actor.growTo(currentWidthPerc, perc, 0, Linear.easeNone);
+		actor.growTo(currentWidthPerc, perc, 0, Easing.linear);
 		currentHeightPerc = perc;
 	}
 	

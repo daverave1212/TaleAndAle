@@ -40,16 +40,7 @@ import box2D.dynamics.B2Body;
 import box2D.dynamics.B2Fixture;
 import box2D.dynamics.joints.B2Joint;
 
-import motion.Actuate;
-import motion.easing.Back;
-import motion.easing.Cubic;
-import motion.easing.Elastic;
-import motion.easing.Expo;
-import motion.easing.Linear;
-import motion.easing.Quad;
-import motion.easing.Quart;
-import motion.easing.Quint;
-import motion.easing.Sine;
+import com.stencyl.utils.motion.*;
 
 /*"
 	
@@ -123,11 +114,11 @@ class U extends SceneScript
 	}
 
 	public static function layerExists(layerName){
-		return getLayer(1, layerName) != null;
+		return engine.getLayerByName(layerName) != null;
 	}
 	
 	public static function createLayerIfDoesntExist(layerName : String, ?zIndex : Int){
-		if(getLayer(1, layerName) == null){
+		if(engine.getLayerByName(layerName) == null){
 			if(zIndex == null) zIndex = 99;
 			addBackgroundFromImage(null, false, layerName, zIndex);
 		}
@@ -339,19 +330,19 @@ class U extends SceneScript
 	}
 	
 	public static function flipActorHorizontally(a : Actor){
-		a.growTo(-1, 1, 0, Linear.easeNone);
+		a.growTo(-1, 1, 0, Easing.linear);
 	}
 
 	public static function flipActorVertically(a : Actor){
-		a.growTo(1, -1, 0, Linear.easeNone);
+		a.growTo(1, -1, 0, Easing.linear);
 	}
 	
 	public static function flipActorToLeft(a : Actor){
-		a.growTo(1, 1, 0, Linear.easeNone);
+		a.growTo(1, 1, 0, Easing.linear);
 	}
 	
 	public static function flipActorToRight(a : Actor){
-		a.growTo(-1, 1, 0, Linear.easeNone);
+		a.growTo(-1, 1, 0, Easing.linear);
 	}
 	
 	public static function createActor(?actorTypeName : String, ?actorType : ActorType, layerName : String, ?_x : Float, ?_y : Float){
@@ -360,7 +351,7 @@ class U extends SceneScript
 		}
 		var a : Actor = null;
 		try {
-			a = createRecycledActorOnLayer(actorType, 2, 1, 1, layerName);
+			a = createRecycledActorOnLayer(actorType, 0, 0, engine.getLayerByName(layerName));
 		} catch (e : String) {
 			trace('ERROR: Failed to create unit');
 		}

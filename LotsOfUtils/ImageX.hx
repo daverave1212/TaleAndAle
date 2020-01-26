@@ -41,16 +41,7 @@ import box2D.dynamics.B2Body;
 import box2D.dynamics.B2Fixture;
 import box2D.dynamics.joints.B2Joint;
 
-import motion.Actuate;
-import motion.easing.Back;
-import motion.easing.Cubic;
-import motion.easing.Elastic;
-import motion.easing.Expo;
-import motion.easing.Linear;
-import motion.easing.Quad;
-import motion.easing.Quart;
-import motion.easing.Quint;
-import motion.easing.Sine;
+import com.stencyl.utils.motion.*;
 
 
 /*"
@@ -175,7 +166,7 @@ class ImageX
 		if(layerName != null){
 			isAttachedToScreen = false;
 			this.layerName = layerName;
-			attachImageToLayer(image, 1, layerName, 0, 0, 1);
+			attachImageToLayer(image, cast engine.getLayerByName(layerName), 0, 0, 1);
 		} else {
 			isAttachedToScreen = true;
 			attachImageToHUD(image, 0, 0);
@@ -191,7 +182,7 @@ class ImageX
 		var oldY = getY();
 		removeImage(image);
 		image = new BitmapWrapper(new Bitmap(getExternalImage(path)));
-		attachImageToLayer(image, 1, layerName, 3, 4, 1);
+		attachImageToLayer(image, cast engine.getLayerByName(layerName), 0, 0, 1);
 		image.scaleX = image.scaleX * Engine.SCALE;
 		image.scaleY = image.scaleY * Engine.SCALE;
 		setX(oldX);
@@ -203,7 +194,7 @@ class ImageX
 		var oldY = getY();
 		if(!isAlive || isShown) return;
 		if(isAttachedToScreen) attachImageToHUD(image, 0, 0);
-		else attachImageToLayer(image, 1, layerName, 3, 4, 1);
+		else attachImageToLayer(image, cast engine.getLayerByName(layerName), 0, 0, 1);
 		setX(oldX);
 		setY(oldY);
 		isShown = true;
@@ -271,13 +262,13 @@ class ImageX
 	public function setWidth(w : Float){	// In pixels
 		var perc = w / originalWidth;
 		var currentHeightPerc = getHeight() / originalHeight;
-		growImageTo(image, perc, currentHeightPerc, 0, Linear.easeNone);
+		growImageTo(image, perc, currentHeightPerc, 0, Easing.linear);
 	}
 	
 	public function setHeight(h : Float){	// In pixels
 		var perc = h / originalHeight;
 		var currentWidthPerc = getWidth() / originalWidth;
-		growImageTo(image, currentWidthPerc, perc, 0, Linear.easeNone);
+		growImageTo(image, currentWidthPerc, perc, 0, Easing.linear);
 	}
 	
 	public inline function resetWidth(){
