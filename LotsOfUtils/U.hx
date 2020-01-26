@@ -59,6 +59,7 @@ import motion.easing.Sine;
 	API:
 		start()
 		changeScene(sceneName, ?fadeIn, ?fadeOut)
+		createLayerIfDoesntExist(layerName)
 		
 		repeat(func, interval)
 		onDraw(function(g))
@@ -75,6 +76,8 @@ import motion.easing.Sine;
 		stringContains(string, substring)
 		splitString(string, delimiters)
 		
+		first(array)
+		last(array)
 		randomOf(array)
 		getFirstNull(arr) : Int		= -1 if no null found, else its index
 		
@@ -103,17 +106,24 @@ class U extends SceneScript
 	public static function start(){
 		u = new U();
 		ImageX._startSlidingImages();
-		if(getActorTypeByName("ButtonActor") != null){
-			UIButton.setButtonActor("ButtonActor");
-		} else {
-			trace("ERROR: No ButtonActor found.");
-		}
 		UIManager.init();
-		if(getActorTypeByName("SayerActor") != null){
-			Sayer.init("SayerActor");
-		} else {
-			trace("ERROR: No SayerActor found.");
-		}
+	}
+	
+	public static function readFile(fileName : String) : String {
+		return nme.Assets.getText("assets/data/" + fileName);
+	}
+	
+	public static function parseJSON(jsonString : String){
+		return haxe.Json.parse(jsonString);
+	}
+	
+	public static function readJSON(fileName : String) {
+		var text = readFile(fileName);
+		return parseJSON(text);
+	}
+
+	public static function layerExists(layerName){
+		return getLayer(1, layerName) != null;
 	}
 	
 	public static function createLayerIfDoesntExist(layerName : String, ?zIndex : Int){
@@ -122,11 +132,19 @@ class U extends SceneScript
 			addBackgroundFromImage(null, false, layerName, zIndex);
 		}
 	}
-	
-	if(getLayer(1, "Say") == null){
-		addBackgroundFromImage(null, false, "Say", 99);
+
+	public static inline function percentOf(value : Float, ofWhat : Float){
+		return ofWhat * value / 100;
+	}
+
+	public static inline function whatPercentOf(value : Float, ofWhat : Float){
+		return value * 100 / ofWhat;
 	}
 	
+	public static function pass(){
+		trace('Pass...');
+	}
+
 	public static function hexToDecimal(stringHex){
 		stringHex = "0x" + stringHex;
 		return Std.parseInt(stringHex);
@@ -180,17 +198,17 @@ class U extends SceneScript
 	}
 	
 	public static function onEnter(func : Void->Void, actor : Actor){
-		addMouseOverActorListener(actor, function(mouseState:Int, list:Array<Dynamic>):Void{
+		u.addMouseOverActorListener(actor, function(mouseState:Int, list:Array<Dynamic>):Void{
 			if(1 == mouseState){
-				onEnter();
+				func();
 			}
 		});
 	}
 	
 	public static function onExit(func : Void->Void, actor : Actor){
-		addMouseOverActorListener(actor, function(mouseState:Int, list:Array<Dynamic>):Void{
+		u.addMouseOverActorListener(actor, function(mouseState:Int, list:Array<Dynamic>):Void{
 			if(-1 == mouseState){
-				onEnter();
+				func();
 			}
 		});
 	}
@@ -239,7 +257,9 @@ class U extends SceneScript
 		if(fadeIn == null){
 			fi = createFadeIn(0, Utils.getColorRGB(0,0,0));
 		}
+		trace("Changing scene to " + sceneID);
 		switchScene(sceneID, fo, fi);
+		trace("Starting U again...");
 		U.start();
 	}
 	
@@ -302,13 +322,13 @@ class U extends SceneScript
 		return(a[Std.random(a.length - 1)]);
 	}
 	
-	public static function first(a : Array){
+	public static function first<T>(a : Array<T>){
 		if(a == null) return null;
 		if(a.length == 0) return null;
 		return a[0];
 	}
 	
-	public static function last(a : Array){
+	public static function last<T>(a : Array<T>){
 		if(a == null) return null;
 		if(a.length == 0) return null;
 		return a[a.length - 1];
@@ -326,13 +346,27 @@ class U extends SceneScript
 		a.growTo(1, -1, 0, Linear.easeNone);
 	}
 	
+	public static function flipActorToLeft(a : Actor){
+		a.growTo(1, 1, 0, Linear.easeNone);
+	}
+	
+	public static function flipActorToRight(a : Actor){
+		a.growTo(-1, 1, 0, Linear.easeNone);
+	}
+	
 	public static function createActor(?actorTypeName : String, ?actorType : ActorType, layerName : String, ?_x : Float, ?_y : Float){
 		if(actorTypeName != null){
 			actorType = getActorTypeByName(actorTypeName);
 		}
-		var a = createRecycledActorOnLayer(actorType, 2, 1, 1, layerName);
+		var a : Actor = null;
+		try {
+			a = createRecycledActorOnLayer(actorType, 2, 1, 1, layerName);
+		} catch (e : String) {
+			trace('ERROR: Failed to create unit');
+		}
 		if(_x != null) a.setX(_x);
 		if(_y != null) a.setY(_y);
+		return a;
 	}
 	
 	public static function getBitmapDataSize(b : BitmapData) : Vector2Int{

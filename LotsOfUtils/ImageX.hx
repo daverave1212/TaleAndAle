@@ -58,6 +58,26 @@ import motion.easing.Sine;
 	--- REQUIRES: U.hx
 	
 	API:
+	new(path/BitmapData, layerName)
+
+	.isShown
+	.isAlive
+	.changeImage(path)
+	.show()
+	.hide()
+	.getX/Y(_)
+	.setX/Y(_)
+	.addX/Y(_)
+	.setXY(_, _)
+	.getWidth()
+	.getHeight()
+	.setWidth()
+	.setHeight()
+	.resetWidth()
+	.resetHeight()
+	.anchorToScreen()
+	.kill()
+
 
 "*/
 
@@ -142,7 +162,16 @@ class ImageX
 		} else if(bitmapData != null){
 			image = new BitmapWrapper(new Bitmap(bitmapData));
 		}
-		if(image == null) trace("ERROR: ImageX could not be loaded");
+		if(image == null){
+			var layerMessage = "";
+			if(layerName == null) layerMessage = '(unspecified)';
+			else layerMessage = '($layerName)';
+			if(path != null){
+				throw 'Error loading ImageX "$path" on layer $layerMessage';
+			} else {
+				throw 'Error loading ImageX from bitmapon layer $layerMessage';
+			}
+		}
 		if(layerName != null){
 			isAttachedToScreen = false;
 			this.layerName = layerName;
@@ -189,17 +218,33 @@ class ImageX
 	public inline function getX(){
 		return image.x / Engine.SCALE;
 	}
+
+	public inline function getXScreen(){
+		return image.x / Engine.SCALE - Std.int(getScreenX());
+	}
 	
 	public inline function getY(){
 		return image.y / Engine.SCALE;
+	}
+
+	public inline function getYScreen(){
+		return image.y / Engine.SCALE - Std.int(getScreenY());
 	}
 	
 	public inline function setX(x : Float){
 		image.x = x * Engine.SCALE;
 	}
+
+	public inline function setXScreen(x : Float){
+		image.x = x * Engine.SCALE + Std.int(getScreenX());
+	}
 	
 	public inline function setY(y : Float){
 		image.y = y * Engine.SCALE;
+	}
+
+	public inline function setYScreen(y : Float){
+		image.y = y * Engine.SCALE + Std.int(getScreenY());
 	}
 	
 	public inline function addX(x : Float){
@@ -209,7 +254,7 @@ class ImageX
 	public inline function addY(y : Float){
 		setY(getY() + y);
 	}
-	
+
 	public inline function setXY(x : Float, y : Float){
 		setX(x);
 		setY(y);

@@ -63,8 +63,7 @@ class Effects
 	// Y-Offset
 	public static inline var defaultYOffset = 35;
 	
-	public static function sendMissileAndThen(from : Point, to : Point, missileName : String, speed : Float, callback : Void->Void){
-		createLayerIfDoesntExist("Particles", 50);
+	public static function sendMissileAndThen(from : Point, to : Point, missileName : String, speed : Float, doThis : Void->Void){
 		var missile = createActor("MissileActor", "Particles");
 			missile.setX(from.x);
 			missile.setY(from.y);
@@ -87,13 +86,13 @@ class Effects
 		var maxDistance = Math.max(Math.abs(deltaX), Math.abs(deltaY));	// 60 - 360 px
 		var time =  maxDistance / speed;
 		missile.moveTo(to.x, to.y, time, Quad.easeIn);
-		doAfter(1000 * time, function(){
+		doAfter(Std.int(1000 * time), function(){
 			recycleActor(missile);
-			doThis();
+			if(doThis != null) doThis();
 		});
 	}
 	
-	public static function playParticleAndThen(from : Point, at : Point, effectName : String, callback : Void->Void){
+	public static function playParticleAndThen(from : Point, at : Point, effectName : String, doThis : Void->Void){
 		createLayerIfDoesntExist("Particles", 50);
 		var specialEffect = createActor("SpecialEffectActor", "Particles", at.x, at.y);
 		specialEffect.setAnimation(effectName);
@@ -113,8 +112,8 @@ class Effects
 		}
 		doAfter(1000, function(){
 			recycleActor(specialEffect);
-			callback();
-		})
+			if(doThis != null) doThis();
+		});
 	}
 
 	

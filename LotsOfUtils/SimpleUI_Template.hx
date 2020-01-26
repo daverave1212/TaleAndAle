@@ -1,5 +1,6 @@
 
 
+package scripts;
 
 import com.stencyl.graphics.G;
 import com.stencyl.graphics.BitmapWrapper;
@@ -53,57 +54,37 @@ import motion.easing.Quart;
 import motion.easing.Quint;
 import motion.easing.Sine;
 
-/*"
-	
-	How to use:
-		- Make another class that extends SimpleUI and overrides open, close and load
-		- Just call		new SimpleUIExtension() (once per game)
-			It is automatically added to the manager
-		- To open, use SimpleUIManager.open(name)
-			See its API for more details
-	
-"*/
+
+import scripts.Constants.*;
+import U.*;
+using U;
 
 
-class SimpleUI
+
+class SimpleUI_Template extends SimpleUI
 {
-	public var name : String = "NOT SET";
+	public static var self : SimpleUI_Template;
+
+	public function new(){
+		super("SimpleUI_Template");
+        self = this;
+        // Once per game code here
+	}
 	
-	public function open(?metaData : Array<Dynamic>){}		// When the UI is opened, with a parameter, do what you want with it
-	public function close(){}						// When the UI is closed
-	public function load(){}						// When the UI loads into the scene for the first time
+	public override function load(){
+		// Once per scene code here
+	}
 	
-	//public static var self = this;			// Use this in subclasses
+	public override function open(?metadata : Array<Dynamic>){
+        // What happens when the ui is opened
+        // If this ui is meant to be given certain arguments, cast them from the metadata
+	}
 	
-	public function new(n : String){
-		name = n;
-		GUI.add(this);
+	public override function close(){
+		// What happens when the ui is closed
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

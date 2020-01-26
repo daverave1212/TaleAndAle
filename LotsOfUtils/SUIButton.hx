@@ -53,9 +53,28 @@ import motion.easing.Quart;
 import motion.easing.Quint;
 import motion.easing.Sine;
 
+import U.*;
+using U;
+
 /*"
 
-	TODO
+	API:
+		new("ActorTypeName", "layerName", ?"animationName")
+
+		.isEnabled		.enable() / .disable()
+		.isShown		.show() / .hide()
+
+		.markAsGrayed()	/ .unmarkAsGrayed()
+
+		.setLeft(_)
+		.setRight(_)
+		.setTop(_)
+		.setBottom(_)
+		.setWidth(_)
+		.setHeight(_)
+		.getWidth(_)
+		.getHeight(_)
+
 	
 "*/
 
@@ -65,77 +84,136 @@ class SUIButton
 	
 	
 	// UIButton properties
+	public var actorType : ActorType;
 	public var actor : Actor;
 	public var isEnabled = true;	// Prevents clicking
+	public var isShown   = true;
 	public var originalWidth  : Float;
 	public var originalHeight : Float;
 	public var currentWidthPerc  : Float = 1;	// 0 to 1
 	public var currentHeightPerc : Float = 1;	// 0 to 1
-	public var onClick   : Void -> Void;
-	public var onRelease : Void -> Void;
+	public var click   : Void -> Void;
+	public var release : Void -> Void;
 	public var hasText = false;
 	public var text : String;
 	public var font : Font;
 	
+	
+	public var data : Dynamic;		// Use this for whatever you want
+	
 	public function new(actorTypeName : String, layer : String, ?anim : String){
-		var actorType = getActorTypeByName(actorTypeName);
-		if(actorType == null){
-			actor = U.createActor(UIButton.buttonActor, layer);
-		} else {
-			actor = U.createActor(actorType, layer);			
-		}
-		if(actor != null){
-			if(anim != null) this.setAnimation(anim);
-			originalWidth  = actor.getWidth();
-			originalHeight = actor.getHeight();
-			U.onClick(function(){
-				if(!isEnabled || !isShown || onClick == null) return;
-				onClick();
-			}, actor);
-			U.onRelease(function(){
-				if(!isEnabled || !isShown || onRelease == null) return;
-				onRelease();
-			}, actor);
-			actor.anchorToScreen();
-		} else {
-			trace('ERROR: Something went wrong with creating UIButton ${name}');
-		}
+		createLayerIfDoesntExist(layer, 100);
+		actorType = getActorTypeByName(actorTypeName);
+		actor = createActor(actorTypeName, layer);
+		if(actor == null) trace("ERROR: SUIButton - null actor?");
+		if(anim != null) this.setAnimation(anim);
+		originalWidth  = actor.getWidth();
+		originalHeight = actor.getHeight();
+		onClick(function(){
+			if(isEnabled && isShown && click != null)
+				click();
+		}, actor);
+		onRelease(function(){
+			if(isEnabled && isShown && release != null)
+				release();
+		}, actor);
+		actor.anchorToScreen();
 	}
 	
 	public function setText(t){
-		if(!hasText){
-			hasText = true;
-			text = t;
-			U.onDraw(function(g){
-				if(isShown){
-					g.drawString(text, x, y);
-				}
-			});
-		} else {
-			text = t;
-		}		
+		// TODO
 	}
 	
-	public override function getWidth(){
+	public function setLeft(value : Float){
+		actor.unanchorFromScreen();
+		actor.setX(getScreenX() + value);
+		actor.anchorToScreen();
+	}
+
+	public function setLeftFrom(value : Float, offset : Float){
+		actor.unanchorFromScreen();
+		actor.setX(value + offset);
+		actor.anchorToScreen();
+	}
+	
+	public function setRight(value : Float){
+		actor.unanchorFromScreen();
+		actor.setX(getScreenX() + getScreenWidth() - getWidth() - value);
+		actor.anchorToScreen();
+	}
+
+	public function setRightFrom(value : Float, offset : Float){
+		actor.unanchorFromScreen();
+		actor.setX(offset - getWidth() - value);
+		actor.anchorToScreen();
+	}
+	
+	public function setTop(value : Float){
+		actor.unanchorFromScreen();
+		actor.setY(getScreenY() + value);
+		actor.anchorToScreen();
+	}
+
+	public function setTopFrom(value : Float, offset : Float){
+		actor.unanchorFromScreen();
+		actor.setY(value + offset);
+		actor.anchorToScreen();
+	}
+	
+	public function setBottom(value : Float){
+		actor.unanchorFromScreen();
+		actor.setY(getScreenY() + getScreenHeight() - getHeight() - value);
+		actor.anchorToScreen();
+	}
+
+	public function setBottomFrom(value : Float, offset : Float){
+		actor.unanchorFromScreen();
+		actor.setY(offset - getHeight() - value);
+		actor.anchorToScreen();
+	}
+	
+	public function setX(value : Float){
+		actor.unanchorFromScreen();
+		actor.setX(value);
+		actor.anchorToScreen();
+	}
+	
+	public function setY(value : Float){
+		actor.unanchorFromScreen();
+		actor.setY(value);
+		actor.anchorToScreen();
+	}
+	
+	public function getWidth(){
 		return actor.getWidth();
 	}
 	
-	public override function getHeight(){
+	public function getHeight(){
 		return actor.getHeight();
 	}
 	
-	public override function setWidth(w : Float){
+	public function setWidth(w : Float){
 		var perc = w / originalWidth;
 		actor.growTo(perc, currentHeightPerc, 0, Linear.easeNone);
 		currentWidthPerc = perc;
 	}
 	
-	public override function setHeight(h : Float){
+	public function setHeight(h : Float){
 		var perc = h / originalHeight;
 		actor.growTo(currentWidthPerc, perc, 0, Linear.easeNone);
 		currentHeightPerc = perc;
 	}
 	
+	public function disableAndMarkAsGrayed(){
+		isEnabled = false;
+		actor.setFilter([createSaturationFilter(0)]);
+	}
+
+	public function enableAndUnmarkAsGrayed(){
+		isEnabled = true;
+		actor.clearFilters();
+	}
+
 	public function markAsGrayed(){
 		isEnabled = false;
 		actor.setFilter([createSaturationFilter(0)]);
@@ -155,7 +233,9 @@ class SUIButton
 	}
 	
 	public function setAnimation(s : String){
-		actor.setAnimation(s);
+		try{
+			actor.setAnimation(s);
+		} catch (e : String) trace('SUIButton ERROR: Could not load animation: $s');
 		originalWidth  = actor.getWidth() / currentWidthPerc;
 		originalHeight = actor.getHeight() / currentHeightPerc;
 	}
@@ -163,24 +243,16 @@ class SUIButton
 		setAnimation(s);
 	}
 	
-	public override function hide(){
+	public function hide(){
 		if(isShown){
 			isShown = false;
 			actor.disableActorDrawing();
 		}
 	}
-	public override function show(){
+	public function show(){
 		if(!isShown){
 			isShown = true;
 			actor.enableActorDrawing();
-		}
-	}
-	
-	public override function draw(?frame){
-		setupCoordinates(frame);
-		if(actor != null){
-			actor.setX(x);
-			actor.setY(y);
 		}
 	}
 	

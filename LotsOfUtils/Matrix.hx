@@ -41,6 +41,28 @@ class Matrix<T>
 		return false;
 	}
 	
+	public function forEach(doThis : T -> Void){
+		for(i in 0...nRows){
+			for(j in 0...nCols){
+				doThis(get(i, j));
+			}
+		}
+	}
+
+	public function forEachIndices(doThis : Int -> Int -> Void){
+		for(i in 0...nRows){
+			for(j in 0...nCols){
+				doThis(i, j);
+			}
+		}
+	}
+	
+	public function isInBounds(i : Int, j : Int){
+		if(i < 0 || i >= nRows) return false;
+		if(j < 0 || j >= nCols) return false;
+		return true;
+	}
+	
 	public static function traceIntMatrix(m : Matrix<Int>){
 		for(i in 0...m.nRows){
 			var line = "";
@@ -50,6 +72,10 @@ class Matrix<T>
 			trace(line);
 		}
 	}
+	
+	
+	
+	
 	
 	
 }

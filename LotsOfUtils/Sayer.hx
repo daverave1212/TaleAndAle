@@ -51,12 +51,25 @@ import motion.easing.Quart;
 import motion.easing.Quint;
 import motion.easing.Sine;
 
-// Note: Must be initialized once per game!
+
+/*
+	Sayer is functionality for making chat bubbles appear on the screen (up to 3 chat bubbles at the same time)/
+
+	Note: Must be initialized once per game!
+		Sayer.init(actorTypeName)
+
+	Requires:
+		- An actor with dimensions 100x70 by default. You can change these
+		- a layer called Say
+
+
+*/
 
 class Sayer
 {
 
 	public static var chatBubbleActorType : ActorType;
+	public static var font : Font;
 
 	public static inline var chatBubbleWidth = 100;
 	public static inline var chatBubbleHeight = 70;
@@ -69,15 +82,21 @@ class Sayer
 	public static var textBoxes : Array<TextBox>;
 	public static var currentTextBox : Int = 0;
 	
-	public static function init(chatBubbleActorTypeName : String){
+	public static function init(chatBubbleActorTypeName : String, f){
 		chatBubbleActorType = getActorTypeByName(chatBubbleActorTypeName);
+		font = f;
 		textBoxes = [null, null, null];
 	}
 	
 	private static function sayAt(s : String, x : Float, y : Float){
-		currentTextBox++; if(currentTextBox == textBoxes.length) currentTextBox = 0;
+		if(chatBubbleActorType == null){
+			trace("ERROR: Sayer not initialized!");
+			return -1;
+		}
+		currentTextBox++;
+		if(currentTextBox == textBoxes.length) currentTextBox = 0;
 		if(textBoxes[currentTextBox] == null){
-			textBoxes[currentTextBox] = new TextBox(chatBubbleWidth - paddingLeft, chatBubbleHeight, 0, 0, Script.getFont(10));
+			textBoxes[currentTextBox] = new TextBox(chatBubbleWidth - paddingLeft, chatBubbleHeight, 0, 0, font);
 			textBoxes[currentTextBox].lineSpacing = 10;
 			//textBoxes[currentTextBox].centerVertically = true;
 			//textBoxes[currentTextBox].centerHorizontally = true;
@@ -90,7 +109,6 @@ class Sayer
 	}
 	
 	public static function say(s : String, x : Float, y : Float, duration : Float){
-		U.createLayerIfDoesntExist("Say", 99);
 		var cb = createChatBubbleActor(x, y);
 		var thisTextBox = sayAt(s, x, y);
 		runLater(1000 * duration, function(timeTask:TimedTask):Void{
