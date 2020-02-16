@@ -58,6 +58,7 @@ class Effects
 		var missile = createActor("MissileActor", "Particles");
 			missile.setX(from.x);
 			missile.setY(from.y);
+		missile.setAnimation(missileName);
 		var deltaX = from.x - to.x;
 		var deltaY = from.y - to.y;
 		if(Math.abs(deltaX) > Math.abs(deltaY)){			// Point the missile 'towards' the target

@@ -72,6 +72,7 @@ import com.stencyl.utils.motion.*;
 		randomOf(array)
 		getFirstNull(arr) : Int		= -1 if no null found, else its index
 		
+		isBetween(number, a, b)
 		angleBetweenPoints(x1, y1, x2, y2)
 		getBitmapDataSize(bitmapData) : Vector2Int
 		
@@ -98,6 +99,7 @@ class U extends SceneScript
 		u = new U();
 		ImageX._startSlidingImages();
 		UIManager.init();
+		Log.isInitialized = false;
 	}
 	
 	public static function readFile(fileName : String) : String {
@@ -222,6 +224,13 @@ class U extends SceneScript
 				}
 			});
 		}
+	}
+
+	public static function onKeyPress(func){
+		if(u == null) trace("ERROR: U not initialized!");
+		u.addAnyKeyPressedListener(function(event:KeyboardEvent, list:Array<Dynamic>){
+			func(event.charCode);
+		});
 	}
 	
 	
@@ -376,6 +385,17 @@ class U extends SceneScript
 	
 	public static function setXCenter(a : Actor, x : Float) a.setX(x - a.getWidth() / 2);
 	public static function setYCenter(a : Actor, y : Float) a.setY(y - a.getHeight() / 2);
+
+	public static inline function isBetween(i : Float, a : Float, b : Float){
+		return a <= i && i < b;
+	}
+
+	public static inline function floatSum(a : Array<Float>){
+		var x : Float = 0;
+        for(e in a)
+            x += e;
+        return x;
+	}
 	
 }
 

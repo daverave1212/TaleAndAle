@@ -44,158 +44,139 @@ import box2D.dynamics.joints.B2Joint;
 
 import com.stencyl.utils.motion.*;
 
-/*"
+import U.*;
+using U;
 
-"*/
-
-class UIComponent
+class SUIComponent
 {
 	
-	public var parent : UIPanel;
-	public var name = "";
-	public var x : Float = 0;	// Actual x on screen          these are not used when building the UI
-	public var y : Float = 0;	// Actual y on screen          these are not used when building the UI
-	
-	public var left		: Float = 0;                        // but these are used
-	public var right	: Float = 0;                        // but these are used
-	public var top		: Float = 0;                        // but these are used
-	public var bottom	: Float = 0;                        // but these are used
-	private var width  : Float = 0;                  // ONLY use getters and setters for these
-	private var height : Float = 0;                  // ONLY use getters and setters for these
-	public var inheritsWidth  = true;	// The w of the parent will be used instead of its own
-	public var inheritsHeight = true;	// The h of the parent will be used instead of its own
+	public var actorType : ActorType;
+	public var actor : Actor;
 	public var isShown = true;
-	public var isContainer = false;
+	public var originalWidth  : Float;
+	public var originalHeight : Float;
+	public var currentWidthPerc  : Float = 1;	// 0 to 1
+	public var currentHeightPerc : Float = 1;	// 0 to 1
 	
-	public function propsToString(){
-		return '$name $left $right $bottom $top';
+	public var data : Dynamic;		// Use this for whatever you want
+	
+	public function new(actorTypeName : String, layer : String, ?anim : String){
+		createLayerIfDoesntExist(layer, 100);
+		actorType = getActorTypeByName(actorTypeName);
+		actor = createActor(actorTypeName, layer);
+		if(actor == null) trace("ERROR: SUIComponent - null actor?");
+		if(anim != null) this.setAnimation(anim);
+		originalWidth  = actor.getWidth();
+		originalHeight = actor.getHeight();
+        actor.anchorToScreen();		
+	}
+
+    public function getX() return actor.getX();
+    public function getY() return actor.getY();
+    public function getWidth() return actor.getWidth();
+	public function getHeight() return actor.getHeight();
+    
+    public function setWidth(w : Float){
+		var perc = w / originalWidth;
+		actor.growTo(perc, currentHeightPerc, 0, Easing.linear);
+		currentWidthPerc = perc;
+        return this;
 	}
 	
-	// Returns true if it worked, or false if property not found
-	public function setProperty(prop : String, val : String){
-		var valFloat = Std.parseFloat(val);
-		trace('   switch( $prop ) with $val to string $valFloat');
-		trace('Length is ${prop.length}');
-		trace('bottom == $prop');
-		trace("bottom" == prop);
-		trace('right == $prop');
-		trace("right" == prop);
-		switch(prop){
-			case "left":	left	= valFloat;  trace('     Did set left $left');
-			case "right":	right	= valFloat;  trace('     Did set right $right');
-			case "top":		top		= valFloat;  trace('     Did set top $top');
-			case "bottom":	bottom	= valFloat;  trace('     Did set bottom $bottom');
-			case "width":	setWidth(valFloat);  trace('     Did set ');
-			case "height":	setHeight(valFloat); trace('     Did set ');
-			default : return false;
-		}
-		trace('   endswitch $left $right');
-		return true;
+	public function setHeight(h : Float){
+		var perc = h / originalHeight;
+		actor.growTo(currentWidthPerc, perc, 0, Easing.linear);
+		currentHeightPerc = perc;
+        return this;
 	}
-	
-	public function p(prop : String, val : String){
-		setProperty(prop, val);
+
+    public function setX(value : Float){
+        actor.anchorToScreen();
+		actor.setX(value);
 		return this;
 	}
 	
-	
-	// 0 prop, 1 value, 2 prop, 3 value, etc...
-	function styleFromArray(propsAndVals : Array<String>){
-		for(i in 0...propsAndVals.length){
-			if(i % 2 == 0) continue;
-			var prop = propsAndVals[i-1];
-			var val	 = propsAndVals[i];
-			trace('For ${name} setting ${prop} to ${val}');
-			setProperty(prop, val);
-		}
-	}
-	
-	// "color: purple, personality:retarded; "
-	public function style(s : String){
-		trace('Styling ${name} as ${s}');
-		var propsAndVals = U.splitString(s, " \t;,:\n");
-		styleFromArray(propsAndVals);
+	public function setY(value : Float){
+        actor.anchorToScreen();
+		actor.setY(value);
 		return this;
 	}
 	
+	public function setLeft(value : Float){
+		setX(getScreenX() + value);
+		return this;
+	}
+
+	public function setLeftFrom(value : Float, offset : Float){
+		setX(value + offset);
+		return this;
+	}
 	
-	public function new(n, ?stl){
-		name = n;
-		if(stl != null){
-			style(stl);
-		}
+	public function setRight(value : Float){
+		setX(getScreenX() + getScreenWidth() - getWidth() - value);
+		return this;
+	}
+
+	public function setRightFrom(value : Float, offset : Float){
+		setX(offset - getWidth() - value);
+		return this;
+	}
+	
+	public function setTop(value : Float){
+		setY(getScreenY() + value);
+		return this;
+	}
+
+	public function setTopFrom(value : Float, offset : Float){
+		setY(value + offset);
+		return this;
+	}
+	
+	public function setBottom(value : Float){
+		setY(getScreenY() + getScreenHeight() - getHeight() - value);
+		return this;
+	}
+
+	public function setBottomFrom(value : Float, offset : Float){
+		setY(offset - getHeight() - value);
+		return this;
+	}
+
+	public inline function getBottom() return getY() + getHeight();
+	public inline function getRight() return getX() + getWidth();
+	public inline function getLeft() return getX();
+	public inline function getTop() return getY();
+
+	public inline function centerVertically() setTop(getScreenHeight() / 2 - getHeight() / 2);
+	public inline function centerHorizontally() setLeft(getScreenWidth() / 2 - getWidth() / 2);
+	
+
+	public function setAnimation(s : String){
+		try{
+			actor.setAnimation(s);
+		} catch (e : String) trace('SUIButton ERROR: Could not load animation: $s');
+		originalWidth  = getWidth() / currentWidthPerc;
+		originalHeight = getHeight() / currentHeightPerc;
+	}
+
+	public function set(s : String){
+		setAnimation(s);
 	}
 	
 	public function hide(){
-		if(isShown) isShown = false;
+		if(isShown){
+			isShown = false;
+			actor.disableActorDrawing();
+		}
 	}
 	public function show(){
-		if(!isShown) isShown = true;
-	}
-	
-	public function setWidth(w){
-		width = w;
-		inheritsWidth = false;
-	}
-	
-	public function setHeight(h){
-		height = h;
-		inheritsHeight = false;
-	}
-	
-	public function getWidth() : Float{
-		if(inheritsWidth){
-			if(parent == null)
-				return getScreenWidth();
-			else {
-				return parent.getWidth() - parent.paddingLeft - parent.paddingRight;
-			}
-		} else {
-			return width;
-		}
-	}
-	public function getHeight() : Float{
-		if(inheritsHeight){
-			if(parent == null)
-				return getScreenHeight();
-			else {
-				return parent.getHeight() - parent.paddingTop - parent.paddingBottom;
-			}
-		} else {
-			return height;
+		if(!isShown){
+			isShown = true;
+			actor.enableActorDrawing();
 		}
 	}
 	
-	public function setupCoordinates(?frame){
-		if(frame == null) trace('For $name, null frame, so:');
-		if(frame == null || parent == null) frame = new Rectangle(0, 0, getScreenWidth(), getScreenHeight());
-		trace('For $name, got frame ${frame.toString()}');
-		if(bottom == 0){
-			y = frame.y + top;
-		} else {
-			trace('  I do have a bottom $bottom');
-			y = frame.y + frame.height - getHeight() - bottom;
-		}
-		if(right == 0){
-			x = frame.x + left;
-		} else {
-			x = frame.x + frame.width - getWidth() - right;
-		}
-		trace('  ' + _propsToString());
-		trace("  Setup coordinates for " + name + " as " + x + ", " + y);
-	}
 
-	public function draw(?frame){
-		setupCoordinates(frame);
-	}
-	
-	public function get(childName : String) : UIComponent{
-		if(name == childName) return this;
-		else return null;
-	}
-	
-	
-	
 }
 
 

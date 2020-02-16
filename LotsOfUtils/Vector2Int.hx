@@ -25,6 +25,4 @@ class Vector2Int
 	public function toString(){
 		return x + ", " + y;
 	}
-
-	
 }

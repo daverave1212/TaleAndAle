@@ -73,7 +73,7 @@ class Sayer
 	public static var textBoxes : Array<TextBox>;
 	public static var currentTextBox : Int = 0;
 	
-	public static function init(chatBubbleActorTypeName : String, f){
+	public static function init(chatBubbleActorTypeName : String, f : Font){
 		chatBubbleActorType = getActorTypeByName(chatBubbleActorTypeName);
 		font = f;
 		textBoxes = [null, null, null];

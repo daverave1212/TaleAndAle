@@ -206,93 +206,67 @@ class ImageX
 		isShown = false;
 	}
 	
-	public inline function getX(){
-		return image.x / Engine.SCALE;
-	}
+	public inline function getX() return image.x / Engine.SCALE;
+	public inline function getY() return image.y / Engine.SCALE;
+	public inline function setX(x : Float) image.x = x * Engine.SCALE;
+	public inline function setY(y : Float) image.y = y * Engine.SCALE;
+	public inline function getWidth() return image.width / Engine.SCALE;
+	public inline function getHeight() return image.height / Engine.SCALE;
 
-	public inline function getXScreen(){
-		return image.x / Engine.SCALE - Std.int(getScreenX());
-	}
-	
-	public inline function getY(){
-		return image.y / Engine.SCALE;
-	}
-
-	public inline function getYScreen(){
-		return image.y / Engine.SCALE - Std.int(getScreenY());
-	}
-	
-	public inline function setX(x : Float){
-		image.x = x * Engine.SCALE;
-	}
-
-	public inline function setXScreen(x : Float){
-		image.x = x * Engine.SCALE + Std.int(getScreenX());
-	}
-	
-	public inline function setY(y : Float){
-		image.y = y * Engine.SCALE;
-	}
-
-	public inline function setYScreen(y : Float){
-		image.y = y * Engine.SCALE + Std.int(getScreenY());
-	}
-	
-	public inline function addX(x : Float){
-		setX(getX() + x);
-	}
-	
-	public inline function addY(y : Float){
-		setY(getY() + y);
-	}
-
-	public inline function setXY(x : Float, y : Float){
-		setX(x);
-		setY(y);
-	}
-	
-	public inline function getWidth(){
-		return image.width / Engine.SCALE;
-	}
-	
-	public inline function getHeight(){
-		return image.height / Engine.SCALE;
-	}
-	
+	public inline function resetWidth() setWidth(originalWidth);
+	public inline function resetHeight() setHeight(originalHeight);
 	public function setWidth(w : Float){	// In pixels
 		var perc = w / originalWidth;
 		var currentHeightPerc = getHeight() / originalHeight;
 		growImageTo(image, perc, currentHeightPerc, 0, Easing.linear);
 	}
-	
 	public function setHeight(h : Float){	// In pixels
 		var perc = h / originalHeight;
 		var currentWidthPerc = getWidth() / originalWidth;
 		growImageTo(image, currentWidthPerc, perc, 0, Easing.linear);
 	}
-	
-	public inline function resetWidth(){
-		setWidth(originalWidth);
-	}
-	
-	public inline function resetHeight(){
-		setHeight(originalHeight);
-	}
-	
 	public inline function kill(){
 		removeImage(image);
 		image = null;
 		isAlive = false;
 	}
-	
-	public inline function centerOnScreen(){
-		setX(getScreenX() + (getScreenWidth() - getWidth()) / 2);
-		setY(getScreenY() + (getScreenHeight() - getHeight()) / 2);
-	}
-	
 	public function anchorToScreen(){
 		attachImageToHUD(image, Std.int(getX()), Std.int(getY()));
 	}
+
+
+
+	public inline function getXScreen() return getX() / Engine.SCALE - Std.int(getScreenX());
+	public inline function getYScreen() return getY() / Engine.SCALE - Std.int(getScreenY());
+	public inline function setXScreen(x : Float) setX(getX() + Std.int(getScreenX()));
+	public inline function setYScreen(y : Float) setY(getY() + Std.int(getScreenY()));
+	public inline function addX(x : Float) setX(getX() + x);
+	public inline function addY(y : Float) setY(getY() + y);
+	public inline function setXY(x : Float, y : Float){
+		setX(x);
+		setY(y);
+	}
+	public inline function setLeft(value : Float){ setX(getScreenX() + value); return this; }
+	public inline function setLeftFrom(value : Float, offset : Float){ setX(value + offset); return this; }
+	public inline function setRight(value : Float){ setX(getScreenX() + getScreenWidth() - getWidth() - value); return this; }
+	public inline function setRightFrom(value : Float, offset : Float){ setX(offset - getWidth() - value); return this; }
+	public inline function setTop(value : Float){ setY(getScreenY() + value); return this; }
+	public inline function setTopFrom(value : Float, offset : Float){ setY(value + offset); return this; }
+	public inline function setBottom(value : Float){ setY(getScreenY() + getScreenHeight() - getHeight() - value); return this; }
+	public inline function setBottomFrom(value : Float, offset : Float){ setY(offset - getHeight() - value); return this; }
+	public inline function getBottom() return getY() + getHeight();
+	public inline function getRight() return getX() + getWidth();
+	public inline function getLeft() return getX();
+	public inline function getTop() return getY();
+	public inline function centerVertically(){ setTop(getScreenHeight() / 2 - getHeight() / 2); return this; }
+	public inline function centerHorizontally(){ setLeft(getScreenWidth() / 2 - getWidth() / 2); return this; }
+	public inline function centerOnScreen(){
+		setX(getScreenX() + (getScreenWidth() - getWidth()) / 2);
+		setY(getScreenY() + (getScreenHeight() - getHeight()) / 2);
+		return this;
+	}
+
+
 }
 
 

@@ -12,11 +12,13 @@ class Matrix<T>
 		matrix = [for (x in 0...nRows) [for (y in 0...nCols) null]];
 	}
 	
-	public function get(i : Int, j : Int){
+	public inline function get(i : Int, j : Int){
 		return matrix[i][j];
 	}
+
+	public inline function getByPos(p : Position) return matrix[p.i][p.j];
 	
-	public function set(i : Int, j : Int, t : T){
+	public inline function set(i : Int, j : Int, t : T){
 		matrix[i][j] = t;
 	}
 	
