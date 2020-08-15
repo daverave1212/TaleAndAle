@@ -278,6 +278,10 @@ class ImageX
 		return this;
 	}
 
+	public inline function grayOut() {
+		setFilterForImage(image, createSaturationFilter(0));
+	}
+
 
 }
 
