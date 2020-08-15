@@ -101,7 +101,8 @@ class SUIButton extends SUIComponent
 		}, actor);
 	}
 	
-	public function setText(t){
+	public function setText(t, ?f){
+		if (f != null) font = f;
 		text = t;
 		textWidth = font.getTextWidth(text) / Engine.SCALE;
 		textHeight = font.getHeight() / Engine.SCALE;

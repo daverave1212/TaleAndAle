@@ -6,6 +6,7 @@
 	open(uiName)
 	close(uiName)
 	change(uiName)
+	isOpen(uiName) : Boolean
 	
 "*/
 	

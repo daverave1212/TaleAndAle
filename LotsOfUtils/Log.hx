@@ -130,7 +130,9 @@ class Log extends SceneScript
 			drawConsole(g);
 		});
 		U.onKeyPress(function(charCode){
-			if(charFromCharCode(charCode) == '`'){
+			if (charCode == 9) {		// TAB
+				Log.tab();
+			} else if(charFromCharCode(charCode) == '`'){
 				//Log.toggle();
 			} else if(charCode == 13){	// ENTER
 				Log.enter();
@@ -150,6 +152,16 @@ class Log extends SceneScript
 
 	private static function backspace(){
 		currentInput = currentInput.substring(0, currentInput.length - 1);
+	}
+
+	private static function tab() {
+		var functionNames = commands.keys();
+		for (name in functionNames) {
+			if (name.indexOf(currentInput) != -1) {
+				currentInput = name;
+				break;
+			}
+		}
 	}
 
 	public static function runCommand(command : String){

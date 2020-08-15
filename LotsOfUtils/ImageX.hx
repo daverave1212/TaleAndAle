@@ -58,6 +58,8 @@ import com.stencyl.utils.motion.*;
 	.hide()
 	.getX/Y(_)
 	.setX/Y(_)
+	.getZ()				Refers to the Z-ordering of the image inside the current layer
+	.setZ(_)			Refers to the Z-ordering of the image inside the current layer
 	.addX/Y(_)
 	.setXY(_, _)
 	.getWidth()
@@ -208,8 +210,10 @@ class ImageX
 	
 	public inline function getX() return image.x / Engine.SCALE;
 	public inline function getY() return image.y / Engine.SCALE;
+	public inline function getZ() return getOrderForImage(image); 
 	public inline function setX(x : Float) image.x = x * Engine.SCALE;
 	public inline function setY(y : Float) image.y = y * Engine.SCALE;
+	public inline function setZ(z : Int) setOrderForImage(image, z);
 	public inline function getWidth() return image.width / Engine.SCALE;
 	public inline function getHeight() return image.height / Engine.SCALE;
 
@@ -263,6 +267,14 @@ class ImageX
 	public inline function centerOnScreen(){
 		setX(getScreenX() + (getScreenWidth() - getWidth()) / 2);
 		setY(getScreenY() + (getScreenHeight() - getHeight()) / 2);
+		return this;
+	}
+	public inline function bringToFront() {
+		bringImagetoFront(image);
+		return this;
+	}
+	public inline function bringToBack() {
+		bringImageToBack(image);
 		return this;
 	}
 

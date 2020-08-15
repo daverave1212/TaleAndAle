@@ -50,6 +50,10 @@ class Inventory<T>
 			return null;	
 		}	
 	}
+
+	public function isFull() {
+		return getFirstEmpty() == null;
+	}
 	
 	public function remove(i : Int, j : Int){
 		matrix.set(i, j, null);
@@ -79,6 +83,13 @@ class Inventory<T>
 		}
 		return null;
 	}
+
+	public function findAndRemove(t : T) {
+		var tPos = find(t);
+		if (tPos == null) return false;
+		remove(tPos.y, tPos.x);
+		return true;
+	}
 	
 	public function set(i : Int, j : Int, t : T){
 		matrix.set(i, j, t);
@@ -94,11 +105,7 @@ class Inventory<T>
 			}
 		}
 	}
-	
-	
-	// Just redo the whole ting
-	// Matrix might be k tho
-	
+		
 	public function addArray(a : Array<T>){
 		var lastAddedPosition : Vector2Int = new Vector2Int(0, 0);
 		for(i in 0...a.length){
