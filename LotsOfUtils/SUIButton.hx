@@ -101,6 +101,10 @@ class SUIButton extends SUIComponent
 		}, actor);
 	}
 	
+	override public function setAnimation(animationName) {
+		actor.setAnimation(animationName);
+	}
+
 	public function setText(t, ?f){
 		if (f != null) font = f;
 		text = t;

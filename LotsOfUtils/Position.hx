@@ -22,4 +22,10 @@ class Position
 	}
 
 	public inline function equalsPosition(p : Position) return i == p.i && j == p.j;
+
+	public static function createFromDynamic(p : Dynamic) {
+		var newI : Int = cast p.i;
+		var newJ : Int = cast p.j;
+		return new Position(newI, newJ);
+	}
 }

@@ -59,40 +59,6 @@ import com.stencyl.graphics.shaders.TintShader;
 import com.stencyl.graphics.shaders.BloomShader;
 
 
-
-/*
- * TextBox:
- * the constructor takes width, height, xposition and yposition
- * Use .setText(String) to set it's text
- * Then simply call startDrawing()
- * Use stopDrawing() to stop drawing
- *
- * You can also set .centerVertically .centerHorizontally and .drawOutline to true!
- *
- * NOTE: Don't forget to uncomment the package at the top of the code!
- */
- 
- /* API:
- 
-	new(width, height, x, y, font)
-	.startDrawing()
-	.stopDrawing()
-	
- 	.setText(String)
-	.getText()	//returns a String
-	.setPosition(x : Float, y : Float)
-	.setSize(width : Int, height : Int)
-	.reset()
-	.x
-	.y
-	.w
-	.h
-	.nLines
-	.lineSpacing	//default is 20
-	.font
- 
- */
-
 class TextLine {
 	
 	public static var defaultFont : Font;
