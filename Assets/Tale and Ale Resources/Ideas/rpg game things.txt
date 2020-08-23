@@ -1,0 +1,360 @@
+coins aka REAL FUKIN MONY BRUH
+reward player for opening the app every day
+https://www.youtube.com/watch?v=70bhC9616zk
+achievement after the player dies the first time to encourage to keep playing
+no adds on the first run
+after first run assassin is unlocked
+store all heroes you played with so far like DD graveyard
+you can mulligan the orbs you get whens starting from a checkpoint
+the first run after a death has bonus things (to discourage rolling the char again and agani for orbs)
+
+Activision - Blizzard EXPO #abx2017
+3 Noiembrie - 5 Noiembrie · Romexpo · Bucuresti
+
+"send us your monster and we may put it in the game!"
+
+"A Monster has been spotted nearby. Do you want to hunt it down?"
+In town: GO button and a side quest (hard shit but very rewarding)
+When you first play the game
+"I agree to play this even though it has shit graphics and portays, God forbid, various things which by no means were done in real life. No animals except camels were harmed in the making of this game. (the theme of this game is a pamphlet and it should not be taken seriously"
+
+Player Class:
+1 = Soldier (blue, used to be pink).
+
+Upgrades:
+0 = None
+1 = +1 Damage
+2 = +2 Health
+3 = +3 Crit	[LEGENDARY]
+
+
+Talents:
+0 = None
+1 = +10 xp per fight	[r]
+2 = restore 1 hp after each fight	[u]
+3 = +1 bleed damage	[l]
+
+
+
+Enemy:
+	Farm
+1 = Peasant
+2 = Hungry Children
+3 = Bloodthirsty Peasant
+4 = Catholic
+5 = Holy Water Elemental
+5 = PUMPZILA
+6 = PAGANUS THE PAGAN
+7 = Rare: Invading Cyclops
+8 = Timberwolf
+9 = Nefarious Paprika
+
+
+	Forest
+11 = Direwolf
+12 = Plantman
+13 = Rabid Mushroom
+14 = Grassslime
+17 = BITCH ASS RARE RED DRAGON
+18 = CYCLOPS
+19 = WEREWOLF
+	
+	Cave
+11 = Grottoooze
+12 = Satanic Mushroom
+13 = Beholder
+14 = Plagueman
+15 = BLACK DRAGON
+
+	Marsh
+11 = Marsh Zgripsor
+12 = Reptillian
+19 = VODYANOY
+
+	Adventurs (3-4)
+1 Farm	-	Peasants
+2 Farm	-	Peasants + Hungry Children
+3 Farm	-	Peasants + Hungry Children
+4 Boss	-	Pumpzilla
+
+5 Farm	-	Peasants + Hungry Children
+6 Farm	-	Bloodthirsty Peasants + Hungry Children + Catholics
+7 Farm	-	Bloodthirsty Peasants + Hungry Children + Catholics
+8 Boss	-	Paganus the Pagan
+
+	When going to combat, randomize a number of encounters.
+	Also set a number 
+
+Mechanics:
+	Turns 1, 2, 3 buffs itself, then only attacks HARD
+		-beat by attacking early a lot, spam attack
+		-players will have buffs that will make them stronger for this combat and they will want to use it at first
+	Every other attack is blocked
+		-beat by attack - sth else - attack - sth else, etc
+	Bleed, attack, bleed, bleed, normal attacks
+		-beat by waiting 4 turns to cast your bleed removal
+	Do something to make it drop more loot (chest enemy)
+An attack that melee's 3 times quickly xd gonna look awesome
+Raging Cyclops is already enraged
+Pokemon: pierce, blunt, smash = ez (or different ones idk, magic n shit)
+	+4 Poison/bleed resistance
+	2 Stages
+	Cancels heal at the start(also some mobs invert heal)
+	Cancels player buffs
+	Can't be stunned
+	Takes double damage if stunned
+	Slime first turn is always corrode weapon (permanently) so learn to stun them early
+	1042 hp but takes x5 damage when stunned
+
+Immune to stuns
+Deals a shit ton of damage
+
+
+Player spells:
+	Slice for 40% damage, blast for 40% damage and pierce for 40% damage.
+	Double edge with bleed (actually a whole class on this would work)
+		has a bandage spell.
+
+Spell mechanics for bosses:
+	Stun
+	Bleed/Poison
+	Dispel enemy
+	Block 1 attack
+	Remove bleeds
+
+All classes have:
+	Dispel enemy
+	Self Buffs	
+
+	S O R C E R E S S
+Mage Prison : Stuns the enemy and reduces it's damage.
+
+Mage Armor : Blocks the next attack against you, and your next attack deals 50% more damage.
+
+Fire Blast : Blast the enemy for 110% damage and apply a Burn.
+
+Blue Mist : Halves all poisons and bleed effects on you and doubles all applied ones on your enemy.
+
+Arcane Bolt : Pierces your enemy for 125% damage and reduces some enemy armor.
+
+Flame Whip : Slashes your enemy for 100% damage and stuns it if it's already burning.
+
+Mind Sight : Transfers all enemy buffs AND burns to you.
+
+Arcane Wall : The next stun against you is negated and you are also healed then.
+
+[RARE] Energy Sap : Deal 75% damage and heal for the damage dealt.
+
+[VERY RARE] Implosion : Blasts the enemy for 165% damage.
+
+
+	A S S A S S I N
+
+Backstab : Attack the enemy for 165% weapon damage.
+
+Kick : Stuns the enemy and reduces its armor.
+
+Dodge : Block 90% of the next damaging attack against you and your next attack gains 50% bonus weapon damage.
+
+Shadow Lurk :	On odd turn - block 90% damage of the next attack and remove all burns on you.
+		On even turn - Your next attack gains 115% weapon damage.
+
+Thrown Dagger : Deals 50% pierce damage and burns the enemy. Every dagger has double the power of the last dagger.
+
+Head Bash : Stuns the enemy and calms it down. Increases the damage of your next attack by 50% weapon damage.
+
+Decoy : This enemy turn, absorbs an attack and heals you. If no attack is absorbed, increases the damage of the next attack by 50% weapon damage.
+
+Slice and Dice : 
+
+All classes have:
+	Bleed/Poison
+		Blast
+		Cut
+
+All classes have:
+	Stun
+	Heal
+	Dispel enemy
+	Bleed/Poison
+	Remove bleeds
+	Self Buffs
+		Normal
+		Blast
+		Pierce
+		Cut
+
+
+[RARE] Potion : heal to full hp. 1 USE ONLY
+
+		S O L D I E R 	design
+//sinsert(, "");
+/*
+sinsert(0, "Nothing");
+sinsert(1, "Attack with your weapon (100% damage)");
+sinsert(2, "Shield WAALL! - Increase armor by 2");
+sinsert(3, "Not-Anger - Magically heal for an amount");
+sinsert(4, "Relentless Blow - Deals 125% damage");
+sinsert(5, "Shield Slam - Blast the enemy for 50% damage and block 50% of the next attack);
+sinsert(6, "Rending Hack - Slice the enemy for 75% damage and apply a bleed.");
+sinsert(7, "Kick - Stuns the enemy and reduces its armor.");
+sinsert(8, "Execute - Deals piercing damage the lower the enemy HP is");
+sinsert(9, "Racist Shout! - Deals 25% damage and calms down the enemy.");
+sinsert(10, "Challenging Attack - Blast the enemy for 150% damage.");
+sinsert(11, "Double Edge - Take 50% damage. Pierce the enemy for 200% damage.");
+*/
+
+Shield WAALL! - Increases your armor by 2 and blocks the next stun.
+Not-Anger - Heal for an amount and remove all bleeds.	
+Relentless Blow - Attack the enemy for 125% weapon damage.
+Shield Slam - Blasts the enemy for 50% weapon damage and blocks the next attack.
+Rending Hack - Slice the enemy for 75% weapon damage and apply a bleed (increases with spellpower)
+Kick - An attack that stuns the enemy and reduces its armor. (not very effective vs unarmored)
+Execute - Deals more piercing damage the lower the enemy HP is.
+Racist Shout! - Deals 25% weapon damage and calms down the enemy.
+[RARE] Challenging Attack - Blast the enemy for 150% weapon damage.
+[SUPER RARE] Double Edge - You take 50% weapon damage. Pierce the enemy for 200% weapon damage.
+
+	Typologies:
+Heal like mad
+Those hard 125% strikes
+Stronger Rending Hack damage (bleed/normal)
+Normal attack build
+
+Increases the Not-Anger healing by 100% of your Spellpower.
+Not-Anger heals 20% more, but only halves the burns on you.
+Your Attacks gain 20% (more) chance to make your next Relentless Blow or Attack crit.
+Relentless Blow now applies a 1 damage bleed.
+Shield-WAALL! shields for 50% more.
+Racist Shout has 50% chance to stun the enemy.
+Increases Relentless Blow damage by 25%.
+
+Increases all burn damage you do by 1.
+You get 10 XP after every fight.
+
+	
+
+
+Towns:
+1 = Town
+
+	Adventure:
+Farm
+Farm
+Farm
+Boss
+
+All spells function by ID. When pressed, if ID = X, somethng happens.
+Also, when changing a spell, change its animation.
+Ez to me.
+
+Create a default spellList with 20 Attack spells.
+At the start of the combat, copy the spellList into another list called currentDeck and shuffle currentDeck.
+__To Do__
+Manually set the 5 spells to the first 5 items in currentDeck and remove them.
+When a spell is used, extract the first spell from currentDeck and replace that spell with it.
+
+
+
+Loot: 3 types of loot:
+	Blue Orbs: Xp
+	Orange Orbs: Random Weapon Upgrades (get upgrade and its done)
+	Red Orbs: Abilities
+	Green Orbs: Talents and upgrades for abilities.
+You choose between 3 chests containing combinations of orbs and sometimes direct upgrades.
+
+__TO DO__
+  make upgrades as images, not text. you choose 1 of 3 random when you choose to buy an upgrade. you also see them as images.	(done)
+o When you get an upgrade add it to the upgrades list.	(done)
+o When calculating stats, iterate through each upgrade and use a switch on them. (done)
+o In character management, put many upgrade actors and add them to an Actor list. (done)
+o For upgrade #1 in your list, set the animation of UpgradeActor #1 to the value of upgrade #1.				(done)
+Make this scrollable. Make the scene extend down and make a scroll thingy.
+o Also make a shop for all of this	(done)
+
+
+- The ability management screen currently displays your 20 abilities equipped. Put them in a list for ease of use.	(done)
+- Make an event for clicking each ability (sucks, i know). That event sets a SelectedAbility (ID) to the corresponding one from the spellList. This also changes the tooltip.	(done)
+- Make a REMOVE button. This removes that SelectedAbility (ID) from the list. Then refresh the 20 abilities.
+HINT: this will work because order doesn't matter
+- When you buy an ability, you get to choose between 3 abilities. The one you choose is automatically added to your ability pool.	(done)
+
+
+__TO DO__
+- Improve the usability of the ability section: add tooltips and a remove button	(1/2)
+- Write the uContains, tContains, sContains functions so you can check existing talents easier	(not nec)
+- perhaps make the database of descriptions global in code instead of a global list attribute.	(not nec)
+
+_TO DO_
+-Ability page remove button			(done)
+-script the stunning system for combat	
+-look at pokemon and make combat like there.	(done)
+	-health bar base is done and scripted, script the rest
+
+__TO DO__
+-further improve the combat game feels!! (its currently pretty good)
+	play with screen shake intensities adn time it takes for all to work out.
+-script the game feel for enemy too			(done)
+-eventually put them in different reusable functions	(not nec)
+-after the player spells tehre's a "do after". calculate how much time it takes for player's action to resolve, and enemy's too and fix time issues.	(done/not nec)
+-also add a "do after" for "check if combat is done"	(done)
+-script the stun system					(done)
+-add tooltips to the abilities section			(done)
+-add a screenshake and chest breaking when you open it (4 pieces, 4 actors i mean)								(done)
+-fix screenshake borders
+-make the combat text a text box			(done)
+-make the hp bar move at heals too			(1/2)
+-keep the health form fight to fight			(done)
+-give the stun part a nice animation (down, then up)
+-BUGFIX: the damage from bleeds should be different from normal damage functions!!!
+--design enemies and bosses
+--design spells: think of cool ways to build ur charactir.
+--the talent system is class-specific
+--when u buy an ab/upgrade/talent, make the orbs go nicely from left to right
+--blood and bigger crits
+--enemy quotes in combat ("god forgive my sins...")
+--stand animations also slightly increase width and height like breathing cube
+
+Scripted Soldied spells (V);
+	
+	Guys who i can contact (maybe):
+Moises Abraham - pixel artist, just finished college, was looking for work
+
+	Free Marketing Pages:
+https://submitgame.io/
+RGDA - Romanian Game Developers Association
+Indie game developers
+Indie Game Developers (facebook community, grey-blue banner)
+Indy App & Game Developers
+Retro Indie Pixel Games
+Indie Game Players & Developers
+Indie Game Developers - GameMarketeers
+https://indiepusher.com/
+indieboost.io
+roganews.ro (si pe facebook si site)
+	Materials
+https://graphicriver.net/item/6-forest-2d-game-backgrounds-parallax-and-stackable/17510004
+
+pretty standard strategy. 
+
+Announce well before release and gain interest. Do a press release to get articles written.
+
+Next, constantly push updates, trailers, gameplay demos etc.
+
+Then send out press copies ahead of launch so they have time to play and review it. That way you get a ton of reviews from big people on day one.
+
+Release with a launch trailer and another press release.
+
+Then you make money
+
+
+
+
+Ce ati fi capabil sa faceti pentru un prieten?
+Ati fi dispus sa faceti ceva neobisnuit pentru prietenie?
+In ce maniera va influenteaza prietenia comportamentul in societate?
+Ce apreciati la prietenii vostri?
+Care sunt defectele pe care puteti/nu puteti sa le acceptati la prietenii vostri?
+Ce amintiri aveti de la inceputul unei prietenii?
+Parintilor dumneavastra le plac toti prietenii dumneavoastra?
+Aveti impresia ca uneori parintii nu va inteleg? Care sunt motivele pentru disputele cele mai frecvente?
