@@ -133,6 +133,21 @@ class U extends SceneScript
 	public static inline function whatPercentOf(value : Float, ofWhat : Float){
 		return value * 100 / ofWhat;
 	}
+
+	public static function percentChance(percent : Float) : Bool {
+		if (randomFloatBetween(0, 100) <= percent) return true;
+		else return false;
+	}
+
+	public static function probabilityDistribution(distribution : Array<Int>) : Int {
+		if (distribution == null) throw 'ERROR: null distribution given to distributionIndex';
+		if (distribution.length == 0) return -1;
+		var balls = [];
+		for (index in 0...distribution.length)
+			for (time in 0...distribution[index])
+				balls.push(index);
+		return balls[randomInt(0, balls.length - 1)];
+	}
 	
 	public static function pass(){
 		trace('Pass...');
@@ -319,7 +334,7 @@ class U extends SceneScript
 	}
 
 	public static function randomOf(a : Array<Dynamic>){
-		return(a[Std.random(a.length - 1)]);
+		return(a[randomInt(0, a.length - 1)]);
 	}
 	
 	public static function first<T>(a : Array<T>){

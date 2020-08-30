@@ -110,8 +110,10 @@ class Inventory<T>
 		var lastAddedPosition : Vector2Int = new Vector2Int(0, 0);
 		for(i in 0...a.length){
 			lastAddedPosition = getFirstEmpty(lastAddedPosition);
+			if (lastAddedPosition == null) return false;
 			matrix.set(lastAddedPosition.y, lastAddedPosition.x, a[i]);
 		}
+		return true;
 	}
 	
 	// For debug
