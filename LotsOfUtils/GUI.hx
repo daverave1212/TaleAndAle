@@ -48,6 +48,7 @@ class GUI{
 	public static function open(simpleUIName : String, ?metaData : Array<Dynamic>){
 		simpleUIs[simpleUIName].open(metaData);
 		var lastOpenedUI = getLastOpenedUI();
+		if (isOpen(simpleUIName)) trace('ERROR in GUI: Trying to open an already existing UI, $simpleUIName');
 		openUIs.push(simpleUIs[simpleUIName]);
 	}
 	
