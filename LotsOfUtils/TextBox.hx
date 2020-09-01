@@ -95,7 +95,7 @@ import com.stencyl.graphics.shaders.BloomShader;
 
 class TextBox extends SceneScript{
 	
-	public var lines 		:Array<Dynamic>;
+	public var lines 		:Array<String>;
 	public var w			:Int = 400;
 	public var h			:Int = 400;
 	public var x			:Float = 50;
@@ -115,18 +115,19 @@ class TextBox extends SceneScript{
 		super();
 		font = f;
 		create(width, height, _x, _y, "");
-		addWhenDrawingListener(null, function(g:G, x:Float, y:Float, list:Array<Dynamic>):Void{
+		addWhenDrawingListener(null, function(g:G, x:Float, y:Float, list:Array<Dynamic>):Void {
 			draw(g);
-			});}
+		});
+	}
 	
 	public function reset(){
 		isDrawing = false;
-		lines = new Array<Dynamic>();
+		lines = [];
 		text = "";
 		nLines = 0;}
 
-	public function create(width : Int, height : Int, X : Float, Y: Float, t : String){
-		lines = new Array<Dynamic>();
+	public function create(width : Int, height : Int, X : Float, Y : Float, t : String){
+		lines = [];
 		x = X;
 		y = Y;
 		h = height;
@@ -144,19 +145,24 @@ class TextBox extends SceneScript{
 	public function setText(t : String){
 		reset();
 		text = t;
-		var wordList	: Array<Dynamic> = text.split(" ");
-		var currentLine	: Int = 0;
-		var currentWord : Int = 0;
+		var wordList	: Array<String> = text.split(" ");
 		nLines = 0;
-		while(currentWord < wordList.length){ //while currentLine width < w
-			nLines++;
-			lines[currentLine] = "";
-			while(font.font.getTextWidth(lines[currentLine] + " " + wordList[currentWord]) / Engine.SCALE < w && wordList[currentWord] != "\n" && currentWord < wordList.length){
-				lines[currentLine] += " " + wordList[currentWord];
-				currentWord++;}
-			currentLine++;
-			if(wordList[currentWord] == "\n"){
-				currentWord++;}}}
+		var currentLine = '';
+
+		for (word in wordList) {
+			if (word == '\n') {
+				lines.push(currentLine);
+				currentLine = '';
+			} else if (getLineWidth(currentLine + ' ' + word) >= w) {
+				lines.push(currentLine);
+				currentLine = word;
+			} else {
+				currentLine += ' ' + word;
+			}
+		}
+		if (currentLine != '') lines.push(currentLine);
+		nLines = lines.length;
+	}
 				
 	public function getText(){
 		return text;}
@@ -173,7 +179,7 @@ class TextBox extends SceneScript{
 				var drawx = x;
 				var drawy = y;
 				if(centerHorizontally){
-					drawx = x + (w - font.font.getTextWidth(lines[currentLine]))/2;
+					drawx = x - getLineWidth(lines[currentLine]) / 2;
 				}
 				if(centerVertically){
 					drawy = y + (h - lineSpacing * nLines) / 2 + lineSpacing * currentLine;
@@ -181,7 +187,11 @@ class TextBox extends SceneScript{
 					drawy = y + lineSpacing * currentLine;
 				}
 				g.drawString(lines[currentLine], drawx, drawy);
-				
+				if (drawOutline) {
+					g.strokeColor = Utils.getColorRGB(0,0,0);
+					g.strokeSize = 1;
+					g.drawRect(drawx, drawy, getLineWidth(lines[currentLine]), lineSpacing);
+				}
 			}}}
 	
 	public function startDrawing(){
@@ -189,5 +199,7 @@ class TextBox extends SceneScript{
 		
 	public function stopDrawing(){
 		isDrawing = false;}
+
+	function getLineWidth(line : String) return font.font.getTextWidth(line) / Engine.SCALE;
 
 }

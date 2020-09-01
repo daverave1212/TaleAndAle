@@ -138,7 +138,8 @@ class Log extends SceneScript
 				Log.enter();
 			} else if(charCode == 8){	// BACKSPACE
 				Log.backspace();
-			} else if(charFromCharCode(charCode) != ''){
+			} else if (charFromCharCode(charCode) != ''){
+				trace(charCode);
 				currentInput += charFromCharCode(charCode);
 			}
 		});
