@@ -336,6 +336,9 @@ class U extends SceneScript
 	public static function randomOf(a : Array<Dynamic>){
 		return(a[randomInt(0, a.length - 1)]);
 	}
+	public static function randomIndex(a : Array<Dynamic>) {
+		return randomInt(0, a.length - 1);
+	}
 	
 	public static function first<T>(a : Array<T>){
 		if(a == null) return null;
