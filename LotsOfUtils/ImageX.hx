@@ -47,7 +47,7 @@ import com.stencyl.utils.motion.*;
 /*"
 
 	--- REQUIRES: U.hx
-	
+
 	API:
 	new(path/BitmapData, layerName)
 
@@ -82,24 +82,24 @@ class ImageXExtended{
 	public var ySpeed : Float = 0;
 	public var age	  : Int = 0;		// In miliseconds
 	public var maxAge : Int = 0;		// In miliseconds
-	
+
 	public function new(img : ImageX){
 		image = img;
 	}
-	
+
 }
 
 class ImageXSlider{
 
 	public static var imagesBeingSlid : Array<ImageXExtended>;
 	public static inline var Slide_Frequency = 20;
-	
+
 	// This is automatically done by U.changeScene
 	public static function start(){
 		imagesBeingSlid = [];
 		U.repeat(moveImages, Slide_Frequency);
 	}
-	
+
 	// Helper function called by every tick(..)
 	private static function moveImages(){
 		for(i in 0...imagesBeingSlid.length){
@@ -114,7 +114,7 @@ class ImageXSlider{
 			}
 		}
 	}
-	
+
 	public static function slideImage(image : ImageX, destinationX : Float, destinationY : Float, overTime : Int){
 		var deltaX = destinationX - image.getX();
 		var deltaY = destinationY - image.getY();
@@ -130,7 +130,7 @@ class ImageXSlider{
 			imagesBeingSlid[pos] = img;
 		}
 	}
-	
+
 }
 
 class ImageX
@@ -140,7 +140,7 @@ class ImageX
 	public static function _startSlidingImages(){
 		ImageXSlider.start();
 	}
-	
+
 	public var image : BitmapWrapper;
 	public var isAttachedToScreen = true;
 	public var layerName : String = "!NONE";
@@ -148,14 +148,14 @@ class ImageX
 	public var isShown = true;
 	private var originalWidth  : Float = 0;
 	private var originalHeight : Float = 0;
-	
+
 	public function new(?path : String, ?bitmapData : BitmapData, ?layerName : String){
 		if(path != null){
 			image = new BitmapWrapper(new Bitmap(getExternalImage(path)));
 		} else if(bitmapData != null){
 			image = new BitmapWrapper(new Bitmap(bitmapData));
 		}
-		if(image == null){
+		if (image == null) {
 			var layerMessage = "";
 			if(layerName == null) layerMessage = '(unspecified)';
 			else layerMessage = '($layerName)';
@@ -175,10 +175,11 @@ class ImageX
 		}
 		image.scaleX = image.scaleX * Engine.SCALE;
 		image.scaleY = image.scaleY * Engine.SCALE;
+		//setOriginForImage(image, 0.5, 0.5);
 		originalHeight = getHeight();
 		originalWidth  = getWidth();
 	}
-	
+
 	public function changeImage(path : String){
 		var oldX = getX();
 		var oldY = getY();
@@ -190,7 +191,7 @@ class ImageX
 		setX(oldX);
 		setY(oldY);
 	}
-	
+
 	public function show(){
 		var oldX = getX();
 		var oldY = getY();
@@ -201,24 +202,30 @@ class ImageX
 		setY(oldY);
 		isShown = true;
 	}
-	
+
 	public function hide(){
 		if(!isAlive || !isShown) return;
 		removeImage(image);
 		isShown = false;
 	}
-	
+
 	public inline function getX() return image.x / Engine.SCALE;
 	public inline function getY() return image.y / Engine.SCALE;
-	public inline function getZ() return getOrderForImage(image); 
+	public inline function getXCenter() return getX() - getWidth() / 2;
+	public inline function getYCenter() return getY() - getHeight() / 2;
+	public inline function getZ() return getOrderForImage(image);
 	public inline function setX(x : Float) image.x = x * Engine.SCALE;
 	public inline function setY(y : Float) image.y = y * Engine.SCALE;
 	public inline function setZ(z : Int) setOrderForImage(image, z);
 	public inline function getWidth() return image.width / Engine.SCALE;
 	public inline function getHeight() return image.height / Engine.SCALE;
+	public inline function setAngle(degrees : Float) image.rotation = degrees;
+	public inline function getAngle() return image.rotation;
 
 	public inline function resetWidth() setWidth(originalWidth);
 	public inline function resetHeight() setHeight(originalHeight);
+	public function setWidthScale(scale : Float) image.scaleX = scale;
+	public function setHeightScale(scale : Float) image.scaleY = scale;
 	public function setWidth(w : Float){	// In pixels
 		var perc = w / originalWidth;
 		var currentHeightPerc = getHeight() / originalHeight;
@@ -239,6 +246,10 @@ class ImageX
 	}
 
 
+	public inline function setOriginToCenter() {
+		var origin = image.width / 8 / Engine.SCALE + Engine.SCALE / 2;
+		setOriginForImage(image, origin, origin);
+	}
 
 	public inline function getXScreen() return getX() / Engine.SCALE - Std.int(getScreenX());
 	public inline function getYScreen() return getY() / Engine.SCALE - Std.int(getScreenY());
@@ -250,6 +261,8 @@ class ImageX
 		setX(x);
 		setY(y);
 	}
+	public inline function setAlpha(alpha) image.alpha = alpha;
+	public inline function addAlpha(alpha) image.alpha += alpha;
 	public inline function setLeft(value : Float){ setX(getScreenX() + value); return this; }
 	public inline function setLeftFrom(value : Float, offset : Float){ setX(value + offset); return this; }
 	public inline function setRight(value : Float){ setX(getScreenX() + getScreenWidth() - getWidth() - value); return this; }
@@ -284,20 +297,3 @@ class ImageX
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

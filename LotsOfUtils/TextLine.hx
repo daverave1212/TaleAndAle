@@ -60,6 +60,11 @@ import com.stencyl.graphics.shaders.BloomShader;
 
 
 class TextLine {
+
+	public static inline var ALIGN_RIGHT = 0;
+	public static inline var ALIGN_LEFT = 1;
+	public static inline var ALIGN_CENTER = 2;
+
 	
 	public static var defaultFont : Font;
 	public static var hasDefaultFont = false;
@@ -71,6 +76,9 @@ class TextLine {
 	public var font : Font;
 
 	public var isDrawing = true;
+
+	var alignment = ALIGN_RIGHT;
+	var alignOffsetX : Float = 0;
 
 	public function new(text, ?font, ?_x, ?_y) {
 		this.text = text;
@@ -85,10 +93,23 @@ class TextLine {
 		U.onDraw(function(g : G){
 			if (!isDrawing) return;
 			g.setFont(this.font);
-			g.drawString(this.text, this.x, this.y);
+			g.drawString(this.text, this.x + alignOffsetX, this.y);
 		});
 	}
 
+	public function setText(t : String) {
+		this.text = t;
+		if (alignment == ALIGN_LEFT)
+			alignOffsetX = - this.font.getTextWidth(this.text) / Engine.SCALE;
+		else if (alignment == ALIGN_CENTER)
+			alignOffsetX = - (this.font.getTextWidth(this.text) / Engine.SCALE) / 2;
+		else if (alignment == ALIGN_RIGHT)
+			alignOffsetX = 0;
+	}
+
+	public function alignLeft() alignment = ALIGN_LEFT;
+	public function alignCenter() alignment = ALIGN_CENTER;
+	public function alignRight() alignment = ALIGN_RIGHT;
 	public inline function setX(x) this.x = x;
 	public inline function setY(y) this.y = y;
 	public inline function disable() isDrawing = false;

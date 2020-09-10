@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style media="screen">
+        body {
+            width: 100vw;
+        }
+        .setting-name {
+            color: gray;
+        }
+        p {
+            margin-bottom: 5px;
+        }
+        .window {
+            padding-top: 100px;
+            margin: auto;
+        }
+        .upper-window {
+            display: flex;
+            justify-content: space-around;
+        }
+        .lower-window {
+            display: flex;
+            justify-content: space-around;
+        }
+        .particle-div {
+            height: 800px;
+            width: 800px;
+            position: relative;
+        }
+        .settings-holder {
+            padding-left: 12px;
+            padding-top: 12px;
+            width: 300px;
+        }
+        input[type="range"] {
+            vertical-align: top;
+            margin-top: 4px;
+        }
+    </style>
+
+    <style media="screen">
+        .particle {
+            position: absolute;
+            height: 32px;
+            width: 32px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="window">
+        <div class="upper-window">
+            <textarea name="name" rows="8" cols="80"></textarea>
+        </div>
+        <div class="lower-window">
+            <div class="settings-holder shadow p-3 mb-5 bg-white rounded">
+                <button onclick="getCode()" type="button" class="btn btn-primary">Get Code</button>
+                <hr>
+            </div>
+            <div class="particle-div shadow p-3 mb-5 bg-white rounded">
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+
+        let particleDiv = document.querySelector('.particle-div')
+        const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const randomFloatBetween = (min, max) => Math.random() * (max - min) + min;
+
+        const defaultParticleWidth = 32
+        const defaultParticleHeight = 32
+
+        class ImageX {
+
+            image
+            x
+            y
+            angle
+            alpha = 1
+
+            constructor(imagePath) {
+                this.image = document.createElement('img')
+                this.image.setAttribute('src', imagePath)
+                this.image.classList.add('particle')
+                particleDiv.appendChild(this.image)
+            }
+
+            setXY(x, y) {
+                this.image.style.left = x + 'px'
+                this.image.style.top = y + 'px'
+                this.x = x
+                this.y = y
+            }
+            setAlpha(alpha) {
+                this.alpha = alpha
+                this.image.style.opacity = alpha
+            }
+            addAlpha(alpha) {
+                this.setAlpha(this.alpha + alpha)
+            }
+            getX() { return this.x }
+            getY() { return this.y }
+            addXY(x, y) {
+                this.setXY(this.x + x, this.y + y)
+            }
+
+
+            setScaleXY(scaleX, scaleY) {
+                this.image.style.width = (scaleX * defaultParticleWidth) + 'px'
+                this.image.style.height = (scaleY * defaultParticleHeight) + 'px'
+            }
+            getAngle() { return this.angle }
+            setAngle(angle) {
+                this.image.style.transform = `rotate(${angle}deg)`
+                this.angle = angle
+            }
+            kill() {
+                this.image.remove()
+            }
+
+        }
+
+        class ParticleImage {
+            image
+            age = 0
+            speedX
+            speedY
+            opacitySpeed
+
+            constructor(img) {
+                this.image = img
+            }
+        }
+
+        class ParticleSpawner {
+
+            constants
+            timeSinceLastSpawn = 0
+
+            centerX = 0;
+            centerY = 0;
+            radius = 10;
+            frequency = 1000;
+            imageLifetime = 1000;
+            sizeMin = 1;
+            sizeMax = 1;
+            hasRandomRotation = false;
+            rotationSpeed = 0;
+            direction = 0;           // Angle
+            directionVariance = 0;   // + / - an amount from direction
+            speedMin = 0;            // Pixels per second
+            speedMax = 0;            // Pixels per second
+            opacityStart = 1;
+            opacityEnd = 1;
+            gravityX = 0;
+            gravityY = 0;
+
+            imagePath
+
+            imagesQueue
+
+            spawnImage() {
+                const sin = angle => Math.sin(angle * Math.PI / 180)
+                const cos = angle => Math.cos(angle * Math.PI / 180)
+                let img = new ImageX(this.imagePath)
+                let particle = new ParticleImage(img);
+                let spawnAngle = randomInt(0, 360) * Math.PI / 180
+                let spawnRadius = randomFloatBetween(0, this.radius);
+                let cx = spawnRadius * cos(spawnAngle) + this.centerX;
+                let cy = spawnRadius * sin(spawnAngle) + this.centerY;
+                let newScale = randomFloatBetween(this.sizeMin, this.sizeMax);
+                let particleDirection = this.direction + randomFloatBetween(-this.directionVariance, this.directionVariance);
+                let ticksPerSeconds = 1000 / this.constants.ageImagesFrequency;
+                let particleSpeed = randomFloatBetween(this.speedMin, this.speedMax);
+                let pixelsPerTick = particleSpeed / ticksPerSeconds;
+                let speedX = pixelsPerTick * cos(particleDirection);
+                let speedY = -pixelsPerTick * sin(particleDirection);
+                let ticksPerLifetime = this.imageLifetime / this.constants.ageImagesFrequency;
+                let opacityDelta = this.opacityEnd - this.opacityStart;
+                let opacityDeltaPerTick = opacityDelta / ticksPerLifetime;
+                img.setXY(cx, cy)
+                img.setScaleXY(newScale, newScale)
+                if (this.hasRandomRotation) img.setAngle(randomInt(0, 360));
+                particle.speedX = speedX;
+                particle.speedY = speedY;
+                particle.opacitySpeed = opacityDeltaPerTick;
+                this.imagesQueue.push(particle);
+                this.timeSinceLastSpawn = 0
+            }
+
+            trySpawnImage() {
+                if (this.timeSinceLastSpawn >= this.frequency) {
+                    this.spawnImage()
+                } else {
+                    this.timeSinceLastSpawn += 20
+                }
+            }
+
+            ageImages() {
+                for (let particle of [...this.imagesQueue]) {
+                    particle.age += this.constants.ageImagesFrequency;
+                    particle.image.setAngle(particle.image.getAngle() + this.rotationSpeed);
+                    particle.image.addXY(particle.speedX, particle.speedY)
+                    particle.image.addAlpha(particle.opacitySpeed)
+                    particle.speedX += this.gravityX
+                    particle.speedY += this.gravityY
+                    if (particle.age >= this.imageLifetime) {
+                        particle.image.kill()
+                        const index = this.imagesQueue.indexOf(particle) // Remove from the queue
+                        this.imagesQueue.splice(index, 1)
+                    }
+                }
+            }
+
+            constructor(settings) {
+                this.constants = {
+                    ageImagesFrequency: 20
+                }
+                this.centerX             = settings.centerX;
+                this.centerY             = settings.centerY;
+                this.radius              = settings.radius;
+                this.frequency           = settings.frequency;
+                this.imagePath           = settings.imagePath;
+                this.sizeMin             = settings.sizeMin;
+                this.sizeMax             = settings.sizeMax;
+                this.hasRandomRotation   = settings.hasRandomRotation;
+                this.rotationSpeed       = settings.rotationSpeed;
+                this.imageLifetime       = settings.imageLifetime;
+                this.direction           = settings.direction;
+                this.directionVariance   = settings.directionVariance;
+                this.speedMin            = settings.speedMin;
+                this.speedMax            = settings.speedMax;
+                this.opacityStart        = settings.opacityStart;
+                this.opacityEnd          = settings.opacityEnd;
+                this.gravityX            = settings.gravityX;
+                this.gravityY            = settings.gravityY;
+
+                this.imagesQueue = []
+                setInterval(() => this.trySpawnImage(), this.constants.ageImagesFrequency)
+                setInterval(() => this.ageImages(), this.constants.ageImagesFrequency)
+            }
+
+        }
+
+
+        let particleSpawner = new ParticleSpawner({
+            centerX: 240,
+            centerY: 160,
+            radius: 50,
+            frequency: 200,
+            imageLifetime: 2000,
+            sizeMin: 0.5,
+            sizeMax: 1.5,
+            hasRandomRotation: true,
+            rotationSpeed: 2,
+            direction: 45,
+            directionVariance: 12,
+            speedMin: 100,
+            speedMax: 150,
+            opacityStart: 1,
+            opacityEnd: 0,
+            gravityX: 0,
+            gravityY: 0.1,
+            imagePath: 'icon.png'
+        });
+
+    </script>
+
+
+    <script>
+
+        function addRange(setting) {
+            let stepSize = (setting.stepSize == null)? 1: setting.stepSize
+            let settingHtml = `
+                <p class="setting-name">${setting.name}</p>
+                <input type="range" name="${setting.name}" value="${setting.default}" min="${setting.min}" max="${setting.max}" step="${stepSize}">
+                <label>${setting.default}</label>
+            `
+            let div = document.createElement('div')
+            div.innerHTML = settingHtml
+            console.log(div.innerHTML)
+            document.querySelector('.settings-holder').appendChild(div)
+            let label = div.querySelector('label')
+            let range = div.querySelector('input')
+            range.addEventListener('input', () => {
+                label.innerText = range.value
+                particleSpawner[setting.name] = parseFloat(range.value)
+            })
+        }
+
+        function addInput(setting) {
+            let settingHtml = `
+                <p class="setting-name">${setting.name}</p>
+                <input type="text" name="${setting.name}" value="${setting.default}">
+            `
+            let div = document.createElement('div')
+            div.innerHTML = settingHtml
+            console.log(div.innerHTML)
+            document.querySelector('.settings-holder').appendChild(div)
+            let input = div.querySelector('input')
+            input.addEventListener('change', () => {
+                particleSpawner[setting.name] = input.value
+            })
+        }
+
+        function addCheckbox(setting) {
+            let settingHtml = `
+                <p class="setting-name">${setting.name}</p>
+                <input type="checkbox" name="${setting.name}" ${ setting.default == true? 'checked': ''}>
+            `
+            let div = document.createElement('div')
+            div.innerHTML = settingHtml
+            console.log(div.innerHTML)
+            document.querySelector('.settings-holder').appendChild(div)
+            let input = div.querySelector('input')
+            input.addEventListener('change', () => {
+                particleSpawner[setting.name] = input.checked
+            })
+        }
+
+
+        addRange({name: 'centerX', min: 0, max: 1000, default: 100})
+        addRange({name: 'centerY', min: 0, max: 1000, default: 100})
+        addRange({name: 'radius', min: 0, max: 500, default: 50})
+        addRange({name: 'frequency', min: 20, max: 5000, default: 20})
+
+        addInput({name: 'imagePath', default: 'icon.png'})
+
+        addRange({name: 'sizeMin', min: 0.1, max: 3, default: 1, stepSize: 0.05})
+        addRange({name: 'sizeMax', min: 0.1, max: 3, default: 1, stepSize: 0.05})
+
+        addCheckbox({name: 'hasRandomRotation', default: true})
+
+        addRange({name: 'rotationSpeed', min: 0, max: 5, default: 0.02, stepSize: 0.01})
+        addRange({name: 'imageLifetime', min: 100, max: 5000, default: 2000})
+        addRange({name: 'direction', min: 0, max: 360, default: 45})
+        addRange({name: 'directionVariance', min: 0, max: 180, default: 12})
+
+        addRange({name: 'speedMin', min: 0, max: 180, default: 100})
+        addRange({name: 'speedMax', min: 0, max: 180, default: 150})
+
+        addRange({name: 'opacityStart', min: 0, max: 1, default: 1, stepSize: 0.01})
+        addRange({name: 'opacityEnd', min: 0, max: 1, default: 0, stepSize: 0.01})
+
+        addRange({name: 'gravityX', min: -3, max: 3, default: 0, stepSize: 0.01})
+        addRange({name: 'gravityY', min: -3, max: 3, default: 0.1, stepSize: 0.01})
+
+        function getCode() {
+            let ps = particleSpawner
+            let code = `new ParticleSpawner(${ps.centerX}, ${ps.centerY}, {
+                "radius": ${ps.radius},
+                "frequency": ${ps.frequency},
+                "imagePath": "${ps.imagePath}",
+                "sizeMin": ${ps.sizeMin},
+                "sizeMax": ${ps.sizeMax},
+                "hasRandomRotation": ${ps.hasRandomRotation},
+                "rotationSpeed": ${ps.rotationSpeed},
+                "imageLifetime": ${ps.imageLifetime},
+                "direction": ${ps.direction},
+                "directionVariance": ${ps.directionVariance},
+                "speedMin": ${ps.speedMin},
+                "speedMax": ${ps.speedMax},
+                "opacityStart": ${ps.opacityStart},
+                "opacityEnd": ${ps.opacityEnd},
+                "gravityX": ${ps.gravityX},
+                "gravityY": ${ps.gravityY}
+            });`
+            document.querySelector('textarea').value = code
+        }
+
+    </script>
+
+
+    <script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+</body>

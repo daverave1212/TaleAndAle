@@ -43,7 +43,7 @@ using U;
 
 class ResourceBar
 {
-	var actor : Actor;
+	public var actor : Actor;
 	var currentPercent : Float = 100;
 	public var currentValue : Float = 0;
 	var initialWidth : Float = 100;
@@ -135,6 +135,10 @@ class ResourceBar
 		if(m != null){
 			maxValue = m;
 		}
+		actor.growTo(1, 1, 0, Easing.linear);
+		initialWidth = actor.getWidth();
+		if(actor.getWidth() < 100)
+			isSmall = true;
 		actor.growTo(1, 1, 0, Easing.linear);
 		isIncreasing = false;
 		isDecreasing = false;
