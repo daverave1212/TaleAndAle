@@ -56,9 +56,9 @@ class Effects
 	
 	public static function sendMissileAndThen(from : Point, to : Point, missileName : String, speed : Float, doThis : Void->Void){
 		var missile = createActor("MissileActor", "Particles");
-			missile.setX(from.x);
-			missile.setY(from.y);
 		missile.setAnimation(missileName);
+		missile.setX(from.x);
+		missile.setY(from.y);
 		var deltaX = from.x - to.x;
 		var deltaY = from.y - to.y;
 		if(Math.abs(deltaX) > Math.abs(deltaY)){			// Point the missile 'towards' the target
@@ -79,6 +79,7 @@ class Effects
 		var time =  maxDistance / speed;
 		missile.moveTo(to.x, to.y, time, Easing.quadIn);
 		doAfter(Std.int(1000 * time), function(){
+			trace('  Ended missile journey at ${missile.getX()}, ${missile.getY()}');
 			recycleActor(missile);
 			if(doThis != null) doThis();
 		});
@@ -90,18 +91,24 @@ class Effects
 		specialEffect.setAnimation(effectName);
 		setXCenter(specialEffect, at.x);
 		setYCenter(specialEffect, at.y);
+		var direction = 'right';
 		if(from.x <= at.x){
 			if(from.y >= at.y){
-				// It's ok
-			} else 
+				direction = 'right';
+			} else {
 				flipActorVertically(specialEffect);
+				direction = 'up';
+			}
 		} else {
 			flipActorHorizontally(specialEffect);
 			if(from.y >= at.y){
-				// It's ok
-			} else 
+				direction = 'left';
+			} else {
 				flipActorVertically(specialEffect);
+				direction = 'down';
+			}
 		}
+		specialEffect.setActorValue('direction', direction);	// For potential in-actor scripts
 		doAfter(1000, function(){
 			recycleActor(specialEffect);
 			if(doThis != null) doThis();

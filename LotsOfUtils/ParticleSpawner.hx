@@ -80,6 +80,7 @@ class ParticleSpawner {
     public var rotationSpeed: Float = 0;
     public var direction: Float = 0;           // Angle
     public var directionVariance: Float = 0;   // + / - an amount from direction
+    public var directionSpreads: Bool = false;  // If true, the angle of the particle directions will always seem to originate from the center
     public var speedMin: Float = 0;            // Pixels per second
     public var speedMax: Float = 0;            // Pixels per second
     public var opacityStart: Float = 1;
@@ -94,14 +95,24 @@ class ParticleSpawner {
     function spawnImage() {
         function sin(angle: Float) return Math.sin(angle * Utils.RAD);
         function cos(angle: Float) return Math.cos(angle * Utils.RAD);
-        var img = new ImageX(bitmapData, 'ParticlesLayer');
+        var img = new ImageX(bitmapData, 'Particles');
         var particle = new ParticleImage(img);
-        var spawnAngle = Utils.DEG * randomInt(0, 360);
         var spawnRadius = randomFloatBetween(0, radius);
+        var spawnAngle: Float;
+        if (directionSpreads) {
+            spawnAngle = direction + randomFloatBetween(-directionVariance, directionVariance);
+        } else {
+            spawnAngle = Utils.DEG * randomInt(0, 360);
+        }
         var cx = spawnRadius * cos(spawnAngle) + centerX;
         var cy = spawnRadius * sin(spawnAngle) + centerY;
         var newScale = img.image.scaleX * randomFloatBetween(sizeMin, sizeMax);
-        var particleDirection = direction + randomFloatBetween(-directionVariance, directionVariance);
+        var particleDirection : Float;
+        if (directionSpreads) {
+            particleDirection = spawnAngle;
+        } else {
+            particleDirection = direction + randomFloatBetween(-directionVariance, directionVariance);
+        }
         var ticksPerSeconds = 1000 / constants.ageImagesFrequency;
         var particleSpeed = randomFloatBetween(speedMin, speedMax);
         var pixelsPerTick = particleSpeed / ticksPerSeconds;
@@ -159,26 +170,40 @@ class ParticleSpawner {
     }
 
     public function setFromDynamic(settings: Dynamic) {
-        radius              = settings.radius;
-        frequency           = settings.frequency;
-        sizeMin             = settings.sizeMin;
-        sizeMax             = settings.sizeMax;
-        hasRandomRotation   = settings.hasRandomRotation;
-        rotationSpeed       = settings.rotationSpeed;
-        imageLifetime       = settings.imageLifetime;
-        direction           = settings.direction;
-        directionVariance   = settings.directionVariance;
-        speedMin            = settings.speedMin;
-        speedMax            = settings.speedMax;
-        opacityStart        = settings.opacityStart;
-        opacityEnd          = settings.opacityEnd;
-        gravityX            = settings.gravityX;
-        gravityY            = settings.gravityY;
+        if (settings.radius != null) radius = settings.radius;
+        if (settings.frequency != null) frequency = settings.frequency;
+        if (settings.sizeMin != null) sizeMin = settings.sizeMin;
+        if (settings.sizeMax != null) sizeMax = settings.sizeMax;
+        if (settings.hasRandomRotation != null) hasRandomRotation = settings.hasRandomRotation;
+        if (settings.rotationSpeed != null) rotationSpeed = settings.rotationSpeed;
+        if (settings.imageLifetime != null) imageLifetime = settings.imageLifetime;
+        if (settings.direction != null) direction = settings.direction;
+        if (settings.directionVariance != null) directionVariance = settings.directionVariance;
+        trace('Direction spreads: ${directionSpreads}');
+        if (settings.directionSpreads != null) {
+            trace('Direction spreads settings NOT NULL: ${settings.directionSpreads}');
+            directionSpreads = settings.directionSpreads;
+        }
+        trace('Direction spreads: ${directionSpreads}');
+        if (settings.speedMin != null) speedMin = settings.speedMin;
+        if (settings.speedMax != null) speedMax = settings.speedMax;
+        if (settings.opacityStart != null) opacityStart = settings.opacityStart;
+        if (settings.opacityEnd != null) opacityEnd = settings.opacityEnd;
+        if (settings.gravityX != null) gravityX = settings.gravityX;
+        if (settings.gravityY != null) gravityY = settings.gravityY;
+        trace('Settings:');
+        trace(settings);
         trace('Getting image: ${settings.imagePath}');
         bitmapData          = getExternalImage(settings.imagePath);
     }
 
-    public function enable() isEnabled = true;
-    public function disable() isEnabled = false;
+    public inline function enable() isEnabled = true;
+    public inline function disable() isEnabled = false;
+    public inline function setX(x) centerX = x;
+    public inline function setY(y) centerY = y;
+
+    public function burst(nParticles: Int) {
+        for (_ in 0...nParticles) spawnImage();
+    }
 
 }
