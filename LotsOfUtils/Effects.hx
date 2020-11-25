@@ -85,31 +85,33 @@ class Effects
 		});
 	}
 	
-	public static function playParticleAndThen(from : Point, at : Point, effectName : String, doThis : Void->Void){
+	public static function playParticleAndThen(from : Point, at : Point, effectName : String, duration : Float, doThis : Void->Void){
 		createLayerIfDoesntExist("Particles", 50);
 		var specialEffect = createActor("SpecialEffectActor", "Particles", at.x, at.y);
 		specialEffect.setAnimation(effectName);
 		setXCenter(specialEffect, at.x);
 		setYCenter(specialEffect, at.y);
-		var direction = 'right';
-		if(from.x <= at.x){
-			if(from.y >= at.y){
-				direction = 'right';
+		var direction = 'no-direction';
+		if (from != null) {
+			if (from.x <= at.x) {
+				if(from.y >= at.y){
+					direction = 'right';
+				} else {
+					flipActorVertically(specialEffect);
+					direction = 'up';
+				}
 			} else {
-				flipActorVertically(specialEffect);
-				direction = 'up';
-			}
-		} else {
-			flipActorHorizontally(specialEffect);
-			if(from.y >= at.y){
-				direction = 'left';
-			} else {
-				flipActorVertically(specialEffect);
-				direction = 'down';
+				flipActorHorizontally(specialEffect);
+				if(from.y >= at.y){
+					direction = 'left';
+				} else {
+					flipActorVertically(specialEffect);
+					direction = 'down';
+				}
 			}
 		}
 		specialEffect.setActorValue('direction', direction);	// For potential in-actor scripts
-		doAfter(1000, function(){
+		doAfter(Std.int(duration), function(){
 			recycleActor(specialEffect);
 			if(doThis != null) doThis();
 		});

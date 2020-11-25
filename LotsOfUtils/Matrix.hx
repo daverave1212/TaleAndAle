@@ -21,7 +21,18 @@ class Matrix<T>
 	public inline function set(i : Int, j : Int, t : T){
 		matrix[i][j] = t;
 	}
-	
+
+	public function filterToArray(func : T -> Bool) {
+		var items : Array<T> = [];
+		forEach(item -> if (func(item)) items.push(item));
+		return items;
+	}
+	public function filterToArrayIndices(func : Int -> Int -> Bool) {
+		var indices : Array<Position> = [];
+		forEachIndices((i, j) -> if (func(i, j)) indices.push(new Position(i, j)));
+		return indices;
+	}
+
 	public function setAll(t : T){
 		for(i in 0...nRows){
 			for(j in 0...nCols){

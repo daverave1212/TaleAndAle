@@ -275,6 +275,7 @@ class U extends SceneScript
 		trace("Changing scene to " + sceneID);
 		switchScene(sceneID, fo, fi);
 		trace("Starting U again...");
+		Sayer.reset();
 		U.start();
 	}
 	

@@ -78,6 +78,11 @@ class Sayer
 		font = f;
 		textBoxes = [null, null, null];
 	}
+
+	public static function reset() {
+		textBoxes = [null, null, null];
+		currentTextBox = 0;
+	}
 	
 	private static function sayAt(s : String, x : Float, y : Float){
 		if (chatBubbleActorType == null) {
@@ -85,6 +90,7 @@ class Sayer
 			return -1;
 		}
 		currentTextBox++;
+		trace('  currentTextBox = ${currentTextBox}');
 		if (currentTextBox == textBoxes.length) currentTextBox = 0;
 		if (textBoxes[currentTextBox] == null) {
 			textBoxes[currentTextBox] = new TextBox(chatBubbleWidth - paddingLeft, chatBubbleHeight, 0, 0, font);
@@ -141,6 +147,8 @@ class Sayer
 		cb.growTo(1, 1, 0.03, Easing.linear);
 		return cb;
 	}
+
+	
 	
 	
 	
