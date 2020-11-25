@@ -1,0 +1,146 @@
+
+Base Hero Stats:
+  Health: 20      (+3)
+  Damage: 6-7     (+0.5)
+  Mana: ?         (+1)
+  Spell Power: 0  
+  
+Base Enemy Stats:
+  Health: 66% of Player's
+  Damage: 10% of Player's HP
+  
+100% DMG: 0 Mana
+135% DMG: 2 Mana
+Move 1: 1 Mana
+10% of HP = 1 Enemy Attack: 5 Mana
+Free Stun: 6 Mana
+
+
+
+Classes:
+  Fighter:
+    [DONE] Attack: 1 range, 100% DMG
+    [DONE] Charge: 2 range, 55% DMG AoE, 2 mana
+    Stand Ground: block 90% of the next attack's damage, +1 damage for the rest of the combat, 4 mana
+    Body Toss: 1 range, 75% DMG, pushes target up to 3 tiles, stuns if it collides with anything, 3 mana
+    Intimidation: 4 range, 25% SP, reduces enemy damage by 15% (work only once).
+    (RARE) Regeneration: (passive) Heal for 20% SP + 2 Health every turn.
+  Ranger:
+    [DONE] Arrow: 4 range, 90% DMG
+    Fox Attack: global, 35% DMG + bleed (35% SP), 2 mana
+    Quickfoot (passive): +1 MVM
+    Triple Arrow: 4 range, 85% DMG, 3 ways in front, 3 mana
+    Flareshot: 4 range, 8 way, 90% SP, decreases enemy dodge and crit by 10% (once)
+    Bear Trap: 4 range, 8 way, 75% SP and snare if someone steps on it
+    Disorient: 3 range, enemies around are scattered away from it
+    (RARE) Steady Shooting: (passive) every consecutive attack deals 20% more damage
+    (RARE) Fox Companion: (passive) start the combat with a Fox companion
+    - Block/Defense
+  Mage:
+    Fire Bolt: 3 range, 90% SP
+    Magic Arrow: 4 range, 75% SP + x (diagonal), 1 mana
+    Blink: (instant) teleport 2 range, 3 mana
+    Mana Ward: any ally, shields for 85% SP + 20% of your Max Mana, 8 mana
+    Ice Spike: 4 range, 70% SP, damages the first target and the one behind it, 5 mana
+    Ignite: all enemies, bleed, 5 mana
+    Slowdown: 4 range, 50% slow, 35% SP, 2 mana
+    Conjure Wall: 4 range - summmon a wall with 75% SP HP
+    (EPIC) Iceberg Drop: 4 range, 40% SP and stuns the target, 9 mana
+    (EPIC) Soul Drain: 3 range, 50% SP, 10 mana, if you kill a target with this, gain 1 Gem
+    - Buff
+  Rogue:
+    Attack: 1 range, 100% DMG
+    Flank: 1 range, diagonally, 110% DMG, 2 mana
+    Backstab: 1 range, 135% DMG + x (left only), 3 mana
+    Shadowstep: (instant) teleport 3 range, 5 mana, your next attack ignores 50% Armor
+    Pocket Sand: (instant, 8 way) 1 range, stun target and it moves in 1 direction (if it can), 7 mana
+    Hijack: (instant), 2 range, reduces armor by 25%
+    - Buff
+    - Debuff
+    (EPIC) Rob Them Blind: (instant), 4 mana, increases the amount of loot you gain from this combat (works multiple times)
+    
+Omni Spells:
+  (RARE) Bandage (Fighter, Ranger, Rogue): 1 range, 8 way, heal for 75% SP, 5 mana
+  (RARE) Whirlwind (Fighter, Rogue): 1 range, 8 way, 70% DMG AoE, 5 mana
+  (RARE) Thunder Clap (Fighter, Mage): 3 range, 60% SP + x AoE, 6 mana
+  (RARE) Raise Morale (Fighter, Ranger): (instant) all allies gain 15% DMG and 2 Initiative for the rest of the combat (works only once), 5 mana
+  (RARE) Thrown Skiver (Fighter, Rogue): 3 range but jumps over the first square, 15% DMG + bleed, 4 mana
+  (RARE) Blood Drain (Fighter, Mage): 2 range, diagonal, 65% SP damage, heal for 40% SP, 6 mana
+  (RARE) Fence (Ranger, Rogue): (instant), gain 50% dodge for 2 turns (6 mana)
+  (EPIC) Vampirism (ALL): (passive) heal for 15% of all damage dealt. You take extra damage from Fire.
+  (EPIC) Magic Touch (Fighter, Ranger, Rogue): (passive) Your attacks/arrows deal 30% of SP bonus damage.
+
+
+Ability Types:
+  - Normal Damage
+  - DoT
+  - AoE
+  - Block/Defense
+  - Heal
+  - Buff
+  - Stun / Snare
+  - Mobility
+  - Disposition
+  
+  
+Zones (each zone has an optional Raid):
+  A.1. Village:
+    Peasant
+    Serfmaster
+    The Pagan Trio (splits into 3 when down on HP)
+  A.2. Fields
+    Peasant
+    Evil Paprika (explodes on death, dealing damage AoE)
+    Pumpkin (on death, leaves spikes on tile)
+    PUMPZILLA (when hit, summons a smaller pumpkin)
+  A.3. Churchyard
+    Peasant
+    Heavenly Spirit (fly, high armor, low MR)
+    Bishop (Heals every turn if anyone is damaged)
+    FATHER ALMUND (can AoE heal)
+  B.1. Outskirts
+    Wolf (apply bleed, howl (AoE Buff))
+    Bandit (every hit steal gold)
+    Rampant Planta (Mandrake) (Summon 'bear traps')
+    FENRIS (huge speed, drain life)
+  B.2. Forest
+    Wolf
+    Bandit
+    Mushroom (damages all enemies, stays in the back)
+    Slime (splits on death into 2 smaller slimes)
+    THE ZGRIPSOR (huge speed, attacks, retreats and heals and buffs)
+  B.3 Swamp
+    Mushroom
+    Reptillian (invisible)
+    Slime
+    Gelatinous Cube (has another enemy inside, which drops after death)
+    THE VODYANOY
+  C.1. Beaches
+    Mermaid (shoot bow and charms if anyone gets close (lowers damage and slows))
+    Pirate (YARGGHHH)
+    Cannon (BOOOOM!)
+    Handymaid (Maid with bandana)
+    CAPTAIN ROTBEARD (cannons from above, delayed 1 turn)
+  C.2. Cove
+    Tertrout (reverse mermaid) (spit bubbles)
+    Mermaid
+    WATER DRAGON
+  D.1. Caverns
+    Slime (other color)
+    Mushroom (other color)
+    Golems o' Plenty (all colors)
+    O'GOR THE BLIND
+  D.2. Dungeon
+    Beholder
+    Skeleton
+    DRIDER
+  Z.1. Necropolis - Graves
+  Z.2. Necropolis - Castle
+  Z.3. Necropolis - Depths
+  
+
+
+Encounters:
+  Each BattlefieldEncounter holds one wave of enemies (hasNextWave = true)
+  The next wave is the next wave in the database, in order
+  If a BattlefieldEncounter doesn't have another wave

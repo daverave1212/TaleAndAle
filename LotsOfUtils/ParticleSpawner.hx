@@ -97,7 +97,7 @@ class ParticleSpawner {
         function cos(angle: Float) return Math.cos(angle * Utils.RAD);
         var img = new ImageX(bitmapData, 'Particles');
         var particle = new ParticleImage(img);
-        var spawnRadius = randomFloatBetween(0, radius);
+        var spawnRadius = radius;//randomFloatBetween(0, radius);
         var spawnAngle: Float;
         if (directionSpreads) {
             spawnAngle = direction + randomFloatBetween(-directionVariance, directionVariance);
@@ -117,7 +117,7 @@ class ParticleSpawner {
         var particleSpeed = randomFloatBetween(speedMin, speedMax);
         var pixelsPerTick = particleSpeed / ticksPerSeconds;
         var speedX = pixelsPerTick * cos(particleDirection);
-        var speedY = -pixelsPerTick * sin(particleDirection);
+        var speedY = pixelsPerTick * sin(particleDirection);
         var ticksPerLifetime = imageLifetime / constants.ageImagesFrequency;
         var opacityDelta = opacityEnd - opacityStart;
         var opacityDeltaPerTick = opacityDelta / ticksPerLifetime;
@@ -177,7 +177,7 @@ class ParticleSpawner {
         if (settings.hasRandomRotation != null) hasRandomRotation = settings.hasRandomRotation;
         if (settings.rotationSpeed != null) rotationSpeed = settings.rotationSpeed;
         if (settings.imageLifetime != null) imageLifetime = settings.imageLifetime;
-        if (settings.direction != null) direction = settings.direction;
+        if (settings.direction != null) direction = -settings.direction;
         if (settings.directionVariance != null) directionVariance = settings.directionVariance;
         trace('Direction spreads: ${directionSpreads}');
         if (settings.directionSpreads != null) {
