@@ -103,7 +103,8 @@ class SUIComponent
 	}
 	
 	public function setLeft(value : Float){
-		setX(getScreenX() + value);
+		actor.anchorToScreen();
+		setX(value);
 		return this;
 	}
 
@@ -113,7 +114,8 @@ class SUIComponent
 	}
 	
 	public function setRight(value : Float){
-		setX(getScreenX() + getScreenWidth() - getWidth() - value);
+		actor.anchorToScreen();
+		setX(getScreenWidth() - getWidth() - value);
 		return this;
 	}
 
@@ -123,7 +125,8 @@ class SUIComponent
 	}
 	
 	public function setTop(value : Float){
-		setY(getScreenY() + value);
+		actor.anchorToScreen();
+		setY(value);
 		return this;
 	}
 
@@ -133,7 +136,8 @@ class SUIComponent
 	}
 	
 	public function setBottom(value : Float){
-		setY(getScreenY() + getScreenHeight() - getHeight() - value);
+		actor.anchorToScreen();
+		setY(getScreenHeight() - getHeight() - value);
 		return this;
 	}
 
@@ -148,7 +152,11 @@ class SUIComponent
 	public inline function getTop() return getY();
 
 	public inline function centerVertically() setTop(getScreenHeight() / 2 - getHeight() / 2);
-	public inline function centerHorizontally() setLeft(getScreenWidth() / 2 - getWidth() / 2);
+	public inline function centerHorizontally() {
+		var left = getScreenWidth() / 2 - getWidth() / 2;
+		trace('Setting left=${left}');
+		setLeft(left);
+	}
 	
 
 	public function setAnimation(s : String){

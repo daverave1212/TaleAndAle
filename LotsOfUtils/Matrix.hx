@@ -21,6 +21,22 @@ class Matrix<T>
 	public inline function set(i : Int, j : Int, t : T){
 		matrix[i][j] = t;
 	}
+	
+	public function filter(func : T -> Bool, nullValue : T) {			// If func(elem), elem. Else nullValue
+		var returnedMatrix = new Matrix<T>(nRows, nCols);
+		for (i in 0...nRows) for (j in 0...nCols) {
+			returnedMatrix.set(i, j, if (func(matrix[i][j])) matrix[i][j] else nullValue);
+		}
+		return returnedMatrix;
+	}
+
+	public function filterIndices(func : Int -> Int -> Bool, nullValue : T) {
+		var returnedMatrix = new Matrix<T>(nRows, nCols);
+		for (i in 0...nRows) for (j in 0...nCols) {
+			returnedMatrix.set(i, j, if (func(i, j)) matrix[i][j] else nullValue);
+		}
+		return returnedMatrix;
+	}
 
 	public function filterToArray(func : T -> Bool) {
 		var items : Array<T> = [];

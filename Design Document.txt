@@ -81,7 +81,17 @@ Ability Types:
   - Stun / Snare
   - Mobility
   - Disposition
-  
+
+
+
+1. Village/Towns
+2. Forest
+3. Swamp
+4. Beaches
+5. Caves
+6. Castle
+
+
   
 Zones (each zone has an optional Raid):
   A.1. Village:
