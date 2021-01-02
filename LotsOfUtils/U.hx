@@ -62,7 +62,7 @@ import com.stencyl.utils.motion.*;
 		hexToDecimal
 		getColor(r, g, b) 	: Int       all ints
 		getColor('#FFFFFF') : Int
-		
+		createBlackBitmapData(w, h) : BitmapData
 		
 		stringContains(string, substring)
 		splitString(string, delimiters)
@@ -151,6 +151,13 @@ class U extends SceneScript
 	
 	public static function pass(){
 		trace('Pass...');
+	}
+
+
+	public static function createBlackBitmapData(width, height) {
+		var blackSquare = newImage(Std.int(width / Engine.SCALE), Std.int(height / Engine.SCALE));
+		fillImage(blackSquare, Utils.getColorRGB(0, 0, 0));
+		return blackSquare;
 	}
 
 	public static function hexToDecimal(stringHex){
@@ -262,7 +269,7 @@ class U extends SceneScript
 		}, null);
 	}
 
-	public static function changeScene(sceneName : String, ?fadeOut : Dynamic, ?fadeIn : Dynamic){
+	public static function changeScene(sceneName : String, ?fadeOut, ?fadeIn){
 		var sceneID = GameModel.get().scenes.get(getIDForScene(sceneName)).getID();
 		var fo = null;
 		var fi = null;

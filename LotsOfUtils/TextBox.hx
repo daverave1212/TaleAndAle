@@ -163,10 +163,10 @@ class TextBox extends SceneScript{
 		if (currentLine != '') lines.push(currentLine);
 		nLines = lines.length;
 	}
-				
+
 	public function getText(){
 		return text;}
-		
+
 	private function draw(g : G){
 		if(isDrawing){
 			if(drawOutline){
@@ -176,10 +176,10 @@ class TextBox extends SceneScript{
 			}
 			g.setFont(font);
 			for(currentLine in 0...nLines){
-				var drawx = x;
+				var drawx = x - getScreenX();
 				var drawy = y;
 				if(centerHorizontally){
-					drawx = x - getLineWidth(lines[currentLine]) / 2;
+					drawx = x - getLineWidth(lines[currentLine]) / 2  - getScreenX();
 				}
 				if(centerVertically){
 					drawy = y + (h - lineSpacing * nLines) / 2 + lineSpacing * currentLine;
@@ -193,7 +193,7 @@ class TextBox extends SceneScript{
 					g.drawRect(drawx, drawy, getLineWidth(lines[currentLine]), lineSpacing);
 				}
 			}}}
-	
+
 	public function startDrawing(){
 		isDrawing = true;}
 		

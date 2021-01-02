@@ -1,9 +1,11 @@
 
 Base Hero Stats:
-  Health: 20      (+3)
+  Health: 20      (+1)
   Damage: 6-7     (+0.5)
   Mana: ?         (+1)
   Spell Power: 0  
+  
+Experience Needed Per Level: 5 + 5 * Current Level
   
 Base Enemy Stats:
   Health: 66% of Player's
@@ -108,6 +110,8 @@ Zones (each zone has an optional Raid):
     Heavenly Spirit (fly, high armor, low MR)
     Bishop (Heals every turn if anyone is damaged)
     FATHER ALMUND (can AoE heal)
+      - Bishop Hershel
+      
   B.1. Outskirts
     Wolf (apply bleed, howl (AoE Buff))
     Bandit (every hit steal gold)
@@ -154,3 +158,50 @@ Encounters:
   Each BattlefieldEncounter holds one wave of enemies (hasNextWave = true)
   The next wave is the next wave in the database, in order
   If a BattlefieldEncounter doesn't have another wave
+
+
+Story:
+- For each character, there's a reason you are locked up.
+- You start in a small dungeon, locked
+- You fight guards to get out
+- Some guards turn into zombies ("What the...")
+- You meet someone who tells you to the corruption is spreading.
+  - Seek answers
+  
+
+
+
+
+
+
+
+
+
+0.
+  The player oversees the evil sister killing 2 crusaders:
+  - "Finally! We caught you!"
+  - "You will pay for your evil magic, witch!"
+  *Turns left*
+  *Turns right*
+  - "Fools! You think you can stop me from getting what is mine?"
+    "I will raise an army of undead!"
+    "And this whole kingdom will be mine!"
+  *Player oversees this and comes to help*
+  *
+ 
+
+1. Fight againt Drunk Guard
+  - Quote: "Let's see if I still know how to fight..."
+  - "Every turn, you can move your character"
+      > Arrow on move spell and highlight it (click on move)
+      > Arrow on tile near the peasant (click on tile)
+  - "After you move, you can attack! Let's strike that drunk soldier!"
+      > Arrow on Attack and highlight (click on it)
+      > Arrow on peasant tile (click on tile)
+      > Quote: "Ouch! That hurt!"
+  - "Now it's the drunk soldier's turn..."
+  - Quote: "I'll show you!"
+  - "You got hit! You lost 6 life points!"
+  - "If your life points reach 0, you die."
+  - "Same for this drunk soldier. Get him to 0 life to win! Good luck!"
+2. Fight against the

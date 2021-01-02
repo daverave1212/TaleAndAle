@@ -62,12 +62,12 @@ class Sayer
 	public static var chatBubbleActorType : ActorType;
 	public static var font : Font;
 
-	public static inline var chatBubbleWidth = 90;
-	public static inline var chatBubbleHeight = 50;
+	// public static inline var chatBubbleWidth = 90;
+	// public static inline var chatBubbleHeight = 50;
 	public static inline var paddingLeft = 2;
 	public static inline var paddingTop = 4;
-	public static inline var originYOffset = 50;
-	public static inline var originXOffset = chatBubbleWidth / 2;
+	// public static inline var originYOffset = 50;
+	// public static inline var originXOffset = chatBubbleWidth / 2;
 	
 	
 	public static var textBoxes : Array<TextBox>;
@@ -84,7 +84,7 @@ class Sayer
 		currentTextBox = 0;
 	}
 	
-	private static function sayAt(s : String, x : Float, y : Float){
+	private static function sayAt(s : String, x : Float, y : Float, width : Int, height : Int){
 		if (chatBubbleActorType == null) {
 			trace("ERROR: Sayer not initialized!");
 			return -1;
@@ -93,36 +93,35 @@ class Sayer
 		trace('  currentTextBox = ${currentTextBox}');
 		if (currentTextBox == textBoxes.length) currentTextBox = 0;
 		if (textBoxes[currentTextBox] == null) {
-			textBoxes[currentTextBox] = new TextBox(chatBubbleWidth - paddingLeft, chatBubbleHeight, 0, 0, font);
+			textBoxes[currentTextBox] = new TextBox(width - paddingLeft, height, 0, 0, font);
 			textBoxes[currentTextBox].lineSpacing = 10;
 			//textBoxes[currentTextBox].centerVertically = true;
 			textBoxes[currentTextBox].centerHorizontally = true;
 		}
-		var textX = x - originXOffset + paddingLeft;
+		var textX = x - (width / 2) + paddingLeft;
 		textX = x;
-		textBoxes[currentTextBox].setPosition(textX, y - originYOffset + paddingTop);
+		textBoxes[currentTextBox].setPosition(textX, y - height + paddingTop);
 		textBoxes[currentTextBox].reset();
 		textBoxes[currentTextBox].setText(s);
 		textBoxes[currentTextBox].startDrawing();
 		return currentTextBox;
 	}
 	
-	public static function say(s : String, x : Float, y : Float, duration : Float){
-		trace('Sayer.say...');
-		var cb = createChatBubbleActor(x, y);
-		trace('Created bubble. SayingAt(${s}, ${x}, ${y})');
-		var thisTextBox = sayAt(s, x, y);
-		trace('sayAt(${s}, ${x}, ${y})');
-		if (duration > 0) {
-			runLater(1000 * duration, function(timeTask:TimedTask):Void {
+	public static function say(s : String, x : Float, y : Float, durationInSeconds : Float, ?actorTypeName : String) {
+		var cb = createChatBubbleActor(x, y, actorTypeName);
+		// var textBoxWidth  = cb.getWidth() - paddingLeft * 2;
+		// var textBoxHeight = cb.getHeight() - paddingTop * 2;
+		if (durationInSeconds > 3) trace('WARNING: duration given to say (${durationInSeconds}) must be in Seconds, not Miliseconds');
+		var thisTextBox = sayAt(s, x, y, Std.int(cb.getWidth()), Std.int(cb.getHeight()));
+		if (durationInSeconds > 0) {
+			runLater(1000 * durationInSeconds, function(timeTask:TimedTask):Void {
 				remove(new SayerReturnObject(cb, thisTextBox));
 			}, null);
 			return null;
-		} else if (duration == -1) {
-			trace('Aight duration -1');
+		} else if (durationInSeconds == -1) {
 			return new SayerReturnObject(cb, thisTextBox);
 		} else {
-			trace('Invalid duration given to say: ${duration}');
+			trace('Invalid durationInSeconds given to say: ${durationInSeconds}');
 			return null;
 		}
 		
@@ -138,10 +137,14 @@ class Sayer
 		}, null);
 	}
 	
-	static function createChatBubbleActor(x : Float, y : Float){
-		var cb = U.createActor(chatBubbleActorType, "Say");
-		cb.setX(x - originXOffset);
-		cb.setY(y - originYOffset + 5);
+	static function createChatBubbleActor(x : Float, y : Float, ?customActorTypeName : String){
+		var cb : Actor;
+		if (customActorTypeName == null)
+			cb = U.createActor(chatBubbleActorType, "Say");
+		else
+			cb = U.createActor(customActorTypeName, "Say");
+		cb.setX(x - cb.getWidth() / 2);
+		cb.setY(y - cb.getHeight() + 5);
 		cb.moveBy(0, -5, 0.03, Easing.linear);
 		cb.growTo(0.7, 0.7, 0, Easing.linear);
 		cb.growTo(1, 1, 0.03, Easing.linear);
