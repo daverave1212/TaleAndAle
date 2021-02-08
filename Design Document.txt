@@ -1,15 +1,16 @@
 
 Base Hero Stats:
-  Health: 20      (+1)
-  Damage: 6-7     (+0.5)
-  Mana: ?         (+1)
+  Health: 20      +1 (+2 item)
+  Damage: 6-7     +1 (+1.5 item)
+  Mana: ?         +1 (+2 item)
   Spell Power: 0  
   
 Experience Needed Per Level: 5 + 5 * Current Level
   
 Base Enemy Stats:
-  Health: 66% of Player's
+  Health: 250% of Player's Damage
   Damage: 10% of Player's HP
+  XP: 0.5 + 0.5 * Monster Level
   
 100% DMG: 0 Mana
 135% DMG: 2 Mana
@@ -86,12 +87,13 @@ Ability Types:
 
 
 
-1. Village/Towns
-2. Forest
-3. Swamp
-4. Beaches
-5. Caves
-6. Castle
+Zones:
+    1. Peasant
+    2. Forest
+    3. Swamp
+    4. Beaches
+    5. Caves
+    6. Castle
 
 
   
