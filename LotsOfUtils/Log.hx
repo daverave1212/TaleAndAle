@@ -98,7 +98,7 @@ class Log extends SceneScript
 	}
 
 	public static function toggle(){
-		if(isOpen){
+		if (isOpen){
 			closeConsole();
 		} else {
 			openConsole();

@@ -81,7 +81,8 @@ class ResourceBar
 	public inline function setY(y : Float) actor.setY(y);
 	public inline function show() actor.enableActorDrawing();
 	public inline function hide() actor.disableActorDrawing();
-
+	public inline function getX() return actor.getX();
+	public inline function getY() return actor.getY();
 
 	public function new(actorName : String, layerName : String, max : Float, ?l2r : Bool = true, ?simple : Bool = false){
 		actor = createActor(actorName, layerName);
@@ -178,5 +179,8 @@ class ResourceBar
 		return;
 	}
 	
+	public function setAnimation(animationName) {
+		actor.setAnimation(animationName);
+	}
 	
 }

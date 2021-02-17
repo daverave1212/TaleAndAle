@@ -58,6 +58,23 @@ import com.stencyl.graphics.shaders.HueShader;
 import com.stencyl.graphics.shaders.TintShader;
 import com.stencyl.graphics.shaders.BloomShader;
 
+/*
+	new TextLine(text, font, x, y)			NOTE: x and y are relative to the screen, not scene!
+
+	.x
+	.y
+	.setX(x)
+	.setY(y)
+
+	.alignLeft()
+	.alignRight()
+	.alignCenter()
+
+	.enable()
+	.disable()
+
+*/
+
 
 class TextLine {
 

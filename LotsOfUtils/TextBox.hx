@@ -149,15 +149,18 @@ class TextBox extends SceneScript{
 		nLines = 0;
 		var currentLine = '';
 
-		for (word in wordList) {
+		for (i in 0...wordList.length) {
+			var word = wordList[i];
 			if (word == '\n') {
 				lines.push(currentLine);
 				currentLine = '';
 			} else if (getLineWidth(currentLine + ' ' + word) >= w) {
 				lines.push(currentLine);
 				currentLine = word;
-			} else {
+			} else if (i != 0) {
 				currentLine += ' ' + word;
+			} else {
+				currentLine += word;
 			}
 		}
 		if (currentLine != '') lines.push(currentLine);

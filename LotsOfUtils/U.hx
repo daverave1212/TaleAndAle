@@ -24,6 +24,7 @@ import com.stencyl.Engine;
 import com.stencyl.Input;
 import com.stencyl.Key;
 import com.stencyl.utils.Utils;
+import com.stencyl.Data;
 
 import openfl.ui.Mouse;
 import openfl.display.Graphics;
@@ -269,6 +270,28 @@ class U extends SceneScript
 		}, null);
 	}
 
+	public static function changeScene(sceneName: String, fadeOutTimeSeconds: Float = 0.5, fadeInTimeSeconds: Float = 0.5) {
+		if (fadeOutTimeSeconds >= 10 || fadeInTimeSeconds >= 10) trace('WARNING: For changeScene with fadeOut $fadeOutTimeSeconds and fadeIn $fadeInTimeSeconds, are you sure these are seconds and not miliseconds?');
+		var sceneID = GameModel.get().scenes.get(getIDForScene(sceneName)).getID();
+		var fo = createFadeOut(fadeOutTimeSeconds, Utils.getColorRGB(0,0,0));
+		var fi = createFadeIn(fadeInTimeSeconds, Utils.getColorRGB(0,0,0));
+		switchScene(sceneID, fo, fi);
+		Sayer.reset();
+		U.start();
+	}
+
+	public static function getFontByName(fontName : String) : Font {
+		for (res in Data.get().resources) {
+			if (res != null) trace(res.name);
+			if (Std.is(res, Font) && res.name == fontName) {
+				return cast res;       
+			}
+		}
+		throw 'ERROR: No font with name $fontName found';
+		return null;
+	}
+
+	/*
 	public static function changeScene(sceneName : String, ?fadeOut, ?fadeIn){
 		var sceneID = GameModel.get().scenes.get(getIDForScene(sceneName)).getID();
 		var fo = null;
@@ -284,7 +307,7 @@ class U extends SceneScript
 		trace("Starting U again...");
 		Sayer.reset();
 		U.start();
-	}
+	}*/
 	
 	public static function stringContains(s : String, letter : String){
 		for(i in 0...s.length){
@@ -358,6 +381,12 @@ class U extends SceneScript
 		if(a == null) return null;
 		if(a.length == 0) return null;
 		return a[a.length - 1];
+	}
+
+	public static function arraySumInt(a : Array<Int>) {
+		var sum = 0;
+		for (elem in a) sum += elem;
+		return sum;
 	}
 	
 	public static function angleBetweenPoints(x1 : Float, y1 : Float, x2 : Float, y2 : Float){
