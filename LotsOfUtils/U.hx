@@ -103,6 +103,9 @@ class U extends SceneScript
 		Log.isInitialized = false;
 	}
 	
+
+
+	// File in/out
 	public static function readFile(fileName : String) : String {
 		return nme.Assets.getText("assets/data/" + fileName);
 	}
@@ -116,30 +119,37 @@ class U extends SceneScript
 		return parseJSON(text);
 	}
 
+
+
+	// Scene functionality
 	public static function layerExists(layerName){
 		return engine.getLayerByName(layerName) != null;
 	}
-	
 	public static function createLayerIfDoesntExist(layerName : String, ?zIndex : Int){
 		if(engine.getLayerByName(layerName) == null){
 			if(zIndex == null) zIndex = 99;
 			addBackgroundFromImage(null, false, layerName, zIndex);
 		}
 	}
-
-	public static inline function percentOf(value : Float, ofWhat : Float){
-		return ofWhat * value / 100;
+	public static function changeScene(sceneName: String, fadeOutTimeSeconds: Float = 0.5, fadeInTimeSeconds: Float = 0.5) {
+		if (fadeOutTimeSeconds >= 10 || fadeInTimeSeconds >= 10) trace('WARNING: For changeScene with fadeOut $fadeOutTimeSeconds and fadeIn $fadeInTimeSeconds, are you sure these are seconds and not miliseconds?');
+		var sceneID = GameModel.get().scenes.get(getIDForScene(sceneName)).getID();
+		var fo = createFadeOut(fadeOutTimeSeconds, Utils.getColorRGB(0,0,0));
+		var fi = createFadeIn(fadeInTimeSeconds, Utils.getColorRGB(0,0,0));
+		switchScene(sceneID, fo, fi);
+		Sayer.reset();
+		U.start();
 	}
 
-	public static inline function whatPercentOf(value : Float, ofWhat : Float){
-		return value * 100 / ofWhat;
-	}
 
+
+	// Math and probability
+	public static inline function percentOf(value : Float, ofWhat : Float) return ofWhat * value / 100;
+	public static inline function whatPercentOf(value : Float, ofWhat : Float) return value * 100 / ofWhat;
 	public static function percentChance(percent : Float) : Bool {
 		if (randomFloatBetween(0, 100) <= percent) return true;
 		else return false;
 	}
-
 	public static function probabilityDistribution(distribution : Array<Int>) : Int {
 		if (distribution == null) throw 'ERROR: null distribution given to distributionIndex';
 		if (distribution.length == 0) return -1;
@@ -149,23 +159,10 @@ class U extends SceneScript
 				balls.push(index);
 		return balls[randomInt(0, balls.length - 1)];
 	}
-	
-	public static function pass(){
-		trace('Pass...');
-	}
-
-
-	public static function createBlackBitmapData(width, height) {
-		var blackSquare = newImage(Std.int(width / Engine.SCALE), Std.int(height / Engine.SCALE));
-		fillImage(blackSquare, Utils.getColorRGB(0, 0, 0));
-		return blackSquare;
-	}
-
 	public static function hexToDecimal(stringHex){
 		stringHex = "0x" + stringHex;
 		return Std.parseInt(stringHex);
 	}
-	
 	public static function getColor(?asString : String, ?r : Int, ?g : Int, ?b : Int){
 		if(asString != null){
 			if(asString.length < 6){
@@ -181,7 +178,34 @@ class U extends SceneScript
 			return Utils.getColorRGB(r, g, b);
 		}
 	}
+	public static function toInt(f : Float){
+		return Std.int(f);
+	}
+	public static function randomOf(a : Array<Dynamic>){
+		return(a[randomInt(0, a.length - 1)]);
+	}
+	public static function randomIndex(a : Array<Dynamic>) {
+		return randomInt(0, a.length - 1);
+	}
+	public static function arraySumInt(a : Array<Int>) {
+		var sum = 0;
+		for (elem in a) sum += elem;
+		return sum;
+	}
+	public static function angleBetweenPoints(x1 : Float, y1 : Float, x2 : Float, y2 : Float){
+		return Utils.DEG * Math.atan2(y1-y2, x1-x2);
+	}
+	public static inline function isBetween(i : Float, a : Float, b : Float) return a <= i && i < b;
+	public static inline function floatSum(a : Array<Float>){
+		var x : Float = 0;
+        for(e in a)
+            x += e;
+        return x;
+	}
 	
+
+
+	// Events
 	public static function onDraw(func : G->Void){
 		if(u == null){
 			trace("ERROR: U not initialized!!");
@@ -191,7 +215,6 @@ class U extends SceneScript
 			func(g);
 		});
 	}
-	
 	public static function onClick(?func : Void->Void, ?actorFunc : Actor->Void, ?actor : Actor){
 		if(u == null){
 			trace("ERROR: U not initialized!!");
@@ -212,24 +235,20 @@ class U extends SceneScript
 			});
 		}
 	}
-	
 	public static function onEnter(func : Void->Void, actor : Actor){
 		u.addMouseOverActorListener(actor, function(mouseState:Int, list:Array<Dynamic>):Void{
 			if(1 == mouseState){
 				func();
 			}
 		});
-	}
-	
+	}	
 	public static function onExit(func : Void->Void, actor : Actor){
 		u.addMouseOverActorListener(actor, function(mouseState:Int, list:Array<Dynamic>):Void{
 			if(-1 == mouseState){
 				func();
 			}
 		});
-	}
-	
-	
+	}	
 	public static function onRelease(?func : Void->Void, ?actorFunc : Actor->Void, ?actor : Actor){
 		if(u == null){
 			trace("ERROR: U not initialized!!");
@@ -248,38 +267,28 @@ class U extends SceneScript
 			});
 		}
 	}
-
 	public static function onKeyPress(func){
 		if(u == null) trace("ERROR: U not initialized!");
 		u.addAnyKeyPressedListener(function(event:KeyboardEvent, list:Array<Dynamic>){
 			func(event.charCode);
 		});
 	}
+
+
 	
-	
+	// General utilities
 	public static function repeat(func : Void->Void, interval){
 		runPeriodically(interval, function(timeTask:TimedTask):Void{
 			func();
 		}, null);
 	}
 	public static var setInterval = repeat;
-	
 	public static function doAfter(miliseconds : Int, doThis : Void -> Void){
 		runLater(miliseconds, function(timeTask:TimedTask):Void{
 			doThis();
 		}, null);
 	}
-
-	public static function changeScene(sceneName: String, fadeOutTimeSeconds: Float = 0.5, fadeInTimeSeconds: Float = 0.5) {
-		if (fadeOutTimeSeconds >= 10 || fadeInTimeSeconds >= 10) trace('WARNING: For changeScene with fadeOut $fadeOutTimeSeconds and fadeIn $fadeInTimeSeconds, are you sure these are seconds and not miliseconds?');
-		var sceneID = GameModel.get().scenes.get(getIDForScene(sceneName)).getID();
-		var fo = createFadeOut(fadeOutTimeSeconds, Utils.getColorRGB(0,0,0));
-		var fi = createFadeIn(fadeInTimeSeconds, Utils.getColorRGB(0,0,0));
-		switchScene(sceneID, fo, fi);
-		Sayer.reset();
-		U.start();
-	}
-
+	public static function pass() trace('Pass...');
 	public static function getFontByName(fontName : String) : Font {
 		for (res in Data.get().resources) {
 			if (res != null) trace(res.name);
@@ -290,25 +299,6 @@ class U extends SceneScript
 		throw 'ERROR: No font with name $fontName found';
 		return null;
 	}
-
-	/*
-	public static function changeScene(sceneName : String, ?fadeOut, ?fadeIn){
-		var sceneID = GameModel.get().scenes.get(getIDForScene(sceneName)).getID();
-		var fo = null;
-		var fi = null;
-		if(fadeOut == null){
-			fo = createFadeOut(0, Utils.getColorRGB(0,0,0));
-		}
-		if(fadeIn == null){
-			fi = createFadeIn(0, Utils.getColorRGB(0,0,0));
-		}
-		trace("Changing scene to " + sceneID);
-		switchScene(sceneID, fo, fi);
-		trace("Starting U again...");
-		Sayer.reset();
-		U.start();
-	}*/
-	
 	public static function stringContains(s : String, letter : String){
 		for(i in 0...s.length){
 			if(s.charAt(i) == letter){
@@ -317,7 +307,6 @@ class U extends SceneScript
 		}
 		return "";
 	}
-	
 	public static function splitString(s : String, delimiters : String){
 		trace('');
 		trace('Splitting $s :');
@@ -359,56 +348,37 @@ class U extends SceneScript
 		trace(returnedArray);
 		return returnedArray;
 	}
-
-	public static function toInt(f : Float){
-		return Std.int(f);
-	}
-
-	public static function randomOf(a : Array<Dynamic>){
-		return(a[randomInt(0, a.length - 1)]);
-	}
-	public static function randomIndex(a : Array<Dynamic>) {
-		return randomInt(0, a.length - 1);
-	}
-	
 	public static function first<T>(a : Array<T>){
 		if(a == null) return null;
 		if(a.length == 0) return null;
 		return a[0];
 	}
-	
 	public static function last<T>(a : Array<T>){
 		if(a == null) return null;
 		if(a.length == 0) return null;
 		return a[a.length - 1];
 	}
-
-	public static function arraySumInt(a : Array<Int>) {
-		var sum = 0;
-		for (elem in a) sum += elem;
-		return sum;
+	public static function getBitmapDataSize(b : BitmapData) : Vector2Int{
+		var img = new ImageX(b, "UI");
+		var v = new Vector2Int(Std.int(img.getWidth()), Std.int(img.getHeight()));
+		img.kill();
+		return v;
 	}
-	
-	public static function angleBetweenPoints(x1 : Float, y1 : Float, x2 : Float, y2 : Float){
-		return Utils.DEG * Math.atan2(y1-y2, x1-x2);
-	}
-	
-	public static function flipActorHorizontally(a : Actor){
-		a.growTo(-1, 1, 0, Easing.linear);
+	public static function getFirstNull(a : Array<Dynamic>){
+		for(i in 0...a.length){
+			if(a[i] == null) return i;
+		}
+		return -1;
 	}
 
-	public static function flipActorVertically(a : Actor){
-		a.growTo(1, -1, 0, Easing.linear);
-	}
-	
-	public static function flipActorToLeft(a : Actor){
-		a.growTo(1, 1, 0, Easing.linear);
-	}
-	
-	public static function flipActorToRight(a : Actor){
-		a.growTo(-1, 1, 0, Easing.linear);
-	}
-	
+
+	// Actor utilities
+	public static function flipActorHorizontally(a : Actor) a.growTo(-1, 1, 0, Easing.linear);
+	public static function flipActorVertically(a : Actor) a.growTo(1, -1, 0, Easing.linear);
+	public static function flipActorToLeft(a : Actor) a.growTo(1, 1, 0, Easing.linear);
+	public static function flipActorToRight(a : Actor) a.growTo(-1, 1, 0, Easing.linear);
+	public static function setXCenter(a : Actor, x : Float) a.setX(x - a.getWidth() / 2);
+	public static function setYCenter(a : Actor, y : Float) a.setY(y - a.getHeight() / 2);
 	public static function createActor(?actorTypeName : String, ?actorType : ActorType, layerName : String, ?_x : Float, ?_y : Float){
 		if(actorTypeName != null){
 			actorType = getActorTypeByName(actorTypeName);
@@ -423,34 +393,40 @@ class U extends SceneScript
 		if(_y != null) a.setY(_y);
 		return a;
 	}
-	
-	public static function getBitmapDataSize(b : BitmapData) : Vector2Int{
-		var img = new ImageX(b, "UI");
-		var v = new Vector2Int(Std.int(img.getWidth()), Std.int(img.getHeight()));
-		img.kill();
-		return v;
+	public static function flashWhite(actor : Actor, durationInMiliseconds: Int, ?callback : Void -> Void) {
+		actor.setFilter([createBrightnessFilter(100)]);
+		doAfter(durationInMiliseconds, () -> {
+			actor.clearFilters();
+			if (callback != null) callback();
+		});
 	}
-	
-	public static function getFirstNull(a : Array<Dynamic>){
-		for(i in 0...a.length){
-			if(a[i] == null) return i;
-		}
-		return -1;
-	}
-	
-	public static function setXCenter(a : Actor, x : Float) a.setX(x - a.getWidth() / 2);
-	public static function setYCenter(a : Actor, y : Float) a.setY(y - a.getHeight() / 2);
-
-	public static inline function isBetween(i : Float, a : Float, b : Float){
-		return a <= i && i < b;
+	public static function flashRed(actor : Actor, durationInMiliseconds: Int, ?callback : Void -> Void) {
+		actor.setFilter([createTintFilter(Utils.getColorRGB(255,0,51), 100/100)]);
+		doAfter(durationInMiliseconds, () -> {
+			actor.clearFilters();
+			if (callback != null) callback();
+		});
 	}
 
-	public static inline function floatSum(a : Array<Float>){
-		var x : Float = 0;
-        for(e in a)
-            x += e;
-        return x;
+	
+
+
+	public static function createBlackBitmapData(width, height) {
+		var blackSquare = newImage(Std.int(width / Engine.SCALE), Std.int(height / Engine.SCALE));
+		fillImage(blackSquare, Utils.getColorRGB(0, 0, 0));
+		return blackSquare;
 	}
+
+
+
+	
+
+	
+
+	
+	
+
+	
 	
 }
 

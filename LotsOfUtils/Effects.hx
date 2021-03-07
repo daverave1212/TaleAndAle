@@ -85,37 +85,71 @@ class Effects
 		});
 	}
 	
-	public static function playParticleAndThen(from : Point, at : Point, effectName : String, duration : Float, doThis : Void->Void){
-		createLayerIfDoesntExist("Particles", 50);
-		var specialEffect = createActor("SpecialEffectActor", "Particles", at.x, at.y);
-		specialEffect.setAnimation(effectName);
-		setXCenter(specialEffect, at.x);
-		setYCenter(specialEffect, at.y);
+	/*
+		This uses an ActorType (SpecialEffectActor) which it spawns and plays that specific animation once.
+		The actual particles with ParticleSpawner are coded inside the SpecialEffectActor.
+	*/
+	public static function playParticleAndThen(from : Point, at : Point, effectName : String, durationInMiliseconds : Int, doThis : Void->Void){
+		playParticleCustomActorAndThen(from, at, "SpecialEffectActor", effectName, durationInMiliseconds, doThis);
+	}
+	public static function playParticleCustomActorAndThen(from : Point, at : Point, actorTypeName : String, effectName : String, durationInMiliseconds, doThis : Void->Void) {
+		var flipHorizontally = false;
+		var flipVertically = false;
 		var direction = 'no-direction';
 		if (from != null) {
 			if (from.x <= at.x) {
-				if(from.y >= at.y){
+				if (from.y >= at.y) {
 					direction = 'right';
 				} else {
-					flipActorVertically(specialEffect);
+					flipVertically = true;
 					direction = 'up';
 				}
 			} else {
-				flipActorHorizontally(specialEffect);
+				flipHorizontally = true;
 				if(from.y >= at.y){
 					direction = 'left';
 				} else {
-					flipActorVertically(specialEffect);
+					flipVertically = true;
 					direction = 'down';
 				}
 			}
 		}
+		var options = {
+			xCenter: at.x,
+			yCenter: at.y,
+			flipHorizontally: flipHorizontally,
+			flipVertically: flipVertically,
+			durationInMiliseconds: durationInMiliseconds
+		};
+		var specialEffect = playActorParticle(actorTypeName, effectName, options, doThis);
 		specialEffect.setActorValue('direction', direction);	// For potential in-actor scripts
-		doAfter(Std.int(duration), function(){
-			recycleActor(specialEffect);
-			if(doThis != null) doThis();
-		});
 	}
+
+
+	
+	public static final _optionsExample = {
+		xCenter: 100,
+		yCenter: 100,
+		flipHorizontally: true,
+		flipVertically: true,
+		durationInMiliseconds: 500
+	}
+	public static function playActorParticle(actorTypeName: String, animationName: String, options: Dynamic, ?doThis: Void->Void) {
+		createLayerIfDoesntExist("Particles", 50);
+		var specialEffect = createActor(actorTypeName, "Particles", 0, 0);
+		specialEffect.setAnimation(animationName);
+		setXCenter(specialEffect, options.xCenter);
+		setYCenter(specialEffect, options.yCenter);
+		if (options.flipVertically == true) flipActorVertically(specialEffect);
+		if (options.flipHorizontally == true) flipActorHorizontally(specialEffect);
+		var duration = if (options.durationInMiliseconds == null) 500 else options.durationInMiliseconds;
+		doAfter(duration, () -> {
+			recycleActor(specialEffect);
+			if (doThis != null) doThis();
+		});
+		return specialEffect;
+	}
+
 
 	
 }
