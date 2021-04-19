@@ -181,8 +181,8 @@ class U extends SceneScript
 	public static function toInt(f : Float){
 		return Std.int(f);
 	}
-	public static function randomOf(a : Array<Dynamic>){
-		return(a[randomInt(0, a.length - 1)]);
+	public static function randomOf(a : Array<Dynamic>) : Dynamic {
+		return (a[randomInt(0, a.length - 1)]);
 	}
 	public static function randomIndex(a : Array<Dynamic>) {
 		return randomInt(0, a.length - 1);
@@ -201,6 +201,10 @@ class U extends SceneScript
         for(e in a)
             x += e;
         return x;
+	}
+	public static inline function throwAndLogError(msg: String) {
+		Log.go('ERROR: ${msg}');
+		trace('ERROR: ${msg}');
 	}
 	
 
@@ -273,6 +277,14 @@ class U extends SceneScript
 			func(event.charCode);
 		});
 	}
+	public static function onGameKeyPress(func) {
+		if(u == null) trace("ERROR: U not initialized!");
+		u.addKeyStateListener("up", function(pressed:Bool, released:Bool, list:Array<Dynamic>):Void {
+			func();
+		});
+	}
+	public static function getScreenXCenter() return getScreenX() + getScreenWidth() / 2;
+	public static function getScreenYCenter() return getScreenY() + getScreenHeight() / 2;
 
 
 	
@@ -374,6 +386,7 @@ class U extends SceneScript
 
 	// Actor utilities
 	public static function flipActorHorizontally(a : Actor) a.growTo(-1, 1, 0, Easing.linear);
+	public static function unflipActorHorizontally(a : Actor) a.growTo(1, 1, 0, Easing.linear);
 	public static function flipActorVertically(a : Actor) a.growTo(1, -1, 0, Easing.linear);
 	public static function flipActorToLeft(a : Actor) a.growTo(1, 1, 0, Easing.linear);
 	public static function flipActorToRight(a : Actor) a.growTo(-1, 1, 0, Easing.linear);

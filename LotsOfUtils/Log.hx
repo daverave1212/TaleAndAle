@@ -118,6 +118,7 @@ class Log extends SceneScript
 	}
 	
 	public static function go(s : String){
+		if (rows == null) return s;
 		rows.shift();
 		rows.push(s);
 		history.push(s);

@@ -237,7 +237,14 @@ class ImageX
 		growImageTo(image, currentWidthPerc, perc, 0, Easing.linear);
 	}
 	public inline function kill(){
-		removeImage(image);
+		if (image != null) {
+			trace('Removing image ${image}');
+			try {
+				removeImage(image);
+			} catch (e: Any) {
+				trace('ERROR: ${e}');
+			}
+		}
 		image = null;
 		isAlive = false;
 	}
