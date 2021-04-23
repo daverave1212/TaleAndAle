@@ -71,20 +71,23 @@ class Sayer
 	
 	
 	public static var textBoxes : Array<TextBox>;
+	public static var activeActors : Array<Actor>;
 	public static var currentTextBox : Int = 0;
 	
 	public static function init(chatBubbleActorTypeName : String, f : Font){
 		chatBubbleActorType = getActorTypeByName(chatBubbleActorTypeName);
 		font = f;
+		activeActors = [];
 		textBoxes = [null, null, null];
 	}
 
 	public static function reset() {
 		textBoxes = [null, null, null];
+		activeActors = [];
 		currentTextBox = 0;
 	}
 	
-	private static function sayAt(s : String, x : Float, y : Float, width : Int, height : Int){
+	private static function sayAt(s : String, x : Float, y : Float, width : Int, height : Int) {
 		if (chatBubbleActorType == null) {
 			trace("ERROR: Sayer not initialized!");
 			return -1;
@@ -109,13 +112,16 @@ class Sayer
 	
 	public static function say(s : String, x : Float, y : Float, durationInSeconds : Float, ?actorTypeName : String) {
 		var cb = createChatBubbleActor(x, y, actorTypeName);
+		activeActors.push(cb);
 		// var textBoxWidth  = cb.getWidth() - paddingLeft * 2;
 		// var textBoxHeight = cb.getHeight() - paddingTop * 2;
 		if (durationInSeconds > 3) trace('WARNING: duration given to say (${durationInSeconds}) must be in Seconds, not Miliseconds');
 		var thisTextBox = sayAt(s, x, y, Std.int(cb.getWidth()), Std.int(cb.getHeight()));
 		if (durationInSeconds > 0) {
 			runLater(1000 * durationInSeconds, function(timeTask:TimedTask):Void {
-				remove(new SayerReturnObject(cb, thisTextBox));
+				if (cb == null || !cb.isAlive()) return;
+				if (activeActors.indexOf(cb) != -1)	// In case we switch scenes or we reset
+					remove(new SayerReturnObject(cb, thisTextBox));
 			}, null);
 			return null;
 		} else if (durationInSeconds == -1) {
@@ -131,9 +137,13 @@ class Sayer
 		if (textBoxes[actorTextBoxPair.textBoxIndex] != null) {			// When jumping scenes
 			textBoxes[actorTextBoxPair.textBoxIndex].stopDrawing();
 		}
+		if (actorTextBoxPair.actor == null || !actorTextBoxPair.actor.isAlive()) return;	// In case we changed scenes too quickly
 		actorTextBoxPair.actor.growTo(0.7, 0.7, 0.05, Easing.linear);
-		runLater(50, function(timeTask:TimedTask):Void{
-			recycleActor(actorTextBoxPair.actor);
+		runLater(50, function(timeTask:TimedTask):Void {
+			if (activeActors.indexOf(actorTextBoxPair.actor) != -1) {
+				activeActors.remove(actorTextBoxPair.actor);
+				recycleActor(actorTextBoxPair.actor);
+			}
 		}, null);
 	}
 	
