@@ -290,7 +290,7 @@ class ImageX
 		return this;
 	}
 	public inline function bringToFront() {
-		bringImagetoFront(image);
+		bringImageToFront(image);
 		return this;
 	}
 	public inline function bringToBack() {
