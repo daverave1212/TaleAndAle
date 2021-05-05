@@ -32,7 +32,7 @@ Classes:
     [DONE] Arrow: 4 range, 90% DMG
     Fox Attack: global, 35% DMG + bleed (35% SP), 2 mana
     Quickfoot (passive): +1 MVM
-    Triple Arrow: 4 range, 85% DMG, 3 ways in front, 3 mana
+    [DONE] Triple Arrow: 4 range, 85% DMG, front, up-front, down-front, 3 mana
     Flareshot: 4 range, 8 way, 90% SP, decreases enemy dodge and crit by 10% (once)
     Bear Trap: 4 range, 8 way, 75% SP and snare if someone steps on it
     Disorient: 3 range, enemies around are scattered away from it
