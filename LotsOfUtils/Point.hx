@@ -20,6 +20,15 @@ class Point
 		y += v.y;
 	}
 
+	public function withAddedX(x) {
+		x += x;
+		return this;
+	}
+	public function withAddedY(y) {
+		y += y;
+		return this;
+	}
+
 	public function toString(){
 		return x + ", " + y;
 	}

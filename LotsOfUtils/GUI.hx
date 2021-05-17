@@ -9,7 +9,8 @@
 	isOpen(uiName) : Boolean
 	
 "*/
-	
+
+import U.*;	
 
 class GUI{
 	
@@ -29,8 +30,8 @@ class GUI{
 	
 	public static function load(name : String){
 		var ui = simpleUIs[name];
-		if(ui == null){
-			trace("ERROR: Failed to load UI with name " + name);
+		if (ui == null) {
+			throwAndLogError("ERROR: Failed to load UI with name " + name);
 			return;
 		}
 		ui.load();
@@ -38,7 +39,7 @@ class GUI{
 	
 	public static function add(s : SimpleUI){
 		if(s == null){
-			trace("ERROR: Null SimpleUI given?");
+			throwAndLogError("ERROR: Null SimpleUI given?");
 			return;
 		}
 		simpleUIs[s.name] = s;
@@ -48,13 +49,14 @@ class GUI{
 	public static function open(simpleUIName : String, ?metaData : Array<Dynamic>){
 		simpleUIs[simpleUIName].open(metaData);
 		var lastOpenedUI = getLastOpenedUI();
-		if (isOpen(simpleUIName)) trace('ERROR in GUI: Trying to open an already existing UI, $simpleUIName');
+		if (isOpen(simpleUIName)) 
+			close(simpleUIName);
 		openUIs.push(simpleUIs[simpleUIName]);
 	}
 	
 	public static function close(simpleUIName : String){
 		var ui = simpleUIs[simpleUIName];
-		if(ui == null) trace("ERROR: No ui found called" + simpleUIName);
+		if(ui == null) throwAndLogError("ERROR: No ui found called" + simpleUIName);
 		if( ! isOpen(ui.name)) return;
 		ui.close();
 		openUIs.remove(ui);

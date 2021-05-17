@@ -143,6 +143,7 @@ class TextBox extends SceneScript{
 		y = _y;}
 
 	public function setText(t : String){
+		var oldIsDrawing = isDrawing;
 		reset();
 		text = t;
 		var wordList	: Array<String> = text.split(" ");
@@ -165,37 +166,41 @@ class TextBox extends SceneScript{
 		}
 		if (currentLine != '') lines.push(currentLine);
 		nLines = lines.length;
+		if (oldIsDrawing) startDrawing();
 	}
 
 	public function getText(){
 		return text;}
 
 	private function draw(g : G){
-		if(isDrawing){
-			if(drawOutline){
-				g.strokeColor = Utils.getColorRGB(255,200,0);
-				g.strokeSize = 4;
-				g.drawRect(x, y, w, h);
+		if (!isDrawing) return;
+		if (drawOutline) {
+			g.strokeColor = Utils.getColorRGB(255,200,0);
+			g.strokeSize = 4;
+			g.drawRect(x, y, w, h);
+		}
+		var oldFont = g.font;
+		g.setFont(font);
+		for (currentLine in 0...nLines) {
+			var drawx = x - getScreenX();
+			var drawy = y;
+			if(centerHorizontally){
+				drawx = x - getLineWidth(lines[currentLine]) / 2  - getScreenX();
 			}
-			g.setFont(font);
-			for(currentLine in 0...nLines){
-				var drawx = x - getScreenX();
-				var drawy = y;
-				if(centerHorizontally){
-					drawx = x - getLineWidth(lines[currentLine]) / 2  - getScreenX();
-				}
-				if(centerVertically){
-					drawy = y + (h - lineSpacing * nLines) / 2 + lineSpacing * currentLine;
-				} else {
-					drawy = y + lineSpacing * currentLine;
-				}
-				g.drawString(lines[currentLine], drawx, drawy);
-				if (drawOutline) {
-					g.strokeColor = Utils.getColorRGB(0,0,0);
-					g.strokeSize = 1;
-					g.drawRect(drawx, drawy, getLineWidth(lines[currentLine]), lineSpacing);
-				}
-			}}}
+			drawy = y + lineSpacing * currentLine;
+			if (centerVertically) {
+				final offsetY = nLines * lineSpacing / 2;
+				drawy -= offsetY;
+			}
+			g.drawString(lines[currentLine], drawx, drawy);
+			if (drawOutline) {
+				g.strokeColor = Utils.getColorRGB(0,0,0);
+				g.strokeSize = 1;
+				g.drawRect(drawx, drawy, getLineWidth(lines[currentLine]), lineSpacing);
+			}
+		}
+		g.setFont(oldFont);
+	}
 
 	public function startDrawing(){
 		isDrawing = true;}

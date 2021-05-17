@@ -43,6 +43,9 @@ import box2D.dynamics.joints.B2Joint;
 
 import com.stencyl.utils.motion.*;
 
+import Std.*;
+import Math.*;
+
 /*"
 	
 	--- REQUIRES:
@@ -110,7 +113,7 @@ class U extends SceneScript
 		return nme.Assets.getText("assets/data/" + fileName);
 	}
 	
-	public static function parseJSON(jsonString : String){
+	public static function parseJSON(jsonString : String) {
 		return haxe.Json.parse(jsonString);
 	}
 	
@@ -151,7 +154,7 @@ class U extends SceneScript
 		else return false;
 	}
 	public static function probabilityDistribution(distribution : Array<Int>) : Int {
-		if (distribution == null) throw 'ERROR: null distribution given to distributionIndex';
+		if (distribution == null) throwAndLogError('ERROR: null distribution given to distributionIndex');
 		if (distribution.length == 0) return -1;
 		var balls = [];
 		for (index in 0...distribution.length)
@@ -187,6 +190,9 @@ class U extends SceneScript
 	public static function randomIndex(a : Array<Dynamic>) {
 		return randomInt(0, a.length - 1);
 	}
+	public static function randomIntBetween(a, b) {
+		return randomInt(a, b);
+	}
 	public static function arraySumInt(a : Array<Int>) {
 		var sum = 0;
 		for (elem in a) sum += elem;
@@ -204,7 +210,11 @@ class U extends SceneScript
 	}
 	public static inline function throwAndLogError(msg: String) {
 		Log.go('ERROR: ${msg}');
+		if (!Log.isOpen) {
+			Log.toggle();
+		}
 		trace('ERROR: ${msg}');
+		throw('ERROR: ${msg}');
 	}
 	
 
@@ -212,7 +222,7 @@ class U extends SceneScript
 	// Events
 	public static function onDraw(func : G->Void){
 		if(u == null){
-			trace("ERROR: U not initialized!!");
+			throwAndLogError("ERROR: U not initialized!!");
 			return;
 		}
 		u.addWhenDrawingListener(null, function(g:G, x:Float, y:Float, list:Array<Dynamic>):Void{
@@ -221,7 +231,7 @@ class U extends SceneScript
 	}
 	public static function onClick(?func : Void->Void, ?actorFunc : Actor->Void, ?actor : Actor){
 		if(u == null){
-			trace("ERROR: U not initialized!!");
+			throwAndLogError("ERROR: U not initialized!!");
 			return;
 		}
 		if(actor == null){
@@ -255,7 +265,7 @@ class U extends SceneScript
 	}	
 	public static function onRelease(?func : Void->Void, ?actorFunc : Actor->Void, ?actor : Actor){
 		if(u == null){
-			trace("ERROR: U not initialized!!");
+			throwAndLogError("ERROR: U not initialized!!");
 			return;
 		}
 		if(actor == null){
@@ -272,13 +282,13 @@ class U extends SceneScript
 		}
 	}
 	public static function onKeyPress(func){
-		if(u == null) trace("ERROR: U not initialized!");
+		if(u == null) throwAndLogError("ERROR: U not initialized!!");
 		u.addAnyKeyPressedListener(function(event:KeyboardEvent, list:Array<Dynamic>){
 			func(event.charCode);
 		});
 	}
 	public static function onGameKeyPress(func) {
-		if(u == null) trace("ERROR: U not initialized!");
+		if(u == null) throwAndLogError("ERROR: U not initialized!!");
 		u.addKeyStateListener("up", function(pressed:Bool, released:Bool, list:Array<Dynamic>):Void {
 			func();
 		});
@@ -289,17 +299,36 @@ class U extends SceneScript
 
 	
 	// General utilities
-	public static function repeat(func : Void->Void, interval){
-		runPeriodically(interval, function(timeTask:TimedTask):Void{
-			func();
+	public static inline function repeat(func, interval) return doEvery(interval, func);
+	public static function doEvery(interval: Int, funcToRepeat : Void->Void) {
+		return runPeriodically(interval, function(timeTask:TimedTask):Void{
+			funcToRepeat();
 		}, null);
 	}
+
+	public static function doEveryUntil(miliseconds: Int, untilMiliseconds: Int, ?funcTakesTime: Int->Void, ?func: Void->Void) {
+		var currentTime: Int = 0;
+		var timedTask: TimedTask;
+		timedTask = doEvery(miliseconds, function(): Void {
+			if (currentTime >= untilMiliseconds && timedTask != null) {
+				timedTask.repeats = false;
+				return;
+			}
+			if (funcTakesTime != null)
+				funcTakesTime(currentTime);
+			else
+				func();
+			currentTime += miliseconds;
+		});
+	}
 	public static var setInterval = repeat;
-	public static function doAfter(miliseconds : Int, doThis : Void -> Void){
-		runLater(miliseconds, function(timeTask:TimedTask):Void{
+	public static inline function doAfter(miliseconds : Float, doThis : Void -> Void){
+		return runLater(Std.int(miliseconds), (timeTask:TimedTask) -> {
 			doThis();
 		}, null);
 	}
+
+
 	public static function pass() trace('Pass...');
 	public static function getFontByName(fontName : String) : Font {
 		for (res in Data.get().resources) {
@@ -420,9 +449,42 @@ class U extends SceneScript
 			if (callback != null) callback();
 		});
 	}
+	public static function slideActorX(a: Actor, from: Float, to: Float, overMiliseconds: Int) {
+		var directionXModifier = if (from < to) 1 else -1;
+		var distanceX = abs(from - to);
+		var everyMilisecondsStep = 16;		// Every 50 miliseconds
+		var time = overMiliseconds;
+		var nSteps = int(time / everyMilisecondsStep);
+		var xStepSize = distanceX / nSteps;
+		doEveryUntil(everyMilisecondsStep, time, (_) -> {
+			a.setX(a.getX() + directionXModifier * xStepSize);
+		});
+	}
+	public static function slideActorYCubic(a: Actor, from: Float, to: Float, overMiliseconds: Int, ?reverseExpo = false) {	// Slides the actor with an easing function
+		var distanceY = from - to;
+		var directionYModifier = if (distanceY >= 0) -1 else 1;
+		var everyMilisecondsStep = 16;		// Every 50 miliseconds
+		var time = overMiliseconds;
+		var nSteps = int(time / everyMilisecondsStep);
+		function getStepExponentialYDistancePassed(currentMiliseconds) {
+			// var distancePassed = (1 - pow(2, (-10 * currentMiliseconds) / time)) * abs(distanceY);
+			var distancePassed = (1 - pow(1 - currentMiliseconds * (1/time), 2)) * abs(distanceY);
+			return distancePassed;
+		}
+		function getStepExponentialYDistancePassedReverse(currentMiliseconds) {
+			// var distancePassed = pow(2, 10 * currentMiliseconds * (1 / time) - 10) * abs(distanceY);
+			var distancePassed = pow((currentMiliseconds/time), 2) * abs(distanceY);
+			return distancePassed;
+		}
+		var expoFunction = if (reverseExpo) getStepExponentialYDistancePassedReverse else getStepExponentialYDistancePassed;
+		doEveryUntil(everyMilisecondsStep, time, (currentMiliseconds) -> {
+			a.setY(from + expoFunction(currentMiliseconds) * directionYModifier);
+		});
+	}
 
 	
 
+	// Other
 
 	public static function createBlackBitmapData(width, height) {
 		var blackSquare = newImage(Std.int(width / Engine.SCALE), Std.int(height / Engine.SCALE));

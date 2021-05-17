@@ -65,7 +65,7 @@ class Sayer
 	// public static inline var chatBubbleWidth = 90;
 	// public static inline var chatBubbleHeight = 50;
 	public static inline var paddingLeft = 2;
-	public static inline var paddingTop = 4;
+	public static inline var paddingTop = 5;
 	// public static inline var originYOffset = 50;
 	// public static inline var originXOffset = chatBubbleWidth / 2;
 	
@@ -93,12 +93,11 @@ class Sayer
 			return -1;
 		}
 		currentTextBox++;
-		trace('  currentTextBox = ${currentTextBox}');
 		if (currentTextBox == textBoxes.length) currentTextBox = 0;
 		if (textBoxes[currentTextBox] == null) {
 			textBoxes[currentTextBox] = new TextBox(width - paddingLeft, height, 0, 0, font);
 			textBoxes[currentTextBox].lineSpacing = 10;
-			//textBoxes[currentTextBox].centerVertically = true;
+			textBoxes[currentTextBox].centerVertically = true;
 			textBoxes[currentTextBox].centerHorizontally = true;
 		}
 		var textX = x - (width / 2) + paddingLeft;
@@ -113,10 +112,10 @@ class Sayer
 	public static function say(s : String, x : Float, y : Float, durationInSeconds : Float, ?actorTypeName : String) {
 		var cb = createChatBubbleActor(x, y, actorTypeName);
 		activeActors.push(cb);
-		// var textBoxWidth  = cb.getWidth() - paddingLeft * 2;
-		// var textBoxHeight = cb.getHeight() - paddingTop * 2;
-		if (durationInSeconds > 3) trace('WARNING: duration given to say (${durationInSeconds}) must be in Seconds, not Miliseconds');
-		var thisTextBox = sayAt(s, x, y, Std.int(cb.getWidth()), Std.int(cb.getHeight()));
+		var textBoxWidth  = Std.int(cb.getWidth() - paddingLeft * 2);
+		var textBoxHeight = Std.int(cb.getHeight() - paddingTop * 2);
+		if (durationInSeconds > 10) trace('WARNING: duration given to say (${durationInSeconds}) must be in Seconds, not Miliseconds');
+		var thisTextBox = sayAt(s, x + paddingLeft, y + paddingTop, textBoxWidth, textBoxHeight);
 		if (durationInSeconds > 0) {
 			runLater(1000 * durationInSeconds, function(timeTask:TimedTask):Void {
 				if (cb == null || !cb.isAlive()) return;

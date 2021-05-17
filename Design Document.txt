@@ -25,7 +25,7 @@ Classes:
     [DONE] Attack: 1 range, 100% DMG
     [DONE] Charge: 2 range, 55% DMG AoE, 2 mana
     Stand Ground: block 90% of the next attack's damage, +1 damage for the rest of the combat, 4 mana
-    Body Toss: 1 range, 75% DMG, pushes target up to 3 tiles, stuns if it collides with anything, 3 mana
+    Haymaker: 1 range, 75% DMG, pushes target up to 3 tiles, stuns if it collides with anything, 3 mana
     Intimidation: 4 range, 25% SP, reduces enemy damage by 15% (work only once).
     (RARE) Regeneration: (passive) Heal for 20% SP + 2 Health every turn.
   Ranger:

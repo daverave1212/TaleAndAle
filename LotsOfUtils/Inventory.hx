@@ -84,6 +84,16 @@ class Inventory<T>
 		return null;
 	}
 
+	public function findByFunc(func: T -> Bool): Position {
+		for (i in 0...nRows) {
+			for (j in 0...nCols) {
+				if (func(matrix.get(i, j)))
+					return new Position(i, j);
+			}
+		}
+		return null;
+	}
+
 	public function findAndRemove(t : T) {
 		var tPos = find(t);
 		if (tPos == null) return false;

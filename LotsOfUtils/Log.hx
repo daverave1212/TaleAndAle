@@ -75,7 +75,7 @@ class Log extends SceneScript
 {
 	public static var theLog : Log;
 	public static var nRows : Int = 4;
-	public static var rows : Array<String>;
+	public static var rows : Array<String> = [for (_ in 0...nRows) ''];
 	public static var font : Font = null;
 	public static var isOpen = false;
 	public static var currentInput : String = '';
@@ -85,6 +85,13 @@ class Log extends SceneScript
 	public static var isInitialized = false;	// Automatically called by U. Don't mess with this.
 
 	public static var commands : Map<String, (Array<String> -> String)>;
+
+	public static function enableToggleOnTilde() {
+		U.onKeyPress(keyCode -> {
+			if (charFromCharCode(keyCode) == "`")
+				toggle();
+		});
+	}
 
 	public static function setFont(f){
 		font = f;
@@ -105,10 +112,9 @@ class Log extends SceneScript
 		}
 	}
 
-	public static function initialize(){
+	public static function initialize() {
 		theLog = new Log();
 		isInitialized = true;
-		rows = [for (_ in 0...nRows) ''];
 		currentInput = '';
 		isOpen = false;
 	}

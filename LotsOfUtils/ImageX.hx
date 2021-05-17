@@ -148,6 +148,7 @@ class ImageX
 	public var isShown = true;
 	private var originalWidth  : Float = 0;
 	private var originalHeight : Float = 0;
+	private var originalPath : String = 'unassigned';
 
 	public function new(?path : String, ?bitmapData : BitmapData, ?layerName : String){
 		if(path != null){
@@ -238,12 +239,7 @@ class ImageX
 	}
 	public inline function kill(){
 		if (image != null) {
-			trace('Removing image ${image}');
-			try {
-				removeImage(image);
-			} catch (e: Any) {
-				trace('ERROR: ${e}');
-			}
+			removeImage(image);
 		}
 		image = null;
 		isAlive = false;
