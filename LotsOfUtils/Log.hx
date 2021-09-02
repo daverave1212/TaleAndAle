@@ -105,6 +105,7 @@ class Log extends SceneScript
 	}
 
 	public static function toggle(){
+		trace('Toggling');
 		if (isOpen){
 			closeConsole();
 		} else {
@@ -129,6 +130,11 @@ class Log extends SceneScript
 		rows.push(s);
 		history.push(s);
 		return s;
+	}
+
+	public static function goAndTrace(s: String) {
+		trace(s);
+		return go(s);
 	}
 	
 	public function new(){

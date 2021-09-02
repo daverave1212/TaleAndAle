@@ -151,19 +151,23 @@ class ImageX
 	private var originalPath : String = 'unassigned';
 
 	public function new(?path : String, ?bitmapData : BitmapData, ?layerName : String){
-		if(path != null){
+		if(path != null && bitmapData == null){
 			image = new BitmapWrapper(new Bitmap(getExternalImage(path)));
-		} else if(bitmapData != null){
+		} else if (bitmapData != null && path == null) {
 			image = new BitmapWrapper(new Bitmap(bitmapData));
+		} else if (path != null && bitmapData != null) {
+			throw 'Error loading ImageX: both path (${path}) and bitmapData given!';
+		} else {
+			throw 'Error loading ImageX: both path and bitmapData given are NULL!';
 		}
 		if (image == null) {
 			var layerMessage = "";
 			if(layerName == null) layerMessage = '(unspecified)';
 			else layerMessage = '($layerName)';
-			if(path != null){
+			if (path != null){
 				throw 'Error loading ImageX "$path" on layer $layerMessage';
 			} else {
-				throw 'Error loading ImageX from bitmapon layer $layerMessage';
+				throw 'Error loading ImageX from bitmap on layer $layerMessage';
 			}
 		}
 		if(layerName != null){
@@ -228,14 +232,14 @@ class ImageX
 	public function setWidthScale(scale : Float) image.scaleX = scale;
 	public function setHeightScale(scale : Float) image.scaleY = scale;
 	public function setWidth(w : Float){	// In pixels
-		var perc = w / originalWidth;
+		var perc =  w / originalWidth;
 		var currentHeightPerc = getHeight() / originalHeight;
-		growImageTo(image, perc, currentHeightPerc, 0, Easing.linear);
+		growImageTo(image, Engine.SCALE * perc, Engine.SCALE * currentHeightPerc, 0, Easing.linear);
 	}
 	public function setHeight(h : Float){	// In pixels
 		var perc = h / originalHeight;
 		var currentWidthPerc = getWidth() / originalWidth;
-		growImageTo(image, currentWidthPerc, perc, 0, Easing.linear);
+		growImageTo(image, Engine.SCALE *  currentWidthPerc, Engine.SCALE *  perc, 0, Easing.linear);
 	}
 	public inline function kill(){
 		if (image != null) {

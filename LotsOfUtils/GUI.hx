@@ -12,7 +12,7 @@
 
 import U.*;	
 
-class GUI{
+class GUI {
 	
 	public static var isReady = false;
 	public static var simpleUIs 	 : Map<String, SimpleUI>;
@@ -70,8 +70,8 @@ class GUI{
 	}
 
 	public static function isOpen(simpleUIName : String){
-		for(ui in openUIs)
-			if(ui.name == simpleUIName)
+		for (ui in openUIs)
+			if (ui.name == simpleUIName)
 				return true;
 		return false;
 	}

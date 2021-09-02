@@ -146,7 +146,7 @@ class TextBox extends SceneScript{
 		var oldIsDrawing = isDrawing;
 		reset();
 		text = t;
-		var wordList	: Array<String> = text.split(" ");
+		var wordList: Array<String> = text.split(" ");
 		nLines = 0;
 		var currentLine = '';
 

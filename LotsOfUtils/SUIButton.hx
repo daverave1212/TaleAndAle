@@ -70,7 +70,6 @@ using U;
 		.getWidth(_)
 		.getHeight(_)
 
-	
 "*/
 
 class SUIButton extends SUIComponent

@@ -73,6 +73,8 @@ class SUIComponent
 
     public function getX() return actor.getX();
     public function getY() return actor.getY();
+	public function getXCenter() return actor.getXCenter();
+	public function getYCenter() return actor.getYCenter();
     public function getWidth() return actor.getWidth();
 	public function getHeight() return actor.getHeight();
     
@@ -151,14 +153,14 @@ class SUIComponent
 	public inline function getLeft() return getX();
 	public inline function getTop() return getY();
 
-	public inline function centerVertically() setTop(getScreenHeight() / 2 - getHeight() / 2);
+	public inline function centerVertically() return setTop(getScreenHeight() / 2 - getHeight() / 2);
 	public inline function centerHorizontally() {
 		var left = getScreenWidth() / 2 - getWidth() / 2;
 		trace('Setting left=${left}');
-		setLeft(left);
+		return setLeft(left);
 	}
 	
-
+	public inline function unanchor() actor.unanchorFromScreen();
 	public function setAnimation(s : String){
 		try{
 			actor.setAnimation(s);

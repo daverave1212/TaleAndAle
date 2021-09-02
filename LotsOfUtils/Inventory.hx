@@ -58,6 +58,14 @@ class Inventory<T>
 	public function remove(i : Int, j : Int){
 		matrix.set(i, j, null);
 	}
+
+	public function clear() {
+		for (i in 0...nRows) {
+			for (j in 0...nCols) {
+				set(i, j, null);
+			}
+		}
+	}
 	
 	public function add(t : T){				// Returns true if add was successful
 		var emptyPos = getFirstEmpty();

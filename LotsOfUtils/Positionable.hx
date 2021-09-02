@@ -57,6 +57,8 @@ class Positionable
     public function getHeight() return 0.0;
 
     // Don't override these
+	public function getXCenter() return getX() + getWidth() / 2;
+	public function getYCenter() return getY() + getHeight() / 2;
 	public function getXScreen() return getX() - Std.int(getScreenX());
 	public function getYScreen() return getY() - Std.int(getScreenY());
 	public function setXScreen(x : Float) setX(getX() + Std.int(getScreenX()));
@@ -78,6 +80,7 @@ class Positionable
 	public function getTop() return getY();
 	public function centerVertically(){ setTop(getScreenHeight() / 2 - getHeight() / 2); return this; }
 	public function centerHorizontally(){ setLeft(getScreenWidth() / 2 - getWidth() / 2); return this; }
+	public function centerHorizontallyInScene() { setLeft(getSceneWidth() / 2 - getWidth() / 2); return this; }
 	public function centerOnScreen(){
 		setX(getScreenX() + (getScreenWidth() - getWidth()) / 2);
 		setY(getScreenY() + (getScreenHeight() - getHeight()) / 2);

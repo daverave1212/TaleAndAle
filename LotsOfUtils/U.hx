@@ -104,6 +104,7 @@ class U extends SceneScript
 		ImageX._startSlidingImages();
 		UIManager.init();
 		Log.isInitialized = false;
+		Log.isOpen = false;
 	}
 	
 
@@ -134,7 +135,11 @@ class U extends SceneScript
 			addBackgroundFromImage(null, false, layerName, zIndex);
 		}
 	}
-	public static function changeScene(sceneName: String, fadeOutTimeSeconds: Float = 0.5, fadeInTimeSeconds: Float = 0.5) {
+
+	public static var defaultChangeSceneFadeTime = 0.5;
+	public static function changeScene(sceneName: String, ?fadeOutTimeSeconds: Float = null, ?fadeInTimeSeconds: Float = null, ?andThen: Void -> Void) {
+		if (fadeOutTimeSeconds == null) fadeOutTimeSeconds = defaultChangeSceneFadeTime;
+		if (fadeInTimeSeconds == null) fadeInTimeSeconds = defaultChangeSceneFadeTime;
 		if (fadeOutTimeSeconds >= 10 || fadeInTimeSeconds >= 10) trace('WARNING: For changeScene with fadeOut $fadeOutTimeSeconds and fadeIn $fadeInTimeSeconds, are you sure these are seconds and not miliseconds?');
 		var sceneID = GameModel.get().scenes.get(getIDForScene(sceneName)).getID();
 		var fo = createFadeOut(fadeOutTimeSeconds, Utils.getColorRGB(0,0,0));
@@ -208,14 +213,43 @@ class U extends SceneScript
             x += e;
         return x;
 	}
+	public static function calculateSlope(actor1: Actor, actor2: Actor): Float {
+		// m = (y2 - y1) / (x2 - x1)
+		var m: Float = (actor2.getY() - actor1.getY()) / (actor2.getX() - actor1.getX());
+		return m;
+	}
+	public static function calculateIntercept(x: Float, y: Float, m: Float) {
+		// c = y - mx
+		var c: Float = y - m * x;
+		return c;
+	}
+
 	public static inline function throwAndLogError(msg: String) {
-		Log.go('ERROR: ${msg}');
 		if (!Log.isOpen) {
 			Log.toggle();
 		}
 		trace('ERROR: ${msg}');
-		throw('ERROR: ${msg}');
+		doAfter(10, () -> {
+			Log.go('ERROR: ${msg}');
+		});
+		doAfter(100, () -> {
+			throw('ERROR: ${msg}');
+		});
+		return 'ERROR: ${msg}';
 	}
+	static function hexStringToInt(hexString: String) {
+		final reversedHexStringChars = hexString.split('');
+		reversedHexStringChars.reverse();
+		final charIntMap = [
+				'0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7,
+		  '8' => 8, '9' => 9, 'A' => 10, 'B' => 11, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15
+		];
+		var intNum = 0;
+		for (i in 0...reversedHexStringChars.length) {
+				intNum += Std.int(charIntMap[reversedHexStringChars[i]] * Math.pow(16, i));
+		}
+		  return intNum;
+	  }
 	
 
 
@@ -328,6 +362,24 @@ class U extends SceneScript
 		}, null);
 	}
 
+	public static function doSequence(sequence: Array<{time: Int, func: Void -> Void}>, ?andThen: Void -> Void) {
+		if (sequence.length == 0) {
+			if (andThen != null) andThen();
+		} else {
+			trace('Sequence.length: ${sequence.length}');
+			final firstPair = sequence.shift();
+			final timeToWait: Int = firstPair.time;
+			final funcToDo: Void -> Void = firstPair.func;
+			trace('Got function as: ${funcToDo}');
+			trace('Alright; doing after ${timeToWait}');
+			doAfter(timeToWait, () -> {
+				trace('Doing..');
+				funcToDo();
+				doSequence(sequence, andThen);
+			});
+		}
+
+	}
 
 	public static function pass() trace('Pass...');
 	public static function getFontByName(fontName : String) : Font {
@@ -411,9 +463,26 @@ class U extends SceneScript
 		}
 		return -1;
 	}
+	@:generic public static function mergeArrays<T>(arrays: Array<Array<T>>) {
+		var finalArray: Array<T> = [];
+		for (array in arrays) {
+			finalArray = finalArray.concat(array);
+		}
+		return finalArray;
+	}
+
+	public static function nullOr(maybeNull: Any, notNull: Any): Any {
+		if (maybeNull == null) return notNull;
+		return maybeNull;
+	}
+
 
 
 	// Actor utilities
+	public static function centerActorOnScreen(a: Actor) {
+		a.setXCenter(getScreenXCenter());
+		a.setYCenter(getScreenYCenter());
+	}
 	public static function flipActorHorizontally(a : Actor) a.growTo(-1, 1, 0, Easing.linear);
 	public static function unflipActorHorizontally(a : Actor) a.growTo(1, 1, 0, Easing.linear);
 	public static function flipActorVertically(a : Actor) a.growTo(1, -1, 0, Easing.linear);
@@ -482,7 +551,32 @@ class U extends SceneScript
 		});
 	}
 
-	
+	public static function slideCameraXCubic(to: Float, overMiliseconds: Int) {
+		final from = getScreenXCenter();
+		final distanceX = from - to;
+		final time = overMiliseconds;
+		final everyMilisecondsStep = 10;
+		final nSteps = int(time / everyMilisecondsStep);
+		function getStepExponentialXDistancePassed(currentMiliseconds) {
+			final distancePassed = (1 - pow(1 - currentMiliseconds * (1/time), 2)) * abs(distanceX);
+			return distancePassed;
+		}
+		final directionXModifier = if (distanceX >= 0) -1 else 1;
+		doEveryUntil(everyMilisecondsStep, time, (currentMiliseconds) -> {
+			engine.moveCamera(from + getStepExponentialXDistancePassed(currentMiliseconds) * directionXModifier, getScreenY());
+		});
+	}
+	public static function setActorSaturation(actor: Actor, percentage: Float) {
+		if (percentage > 0 && percentage < 1) trace('WARNING: In setActorSaturation, was expecting percentage ${percentage} between 0 and 100, not between 0 and 1.');
+		actor.setFilter([createSaturationFilter(percentage)]);
+	}
+	public static function tintActorByAmount(actor: Actor, color: String, percentage: Float) {
+		if (percentage > 0 && percentage < 1) trace('WARNING: In tintActorByAmount, was expecting percentage ${percentage} between 0 and 100, not between 0 and 1.');
+		final red = hexStringToInt(color.substring(0, 2));
+		final green = hexStringToInt(color.substring(2, 4));
+		final blue = hexStringToInt(color.substring(4, 6));
+		actor.setFilter([createTintFilter(Utils.getColorRGB(red, green, blue), percentage / 100)]);
+	}
 
 	// Other
 

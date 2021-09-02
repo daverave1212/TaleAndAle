@@ -84,8 +84,13 @@ class ResourceBar
 	public inline function getX() return actor.getX();
 	public inline function getY() return actor.getY();
 
-	public function new(actorName : String, layerName : String, max : Float, ?l2r : Bool = true, ?simple : Bool = false){
+	public function new(actorName : String, layerName : String, max : Float, ?options: Dynamic) {
+		if (options == null) options = {};
+		var l2r = if (options.l2r != null) options.l2r else true;
+		var simple = if (options.simple != null) options.simple else true;
 		actor = createActor(actorName, layerName);
+		if (options.initialAnimation != null)
+			actor.setAnimation(options.initialAnimation);
 		maxValue = max;
 		currentValue = max;
 		destinationValue = max;

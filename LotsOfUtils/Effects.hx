@@ -58,9 +58,9 @@ import Std.int;
 class Effects
 {
 	// Effect speeds
-	public static inline var SLOW	 = 100;		// px/s
-	public static inline var MEDIUM	 = 250;		// px/s
-	public static inline var FAST	 = 500;		// px/s
+	public static var SLOW	 	 = 100;		// px/s
+	public static var MEDIUM	 = 250;		// px/s
+	public static var FAST	 	 = 500;		// px/s
 	
 	// Y-Offset
 	public static inline var defaultYOffset = 35;
@@ -72,7 +72,6 @@ class Effects
 	*/
 
 	public static function sendArcMissileAndThen(from: Point, to: Point, missileName: String, speed: Float, doThis: Void->Void) {
-		to.x += 10;
 		if (speed == MEDIUM)
 			speed = int(0.66 * MEDIUM);
 		if (speed == FAST)
@@ -81,7 +80,7 @@ class Effects
 		missile.setAnimation(missileName);
 		missile.setX(from.x);
 		missile.setY(from.y);
-		var distanceX = abs(from.x - to.x);
+		var distanceX = int(Math.max(abs(from.x - to.x), 150));
 		var time = int(1000 * distanceX / speed);
 		var missileHeight = 125;
 		slideActorX(missile, from.x, to.x, time);

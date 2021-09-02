@@ -50,7 +50,7 @@ using U;
     This is a class to help position actors together
 */
 
-class ActorGroup extends Positionable{
+class ActorGroup extends Positionable {
 
     public static inline var HORIZONTALLY = 0;
     public static inline var VERTICALLY = 1;
