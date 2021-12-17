@@ -1,3 +1,129 @@
+Events:
+
+1. Pentagram
+- Extinguish Candle: You feel slightly better (3 heal)
+- Use item:
+	CLOTH: Reduces item quality; All characters +4 initiative and +2 Mana
+	LIQUID: Item is lost; You gain Blood Mixture - Deals 3 damage; increases damage by 25% the combat
+	Orb of Evil Thoughts: Cutscene - castle struck by lightning - Vampire is permanently weaker!
+
+2. Dark Cellar
+o Can only appear inside houses
+- Open with key [Requires Key]
+	- Provides blacksmith's tools. There's a dead woman in the basement.
+	- This reduces all BS's prices by 20%. Forever!
+
+3. Effigy
+- Break: Spirits are angry - you get attacked
+- Use item:
+	TOME: It is transformed into another random tome
+	Bone/Heart/Toilet Paper/Soft Fur/Candle: The effigy comes to life and joins you as a companion!
+		o Restore Mana
+		o Offer Block
+		o Push All Away
+  Flowers: Becomes cleansed - restores up to 50% of total health and +2 max mana to all!
+
+4. Golden Shrine
+- Steal it: 50 gold and you get cursed - crit -10% on both chars (if below 0%, there's a chance to deal only half damage)
+- Pay Tribute (25 gold): Upgrade a random carried item by 50%
+- Use Item:
+	Any Item: You get 150% of its value in gold!
+
+5. Fungus Overgrowth (can't ignore).
+- Destroy by Hand: -3 max mana, but move on
+- Burn: -4 HP, but move on
+- Use Item:
+	Moldy Bread: Becomes Very Moldy Bread - restores 12 HP
+	Cheese: Becomes Blue Cheese - restores 21 HP
+	Sandwich: Becomes Moldy Bread Sandwich - restores 12 HP
+	Candle: >Burn
+  
+6. Grave of a Fallen Hero
+- Take its flowers: the atmosphere seems disappointed, but at least you have flowers
+- Use Item:
+  UNHOLY: BLASPHEMY! Combat encounter with the pissed warrior's ghost. Always drops flowers.
+  ARMOR/WEAPON: Gain ability [Regenerate 2 HP after every Node]
+  CONSUMABLE: Charity - +4 max mana for all team
+  Flowers: The warrior joins you!
+
+7. Trapped Locked Chest
+- Try to open: lock minigame - if you win, you get a random item
+- Smash (you get dirt)
+
+8. The Devil
+- Sell your soul: you restart the whole run, but your next run, you start with some perks:
+  - Soul Drain: +1 HP for every enemy killed
+  - Fiery Presence: All spells and attacks deal an extra 50% of your level damage
+- Take his soul: encounter with the Devil. If you beat him, you get his perks PERMANENTLY on every run:
+  - Every Unholy enemy slain +1 HP
+  - Smite: +20% damage against all Unholy enemies
+  - +3 starting max mana
+- Use item:
+  - Flowers: You are pathetic. Begone!
+  - Orb of Evil Thoughts: How did you get this? Let me pay you for it... (125 gold)
+  - Any: Who do you think I am, some traveling merchant?
+
+9. Travelling Alchemist
+The merchant is an Alchemist here
+- Try a potion of randomness
+  - Heal 25%
+  - Poison
+  - Speed +1
+  - Damage/SP/Initiative +2
+  - Mana/HP +4
+- Buy an Elixir of Spelling (swaps the spell every turn) (65 gold)
+- Use item:
+  UNHOLY: Creates an Unholy Potion (ability) (saves you from death once)
+  ORE: Potion of Armor: You have +1 armor this combat
+  PLANT: Potion of Healing: Restores 25% of health
+  CONSUMABLE: Transforms it into another random consumable
+  MAGICAL: Potion of Magic: +25% SP this combat
+  
+10. Band of Adventurers (they look like you, but different colors)
+- Switch Teams: Your <RANGER> will be replaced with a <MAGE> (you keep all items)
+- Use Item: 
+    SPECIAL: "We don't have anything like that." (refuse)
+    ANY: trades it for a random similar item (pick 1 of 3)
+
+11. Pirates ("give us an item, and we'll give you something valuable in return")
+- Attack them (if you win, you get your previous item back)
+- Gamble 25 gold
+- Use Item:
+  ANY: YAHAHARGHH! SO LONG, SUCKERS!
+  
+12. Dead Adventurers
+- Search Bodies
+
+13. Eldritch Tome
+- Read:
+  - Lose 2 HP with each page turn
+  - On a random page, there is a a random usable RARE or better spell
+  - Maybe you can also find other stuff
+  - LSD option might activate if you read too much!!!
+- Burn: it turns to dust (Just Some Dirt)
+
+14. Fortune Teller
+- Answers a question for you... for a price (just 10 gold)
+
+
+
+
+
+
+- Duplicates an item
+- Changes your class (keeps all stats/abilities)
+
+
+- MAGICAL (Magic Feather)
+- ORE
+- PLANT
+
+	
+
+
+
+
+
 
 Base Hero Stats:
   Health: 20      +1 (+2 item)
