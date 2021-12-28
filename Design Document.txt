@@ -14,7 +14,7 @@ o Can only appear inside houses
 	- This reduces all BS's prices by 20%. Forever!
 
 3. Effigy
-- Break: Spirits are angry - you get attacked
+- Break: You get a shitty item
 - Use item:
 	TOME: It is transformed into another random tome
 	Bone/Heart/Toilet Paper/Soft Fur/Candle: The effigy comes to life and joins you as a companion!
@@ -109,7 +109,8 @@ The merchant is an Alchemist here
 
 
 
-
+- Replace an item with one of the same level but better quality
+  - Highest quality item has +level in all stats xD
 - Duplicates an item
 - Changes your class (keeps all stats/abilities)
 
