@@ -33,13 +33,14 @@ o Can only appear inside houses
 - Destroy by Hand: -3 max mana, but move on
 - Burn: -4 HP, but move on
 - Use Item:
-	Moldy Bread: Becomes Very Moldy Bread - restores 12 HP
+	Moldy Bread: Becomes Penicillin Bread - restores 12 HP
 	Cheese: Becomes Blue Cheese - restores 21 HP
 	Sandwich: Becomes Moldy Bread Sandwich - restores 12 HP
 	Candle: >Burn
+  WEAPON: Weapon degrades, but you clear the path.
   
 6. Grave of a Fallen Hero
-- Take its flowers: the atmosphere seems disappointed, but at least you have flowers
+- Take its flowers: -2 initiative; the atmosphere seems disappointed, but at least you have flowers
 - Use Item:
   UNHOLY: BLASPHEMY! Combat encounter with the pissed warrior's ghost. Always drops flowers.
   ARMOR/WEAPON: Gain ability [Regenerate 2 HP after every Node]
