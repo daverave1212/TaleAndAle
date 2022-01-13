@@ -1,5 +1,18 @@
-Events:
+  Story:
+They excavated a portion of the castle and lifted a tile.
+From under the tile came an ancient corruption eldritch powers corrupted my daughter, who was too weak to resist.
 
+Heroes... you must find the tile and put it back over its spot.
+
+The tile has been hidden somewhere in my old castle, which now teems with monsters and abominations of all sorts. 
+
+
+
+
+
+
+
+Events:
 1. Pentagram
 - Extinguish Candle: You feel slightly better (3 heal)
 - Use item:
@@ -43,9 +56,10 @@ o Can only appear inside houses
 - Take its flowers: -2 initiative; the atmosphere seems disappointed, but at least you have flowers
 - Use Item:
   UNHOLY: BLASPHEMY! Combat encounter with the pissed warrior's ghost. Always drops flowers.
-  ARMOR/WEAPON: Gain ability [Regenerate 2 HP after every Node]
-  CONSUMABLE: Charity - +4 max mana for all team
-  Flowers: The warrior joins you!
+  ARMOR/WEAPON: Gain ability [Regenerate 2 HP after every combat]
+  CONSUMABLE: Charity - +1 Magic Resistance, +2 Mana
+  Flowers: You reunite the fallen hero with his long dead comrade.
+    - You gain permanent bonuses
 
 7. Trapped Locked Chest
 - Try to open: lock minigame - if you win, you get a random item
@@ -68,7 +82,7 @@ o Can only appear inside houses
 The merchant is an Alchemist here
 - Try a potion of randomness
   - Heal 25%
-  - Poison
+  - Poison (puke xD)
   - Speed +1
   - Damage/SP/Initiative +2
   - Mana/HP +4
