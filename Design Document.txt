@@ -1,12 +1,77 @@
+  Tile shards locations:
+- Stormjr
+- Father Almund
+- Marceline
+
   Story:
+  1. Exposition
 They excavated a portion of the castle and lifted a tile.
 From under the tile came an ancient corruption eldritch powers corrupted my daughter, who was too weak to resist.
 
-Heroes... you must find the tile and put it back over its spot.
+Heroes... you must find the tile and put it back over its spot, and seal the monsters back beneath the earth!
 
-The tile has been hidden somewhere in my old castle, which now teems with monsters and abominations of all sorts. 
+The tile has been broken into 4 shards.
 
+The first piece is guarded by the legendary tempest dragon, Stormjr.
 
+Travel through the swamps and reach the beach. There you will find him.
+
+  2. Encounter with Redbeard (on beach)
+- Yahahargg... I heard you are hunting my sweet wife, Marceline.
+- Won't happen!
+
+  2. Encounter with Stormjr
+- I am forver bound to guard the seas.
+- I and the creatures of the sea are corrupted, mortals.
+- The vampire lord count Spatula holds our souls hostage.
+- And another piece of the Tile is in his possession.
+- However, count Spatula may not die. He will revive himself and other creatures... including me.
+- I am forver bound to guard the seas.
+o So what do we do?
+- Defeat count Spatula in his castle and maybe I will have more answers the next time we meet.
+
+  3. Encounter with Marceline (in the dungeon) (unlocks Captain Redbeard boss)
+- You... you are after the Tile
+- I will do ANYTHING in my power to get revenge on my father!
+- My father sold me as a wife to the pirate king, Captain Redbeard....
+- Do me a favor...
+- Kill him, and I will tell you where I have hidden a piece of the tile.
+- The next time you visit the beaches, the path to him will be revealed to you.
+- Even if you know where it is, I will kill you before you get to it.
+- Good luck? I don't really know anymore.
+
+  4. Encounter with Count Spatula (unlocks Blessed Children boss) (unlocks Vampire Ashes 1/2)
+- Why do you think the whole church is after you?
+- They serve Marceline now.
+
+  King:
+- So, the church is also corrupted...
+- The high priest, Father Almund must be destroyed.
+- Find him in the villages.
+
+  5. Blessed Children
+- Father Almund uses the power of the Tile Shard to hide himself.
+- You shall never find him!
+
+  6. King
+- There is an ancient ritual to reveal where Father Almund is hiding...
+- Heroes, you will need to defeat Count Spatula again.
+- We need 2 instances of Vampire Ashes to reveal Father Almund.
+- But beware! This time, he will better prepared for your arrival!
+- May the odds be in your favor, ever...
+
+  7. 
+
+  
+
+  Bosses:
+First journey:
+- Pumpzilla (default and placeholder boss)
+- Blessed Children (unlocked after defeating Count Spatula once)
+
+Second journey:
+- Stormjr (default and placeholder boss)
+- Captain Redbeard (unlocked after Encounter with Marceline)
 
 
 
@@ -70,9 +135,8 @@ o Can only appear inside houses
   - Soul Drain: +1 HP for every enemy killed
   - Fiery Presence: All spells and attacks deal an extra 50% of your level damage
 - Take his soul: encounter with the Devil. If you beat him, you get his perks PERMANENTLY on every run:
-  - Every Unholy enemy slain +1 HP
-  - Smite: +20% damage against all Unholy enemies
-  - +3 starting max mana
+  - +4 Max Health
+  - +2 Spell Power
 - Use item:
   - Flowers: You are pathetic. Begone!
   - Orb of Evil Thoughts: How did you get this? Let me pay you for it... (125 gold)
@@ -86,13 +150,12 @@ The merchant is an Alchemist here
   - Speed +1
   - Damage/SP/Initiative +2
   - Mana/HP +4
-- Buy an Elixir of Spelling (swaps the spell every turn) (65 gold)
 - Use item:
   UNHOLY: Creates an Unholy Potion (ability) (saves you from death once)
   ORE: Potion of Armor: You have +1 armor this combat
-  PLANT: Potion of Healing: Restores 25% of health
+  PLANT: Potion of Healing: Restores 20% of health
   CONSUMABLE: Transforms it into another random consumable
-  MAGICAL: Potion of Magic: +25% SP this combat
+  MAGICAL: Potion of Magic: +33% of total Mana and +15% SP this combat.
   
 10. Band of Adventurers (they look like you, but different colors)
 - Switch Teams: Your <RANGER> will be replaced with a <MAGE> (you keep all items)
