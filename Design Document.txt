@@ -3,7 +3,8 @@
 - Father Almund
 - Marceline
 
-  Story:
+  I-------------------- Story --------------------I
+  
   1. Exposition
 They excavated a portion of the castle and lifted a tile.
 From under the tile came an ancient corruption eldritch powers corrupted my daughter, who was too weak to resist.
@@ -16,62 +17,415 @@ The first piece is guarded by the legendary tempest dragon, Stormjr.
 
 Travel through the swamps and reach the beach. There you will find him.
 
-  2. Encounter with Redbeard (on beach)
+    ACT I
+    
+  2.1. Encounter with Stashton (on beach)
 - Yahahargg... I heard you are hunting my sweet wife, Marceline.
 - Won't happen!
 
-  2. Encounter with Stormjr
+  2.2. Encounter with Stormjr
 - I am forver bound to guard the seas.
 - I and the creatures of the sea are corrupted, mortals.
 - The vampire lord count Spatula holds our souls hostage.
-- And another piece of the Tile is in his possession.
 - However, count Spatula may not die. He will revive himself and other creatures... including me.
-- I am forver bound to guard the seas.
+- I am forver bound to guard this region.
+- And I will kill anyone who gets too close to me!
 o So what do we do?
 - Defeat count Spatula in his castle and maybe I will have more answers the next time we meet.
+- [ TILE PIECE 1 UNLOCKED ]
 
-  3. Encounter with Marceline (in the dungeon) (unlocks Captain Redbeard boss)
+  3.1. Encounter with Marceline (in the dungeon) (unlocks Captain Stashton boss)
 - You... you are after the Tile
-- I will do ANYTHING in my power to get revenge on my father!
-- My father sold me as a wife to the pirate king, Captain Redbeard....
+- I will do ANYTHING in my power to destroy my father's kingdom!
+- My father sold me as a wife to the pirate king, Captain Stashton...
+o Why did he do that!?
 - Do me a favor...
-- Kill him, and I will tell you where I have hidden a piece of the tile.
+- Kill him, and I will tell you everything.
 - The next time you visit the beaches, the path to him will be revealed to you.
-- Even if you know where it is, I will kill you before you get to it.
-- Good luck? I don't really know anymore.
 
-  4. Encounter with Count Spatula (unlocks Blessed Children boss) (unlocks Vampire Ashes 1/2)
+  3.2. Encounter with Count Spatula (unlocks Blessed Children boss) (unlocks Vampire Ashes 1/2)
 - Why do you think the whole church is after you?
 - They serve Marceline now.
+- I... I serve Marceline... I think...
+o You don't even know who you serve?
+- I remember... I was brought here by an ancient demon...
+- But... Marceline offered me such tremendous powers...
+- Yes... that was it...
+- Yes...
+- I serve Marceline now!
+o Who is this ancient demon you're talking about?
+- His name... was... Tyl, I think...
+- Yes, that's it!
+- Tyl, the Tile Demon!
+o The Tile Demon!?
+- My body... is turning to dust...
 
-  King:
+  3.3. King, After Spatula:
 - So, the church is also corrupted...
+- And this demon, Tyl, seems to be at the core of it...
+o What about your daughter, Marceline?
+- Poor Marceline...
+- The ancient corruption got to her early on...
+o You sold her to the pirate king!
+- Yes...
+- I am ashamed of this.
+- I only wanted to protect her from the castle...
+- She was not safe inside the castle walls.
+- Listen, adventurers.
 - The high priest, Father Almund must be destroyed.
+- He is the head of the church.
+- Now that the church is also corrupted, you must find him...
+- ...and you must kill him.
 - Find him in the villages.
+- We will meet again soon, I am sure.
 
-  5. Blessed Children
+
+
+    ACT II
+
+  1.1. Blessed Children
 - Father Almund uses the power of the Tile Shard to hide himself.
 - You shall never find him!
 
-  6. King
+  1.1. King, after Blessed Children
+- Hmm
+- Seems Father Almund has another tile piece
 - There is an ancient ritual to reveal where Father Almund is hiding...
 - Heroes, you will need to defeat Count Spatula again.
 - We need 2 instances of Vampire Ashes to reveal Father Almund.
-- But beware! This time, he will better prepared for your arrival!
+- But beware! This time, count Spatula will better prepared for your arrival!
 - May the odds be in your favor, ever...
 
-  7. 
+  2.1. Captain Stashton
+- Yahahargg...
+- This was not the end of me!
+- Have my Tile Piece, but leave my sweet Marceline alone!
+o She is corrupted by the eldritch powers in the castle!
+o She is a threat to the kingdom!
+- Yes...
+- She be a strong woman...
+- So strong, she broke that tile into 4 pieces!
+o What!?
+o She is the one who broke the tile!?
+- Yes! What a strong woman, am I right!?
+o But why!?
+- Ask her, not me!
+- Adios!
+- [ TILE PIECE 2 UNLOCKED ]
+o We have 2 pieces.
+o We need 2 more.
+
+  3.1. Encounter with Marceline
+- Thanks for beating that jerk's ass.
+- Here
+- [ SOME POWER UNLOCKED ]
+- Now then...
+- I'll get back to my business destroying my father's kingdom
+o Wait!
+o Why are you doing this?
+
+- Hundreds of years ago...
+- My father's ancestors made a pact with an ancient demon
+- Tyl, the Tile Demon
+- That's how they built the kingdom, and the castle
+- And now, the time has come to pay the price.
+- Tyl, the Tile Demon wants to redeem the kingdom.
+- That's the reason for all this corruption
+- For all these monsters
+
+o So when the King excavated the tile...
+o The corruption came out to get the kingdom...
+- It was inevitable.
+- I broke the tile into 4 pieces so I can destroy the kingdom...
+- I have a tile piece...
+- With it, I can control a part of the corruption to destroy the kingdom.
+o What happens if we assemble the tile back?
+- If you put that tile back where it was...
+- You will stop the corruption...
+o Perfect!
+- BUT...
+- ...only until someone else finds the tile!
+- And this chaos will return!
+- One day, in the future, someone will find the tile again.
+- And the corruption will emerge once more!
+- Everything we suffered through will be in vain!
+
+- The only solution to all of this is to destroy the whole kingdom.
+- And end the demon pact once and for all!
+o So...
+o You want to destroy the kingdom, so the demon can't have it?
+- Exactly!
+o There must be another way!
+- You don't get it!
+- This kingdom is a ticking time bomb for the demon!
+o Come with us! Let's destroy Tyl, together!
+- Fools!
+- You can't hope to fight such powers!
+o We will try!
+
+
+
+  3.2. Spatula Death
+- My powers weaken...
+o Now, let go of the monsters' souls!
+- I want to... but... I can't!
+o Do it!
+o Free Stormjr
+- In the name of the demon lord, Tyl...
+- I abandon my control over Stormjr's soul...
+o Yes!
+- And I forward it to Tyl, the Tile Demon!
+o No!
+o OH, COME ON!
+- After all that was given to me...
+- I now stand to lose it all...
+[ BONK - comes the king and bonks Spatula in his head with the spoon ]
+
+- Good work, adventurers!
+- Now, we have the ashes necessary to reveal Father Almund.
+o Hold up.
+o Tyl, the Tile Demon is the master of it all!
+- It seems so...
+o And you lied to us about the tile.
+- ...
+o You told us the tile was shattered into 4 pieces.
+o It was actually Marceline who did it...
+o ...to keep you away from reassembling the tile...
+o ...and postponing the evil.
+- ...
+- Yes. I know.
+- I feared you may not understand.
+- But you have to understand.
+- It was all for her good, and the good of the kingdom.
+
+- Either we assemble the tile and seal the evil temporarily...
+- ...or we destroy the kingdom, so Tyl can't have it.
+- If you were the king, what would you choose?
+o ...
+- I thought so...
+
+- Now then,
+- Only 2 pieces remain to be found.
+- Father Almund has one...
+- ...and Marceline has the last one.
+- I fear we will have to make a grave choice soon...
+
+- Go back to the villages.
+- With the vampire's ashes, I will reveal the path to Almund.
+- Take great care.
+- He is a man of great wisdom, and great power.
+
+    Act III
+  1.1. Father Almund meeting
+- Our Lord and Savior, hear us...
+- In these dark moments, deliver us from evil...
+- Oh, Lord...
+- Why won't you answer?
+- I only hear the voices of demons.
+- A dark whisper at the back of my head.
+- If only this Tile Shard could empower my faith...
+- ...as much as it has empowered my body.
+
+  2.1. King Meeting Encounter on the second journey
+> All your kingdom is belong to us.
+- Now begone, fiend!
+> You have sealed your fate.
+
+o What was that?
+- The presence of Tyl, the Tile Demon, is becoming stronger.
+- We must move quickly, heroes!
+- Have you defeated Almund and got his Tile Piece?
+o We did.
+- Then we got 3.
+- Only 1 more to go...
+
+- Heroes,
+- I will ask you the impossible for a father...
+- You must defeat my daughter, Marceline.
+- And take the final Tile Piece from her.
+
+  2.2. King and Marceline after second boss is defeated
+- Stop this nonesense!
+- Can't you see!?
+- You can't postpone this forever!
+> Marceline...
+- Father!? Begone!
+> Marceline, please...
+> Hand over the Tile Piece...
+> ...and we can live hapily for the rest of our lives!
+- And what of the next king?
+- The future of this kingdom is doomed!
+> I suppose it is your choice, heroes.
+> Help me assemble the Tile and seal Tyl back beneath the castle.
+- Or help me destroy the kingdom so the demon can't have it.
+
+[ Side with the King ]
+You will try to defeat Marceline and take her final Tile Piece.
+You will then assemble the Tile and seal the corruption under the castle floors.
+
+[ Side with Marceline ]
+You will try to defeat the King.
+You will then use the power of the Tile to blow up the whole kingdom, so the demon can't have it.
 
   
+  3.1A. King Erio
+> Marceline...
+> My daughter...
+> Please...
+- Spare me, father.
+- Now you beg for mercy?!
+- Heroes,
+- Now that the king is defeated...
+- ...we can use the power of the Tile to blow this whole castle up.
+- Quickly!
+- Assemble the Tile!
+[ Tile is assembled ]
+- Perfect!
+- Now to blow up this place!
+- Brace yourselves!
+...
+- ?
+- It... it's not working...
+- WHY DOESN'T IT WORK!?
+> Fool.
+- What was that?
+> I thank you, foolish girl.
+o What!?
+> By assembling the Tile, you have awakened me.
+- No!!! No this isn't supposed to happen!
+> Foolish girl.
+[ Tyl blasts Marceline ]
+> This kingdom is mine.
+> MINE!
+[ Tyl blasts the King ]
+> It's over.
+> I win.
+> I am king now.
+> BOW BEFORE ME, MORTALS!
+[ Tyl blasts the adventurers ]
+> HA HA HA HA HAAA!!!
 
-  Bosses:
-First journey:
-- Pumpzilla (default and placeholder boss)
-- Blessed Children (unlocked after defeating Count Spatula once)
 
-Second journey:
-- Stormjr (default and placeholder boss)
-- Captain Redbeard (unlocked after Encounter with Marceline)
+  3.1B. Marceline
+- It is over, Marceline.
+- The Tile Piece is ours.
+
+- We did it, heroes!
+- Now, to assemble the tile...
+
+o That's it! We won!
+o Quickly! Put the tile over the hole!
+- I...
+- I am afraid I can't do that.
+o What!?
+- Tyl.
+[ Tyl appears partially ]
+- As I promised, here is the Tile.
+> Good.
+- Now, your end of the bargain.
+- You will make me the regent King of this Kingdom, for eternity.
+> No.
+> You're a terrible father, King Erio.
+> You're an even worse King.
+[ Tyl materializes ]
+- But... we had an agreement!
+> Fool.
+> This kingdom is mine.
+> MINE!
+[ Tyl blasts the King ]
+> It's over.
+> I win.
+> I am king now.
+> BOW BEFORE ME, MORTALS!
+[ Tyl blasts the adventurers ]
+> HA HA HA HA HAAA!!!
+
+
+  I-------------------- Bosses --------------------I
+  
+I.1. Pumpzilla (default and placeholder boss)
+II.1. Blessed Children (unlocked after defeating Count Spatula once)
+III.1 Father Almund
+  o Every 5th turn, revives all the ads
+    - The tactic is get the ads low and kill them immediately after the revive spell.
+    - Ads that attack diagonally
+  o Creates a cross on the middle of the board: it heals allies and damages players
+  o Runs away and creates a circle of fire around him
+  o Small cross on a random player
+  o The closest player is marked. Next turn, it explodes and damages allies and heals enemies.
+  
+
+I.2. Stormjr (default and placeholder boss):
+  o Alternates 3 abilities:
+    - Tidal Wave (1) on odd rows
+    - Wait
+    - Tidal Wave (2) on even rows
+    - Wait
+    - Tidal Wave (3) on all rows
+    - Wait
+  o Tidal wave 3 Summons 2 Water Elementals
+    - Water elementals have normal attacks
+    - They get empowered if hit by Tidal Waves
+    - On death, they do a delayed nova explosion
+    
+II.2. Captain Stashton (unlocked after Encounter with Marceline)
+  x Phase 1
+    o Stands out of the Battlefield
+    o Alternates 2 abilities:
+      - Puts a barrel
+      - Shoots the barrel (delayed)
+    o Clear all enemies to end Phase 1
+  x Phase 2
+    o If ranged, will shoot like a Highwayman
+    o If melee, will attack
+    o Every now and then, summons a banner
+    o Also there's a chest
+
+I.3. Count Spatula
+  - Very High MS
+  - Has low Health, but spawns 10 bats on death
+    - Bats move randomly and attack if they can
+    - At the end of the round, Spatula revives
+  - Attacks lifesteal
+    - Overheal adds block
+  - Every 3rd turn, moves back and spawns 2 bats
+  - If below 50%, and a bat exists, will drain a bat to heal
+II.3. Count Spatula (Again)
+  x Phase 2
+  - At start, summons 5 Bard Heals (bloody thingies) that heal him to full HP. You can step on them to destroy them.
+  - Attacks have range 2 diagonal
+III.3A. Marceline
+  x Phase 1
+    - Teleports after she is hit
+    o Sends a wave that advances round by round per column (from a random direction)
+      o Yes you will have 2 waves at a point
+    o Teleports in the middle then charges 1 turn to deal massive AoE damage
+      o If stunned or after she does it, she becomes weakened
+    o Triple arrow
+  o 
+III.3B. King Erio
+  x Phase 2
+    o Summons 4 Cheerios
+    o Sends Cheerios into random Players
+    o Summons 4 Cheerios
+    o Cheerios explode
+  x Phase 1? (with ads)
+    o Tries to bonk players with the spoon (bonk sound effect)
+    o Dodges skill shots with missile
+IV.3. Tyl, the Tile Demon
+  x Phase 1
+    - His movement speed animation is way slower with ease in-out
+    - There are 4 fire sigils on the ground. Whenever a player casts a spell, another one activates.
+      - When all 4 activate, they deal damage in a ractangle
+    o Creates permanent fire on corners
+    o Fires a bolt (delayed) that explodes on impact AoE
+    o Fires a missile diagonally that bounces off edges
+    o Summon a permanent 2x2 silence zone. Yeah it keeps going!
+  x Phase 2
+    o Summons a portal that summons demons if you don't destroy it
+    o Shoots a missile that summons a demon if it doesn't hit anything
+
+
 
 
 
@@ -290,36 +644,3 @@ Ability Types:
   - Stun / Snare
   - Mobility
   - Disposition
-
-
-
-Zones:
-    1. Peasant
-    2. Forest
-    3. Swamp
-    4. Beaches
-    5. Caves
-    6. Castle
-    
-Ideas:
-    - Make the player hate the villain!
-    - If the game is roguelike (learn by dying), have big power spikes/strategy changing items/abilities!
-
-Enemy Abilities:
-    - Deal with me last: e.g. loses power with each dead ally
-    - Deal with me first: healer, high damage/low hp, enrages after every ally death
-    
-Player powers:
-    - Shooting the same enemy 2 turns in a row crits!
-    - Flanking an enemy deals extra damage!
-
-
-
-Encounters:
-  Each BattlefieldEncounter holds one wave of enemies (hasNextWave = true)
-  The next wave is the next wave in the database, in order
-  If a BattlefieldEncounter doesn't have another wave
-
-
-Story:
-- TODO
