@@ -383,17 +383,23 @@ II.2. Captain Stashton (unlocked after Encounter with Marceline)
 
 I.3. Count Spatula
   - Very High MS
-  - Has low Health, but spawns 10 bats on death
+  - Has low Health, but spawns bats on death:
+    - Each Bat killed reduces Spatula's HP by 5.
+    - After 2 turns, Bats converge and resummon Spatula with the new HP
+    - Spatula summons up to 6 Bats on death. Summons no Bats if his Max HP is <= 20.
+    - If all bats die, Spatula is resummoned
     - Bats move randomly and attack if they can
     - At the end of the round, Spatula revives
   - Attacks lifesteal
     - Overheal adds block
   - Every 3rd turn, moves back and spawns 2 bats
   - If below 50%, and a bat exists, will drain a bat to heal
+  
 II.3. Count Spatula (Again)
   x Phase 2
-  - At start, summons 5 Bard Heals (bloody thingies) that heal him to full HP. You can step on them to destroy them.
+  - At start, summons 5 Bard Heals (bloody thingies) that heal him for half of his HP.
   - Attacks have range 2 diagonal
+  
 III.3A. Marceline
   x Phase 1
     - Teleports after she is hit
@@ -406,12 +412,13 @@ III.3A. Marceline
 III.3B. King Erio
   x Phase 2
     o Summons 4 Cheerios
-    o Sends Cheerios into random Players
+    o Sends Cheerios into random Players (can be blocked by obstacles)
     o Summons 4 Cheerios
     o Cheerios explode
   x Phase 1? (with ads)
     o Tries to bonk players with the spoon (bonk sound effect)
     o Dodges skill shots with missile
+    
 IV.3. Tyl, the Tile Demon
   x Phase 1
     - His movement speed animation is way slower with ease in-out
@@ -424,6 +431,7 @@ IV.3. Tyl, the Tile Demon
   x Phase 2
     o Summons a portal that summons demons if you don't destroy it
     o Shoots a missile that summons a demon if it doesn't hit anything
+    o Leaves a trail of fire towards where he moves
 
 
 
