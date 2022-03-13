@@ -220,7 +220,8 @@ o ...
 - Our Lord and Savior, hear us...
 - In these dark moments, deliver us from evil...
 - Oh, Lord...
-- Why won't you answer?
+- Why won't thou answer?
+- Why hast thou forsaken me...
 - I only hear the voices of demons.
 - A dark whisper at the back of my head.
 - If only this Tile Shard could empower my faith...
@@ -345,14 +346,42 @@ o What!?
   
 I.1. Pumpzilla (default and placeholder boss)
 II.1. Blessed Children (unlocked after defeating Count Spatula once)
+  o Phase 1:
+    o Suzanna:
+      - Stands back and heals
+      - Lil Munchy gains damage when she dies (whatever his form)
+    o Lil Munchy
+      - Throws a trap with a Muffin on the ground every turn (and deals damage if it lands on a unit)
+      - Big Boyo gains damage when he dies (whatever his form)
+    o Big Boyo
+      - Big HP, small D, attacks diagonally
+      - If it lands on a Muffin trap, grows in size
+      - Suzanna gains 25% Dodge and +2 speed when he dies
+  o Phase 2:
+    o Suzanna:
+      - Spits Web Traps around her and runs
+      - Long range Web that immobilizes but deals little damage
+      - Sacrifices from her own HP to heal insect Boyo/Lil
+        - Otherwise, damages a human Boyo/Lil
+    o Lil Munchy
+      - AoE around him (spikes)
+      - Goes to the side...
+      - CHARGES towards the other side, slashing up and down (deals no damage to middle, but pushes)
+    o Wasp Boyo: 3 move speed, brute
+      - Has a to-right attack with his pincer
+      - Flips every 3rd turn if it can't hit anything
+
 III.1 Father Almund
-  o Every 5th turn, revives all the ads
-    - The tactic is get the ads low and kill them immediately after the revive spell.
-    - Ads that attack diagonally
+  Phase 1: - Has 2 ads
   o Creates a cross on the middle of the board: it heals allies and damages players
   o Runs away and creates a circle of fire around him
-  o Small cross on a random player
+  o Prepares a large consecration zone on the player. Damages players, heals enemies and puts silence traps
   o The closest player is marked. Next turn, it explodes and damages allies and heals enemies.
+  Phase 2: - Revives ads
+    o Every 5th turn, revives all the ads
+      - The tactic is get the ads low and kill them immediately after the revive spell.
+      - Ads that attack diagonally
+    o Same spells but deal only damage (DARK AF!!)
   
 
 I.2. Stormjr (default and placeholder boss):
@@ -405,12 +434,20 @@ III.3A. Marceline
     - Teleports after she is hit
     o Sends a wave that advances round by round per column (from a random direction)
       o Yes you will have 2 waves at a point
-    o Teleports in the middle then charges 1 turn to deal massive AoE damage
-      o If stunned or after she does it, she becomes weakened
-    o Triple arrow
-  o 
-III.3B. King Erio
+  x Phase 1.5:
+    o Summons an Exploding Crystal
   x Phase 2
+    - Summons a massive Sword in the middle of the room
+      - Sword can be killed but it's optional
+    o Sword alternates between damaging around the sword, medium range and long range
+    o Marceline keeps sending waves
+    o 
+III.3B. King Erio
+  x Phase 1:
+    o Has a wall of Royal Guards that constantly move forward together and deal damage in front of them.
+    o King constantly marks certain tiles and throws giant spoons at you
+  x Phase 2
+    - Is immune to skill shots with missiles coming directly from his front, and deflects them
     o Summons 4 Cheerios
     o Sends Cheerios into random Players (can be blocked by obstacles)
     o Summons 4 Cheerios
@@ -423,15 +460,25 @@ IV.3. Tyl, the Tile Demon
   x Phase 1
     - His movement speed animation is way slower with ease in-out
     - There are 4 fire sigils on the ground. Whenever a player casts a spell, another one activates.
-      - When all 4 activate, they deal damage in a ractangle
+      - On activation, active sigils deal damage.
+      - Activated sigils are random, but, they follow certain rules.
     o Creates permanent fire on corners
-    o Fires a bolt (delayed) that explodes on impact AoE
-    o Fires a missile diagonally that bounces off edges
-    o Summon a permanent 2x2 silence zone. Yeah it keeps going!
-  x Phase 2
     o Summons a portal that summons demons if you don't destroy it
     o Shoots a missile that summons a demon if it doesn't hit anything
     o Leaves a trail of fire towards where he moves
+    
+  x Phase 2
+    o Fires a bolt (delayed) that explodes on impact AoE and spawns Toxic Fog if it misses
+    o Fires a missile diagonally that bounces off edges and spawns Toxic Fog if it misses
+    o Global AoE lightning; until it happens, each time a player moves, damage increases by 50%. If any player moved, that player gets Infected
+    o Spawns Slime in all corners affected by Toxic Fog
+    
+  x Phase 3?
+    o Wait... Toby?
+    o WHAT THE HELL ARE YOU DOING HERE, TOBY!?
+    o "Woof!"
+    o Damn it, Toby! Please don't kill Toby!
+    o Just leave the dog out of this!
 
 
 
