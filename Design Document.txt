@@ -445,6 +445,8 @@ III.3A. Marceline
 III.3B. King Erio
   x Phase 1:
     o Has a wall of Royal Guards that constantly move forward together and deal damage in front of them.
+  x Phase 1.5: activates when any guard dies
+    - Guards go free for all as individual units
     o King constantly marks certain tiles and throws giant spoons at you
   x Phase 2
     - Is immune to skill shots with missiles coming directly from his front, and deflects them
@@ -452,9 +454,7 @@ III.3B. King Erio
     o Sends Cheerios into random Players (can be blocked by obstacles)
     o Summons 4 Cheerios
     o Cheerios explode
-  x Phase 1? (with ads)
-    o Tries to bonk players with the spoon (bonk sound effect)
-    o Dodges skill shots with missile
+
     
 IV.3. Tyl, the Tile Demon
   x Phase 1
