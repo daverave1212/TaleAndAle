@@ -32,7 +32,7 @@ Travel through the swamps and reach the beach. There you will find him.
 - And I will kill anyone who gets too close to me!
 o So what do we do?
 - Defeat count Spatula in his castle and maybe I will have more answers the next time we meet.
-- [ TILE PIECE 1 UNLOCKED ]
+- [ Tile Shard 1 UNLOCKED ]
 
   3.1. Encounter with Marceline (in the dungeon) (unlocks Captain Stashton boss)
 - You... you are after the Tile
@@ -89,7 +89,7 @@ o You sold her to the pirate king!
 
   1.1. King, after Blessed Children
 - Hmm
-- Seems Father Almund has another tile piece
+- Seems Father Almund has another Tile Shard
 - There is an ancient ritual to reveal where Father Almund is hiding...
 - Heroes, you will need to defeat Count Spatula again.
 - We need 2 instances of Vampire Ashes to reveal Father Almund.
@@ -99,7 +99,7 @@ o You sold her to the pirate king!
   2.1. Captain Stashton
 - Yahahargg...
 - This was not the end of me!
-- Have my Tile Piece, but leave my sweet Marceline alone!
+- Have my Tile Shard, but leave my sweet Marceline alone!
 o She is corrupted by the eldritch powers in the castle!
 o She is a threat to the kingdom!
 - Yes...
@@ -111,7 +111,7 @@ o She is the one who broke the tile!?
 o But why!?
 - Ask her, not me!
 - Adios!
-- [ TILE PIECE 2 UNLOCKED ]
+- [ Tile Shard 2 UNLOCKED ]
 o We have 2 pieces.
 o We need 2 more.
 
@@ -125,9 +125,9 @@ o Wait!
 o Why are you doing this?
 
 - Hundreds of years ago...
-- My father's ancestors made a pact with an ancient demon
+- My ancestors made a pact with a demon
 - Tyl, the Tile Demon
-- That's how they built the kingdom, and the castle
+- That's how they built the kingdom
 - And now, the time has come to pay the price.
 - Tyl, the Tile Demon wants to redeem the kingdom.
 - That's the reason for all this corruption
@@ -137,7 +137,7 @@ o So when the King excavated the tile...
 o The corruption came out to get the kingdom...
 - It was inevitable.
 - I broke the tile into 4 pieces so I can destroy the kingdom...
-- I have a tile piece...
+- I have a Tile Shard...
 - With it, I can control a part of the corruption to destroy the kingdom.
 o What happens if we assemble the tile back?
 - If you put that tile back where it was...
@@ -235,7 +235,7 @@ o ...
 o What was that?
 - The presence of Tyl, the Tile Demon, is becoming stronger.
 - We must move quickly, heroes!
-- Have you defeated Almund and got his Tile Piece?
+- Have you defeated Almund and got his Tile Shard?
 o We did.
 - Then we got 3.
 - Only 1 more to go...
@@ -243,7 +243,7 @@ o We did.
 - Heroes,
 - I will ask you the impossible for a father...
 - You must defeat my daughter, Marceline.
-- And take the final Tile Piece from her.
+- And take the final Tile Shard from her.
 
   2.2. King and Marceline after second boss is defeated
 - Stop this nonesense!
@@ -252,7 +252,7 @@ o We did.
 > Marceline...
 - Father!? Begone!
 > Marceline, please...
-> Hand over the Tile Piece...
+> Hand over the Tile Shard...
 > ...and we can live hapily for the rest of our lives!
 - And what of the next king?
 - The future of this kingdom is doomed!
@@ -261,7 +261,7 @@ o We did.
 - Or help me destroy the kingdom so the demon can't have it.
 
 [ Side with the King ]
-You will try to defeat Marceline and take her final Tile Piece.
+You will try to defeat Marceline and take her final Tile Shard.
 You will then assemble the Tile and seal the corruption under the castle floors.
 
 [ Side with Marceline ]
@@ -309,7 +309,7 @@ o What!?
 
   3.1B. Marceline
 - It is over, Marceline.
-- The Tile Piece is ours.
+- The Tile Shard is ours.
 
 - We did it, heroes!
 - Now, to assemble the tile...
@@ -341,6 +341,100 @@ o What!?
 [ Tyl blasts the adventurers ]
 > HA HA HA HA HAAA!!!
 
+  4.1A. King
+- Don't look at me, heroes!
+- I am filled with shame and guilt!
+o Our job is not done, King Erio.
+- King?
+- I am no king!
+- And without my crown...
+- ...I am nothing.
+o You can still be the father you have never been.
+
+- ...Heroes,
+- Defeat Tyl.
+- Avenge me.
+- Avenge all the kingdom!
+- Put an end to this, once and for all.
+o We will.
+o We have to go now.
+- Wait!
+- Take this Seal.
+- It will grant you access to the throne room.
+- That is likely where Tyl is hiding, deep within the castle.
+- (turns) Good luck, heroes.
+
+  4.1B Marceline
+(hitting a practice target)
+- What do you want?
+- Everything has failed.
+- It is over.
+o There is still a chance.
+o We will defeat Tyl, with or without your help.
+- I called you fools for wanting that before.
+- Now I can see I was the foolish one.
+- Have this.
+[ Gives revival ]
+- I don't need it anymore.
+- It shall serve you well.
+- Go now.
+- Succeed where I have failed.
+- Good luck.
+o Tha-
+[ Teleports away ]
+
+  4.2 Tyl
+- I have been watching you, mortals.
+[-] But getting fooled like that by the King.
+[-] That was most amusing.
+[+] Allying yoursleves with my puppet, Marceline?
+[+] What a bunch of simps.
+o Your words will spell your end, Tyl.
+- Foolish to the very end.
+- It is time, mortals.
+- Your end...
+- ...HAS COME!!!
+
+  4.2 Tyl ending
+- What is this!?
+- What are these powers???
+[-] Did Natas help you out!?
+o They are your doing, Tyl!
+o All these venturing throughout the kingdom has trained us...
+o ...for our final opponent:
+o You!
+- Nooo!!!
+- This cannot be!!!
+[Marceline teleports in]
+> It sure can be, Tyl.
+[Drops a giant sword on him]
+- What!? How did you even get here!?
+[King slowly creeps from behind]
+- Is this... the end?
+o It is.
+[King hits Tyl with his spoon]
+- Nnnnnoooooo!!!
++ And stay there!
+[King throws the Tile over the hole in the floor]
+
++ Well, Heroes...
++ You did it.
++ You saved the kingdom.
+> He would have gotten away if it weren't for you, meddling adventurers.
+> I...
+> ... I thank you.
++ That's the first time she ever said that, you know.
+> ...
+o It was our duty, Marceline.
++ It had to be done.
++ As for me... I am unfit to rule.
+o Then who's gonna be king?
+
+[Willard strolling and whistling]
+"My, oh, my!"
+"Kingdom ownership documents?"
+turn/unturn
+"Finders keepers!!"
 
   I-------------------- Bosses --------------------I
   
