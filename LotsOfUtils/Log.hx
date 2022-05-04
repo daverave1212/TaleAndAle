@@ -80,11 +80,18 @@ class Log extends SceneScript
 	public static var isOpen = false;
 	public static var currentInput : String = '';
 
+	public static var commandOnlyHistory: Array<String> = [];
+	public static var cursor: Int = -1;
 	public static var history : Array<String> = [];
 
 	public static var isInitialized = false;	// Automatically called by U. Don't mess with this.
 
 	public static var commands : Map<String, (Array<String> -> String)>;
+	public static var variables: Map<String, String> = new Map<String, String>();
+	public static function getVar(varName: String): String {
+		if (variables.exists(varName)) return variables[varName];
+		else return null;
+	}
 
 	public static function enableToggleOnTilde() {
 		U.onKeyPress(keyCode -> {
@@ -105,7 +112,7 @@ class Log extends SceneScript
 	}
 
 	public static function toggle(){
-		trace('Toggling');
+		cursor = -1;
 		if (isOpen){
 			closeConsole();
 		} else {
@@ -142,18 +149,37 @@ class Log extends SceneScript
 		addWhenDrawingListener(null, function(g:G, x:Float, y:Float, list:Array<Dynamic>):Void{
 			drawConsole(g);
 		});
-		U.onKeyPress(function(charCode){
+		U.onKeyPress(function(charCode) {
 			if (charCode == 9) {		// TAB
 				Log.tab();
 			} else if(charFromCharCode(charCode) == '`'){
 				//Log.toggle();
-			} else if(charCode == 13){	// ENTER
+			} else if(charCode == 13) {	// ENTER
 				Log.enter();
-			} else if(charCode == 8){	// BACKSPACE
+			} else if(charCode == 8) {	// BACKSPACE
 				Log.backspace();
 			} else if (charFromCharCode(charCode) != ''){
-				trace(charCode);
 				currentInput += charFromCharCode(charCode);
+			}
+		});
+		U.u.addKeyStateListener("up", function(pressed:Bool, released:Bool, list:Array<Dynamic>):Void {
+			if (pressed) {
+				if (commandOnlyHistory == null || commandOnlyHistory.length == 0) return;
+				if (cursor == -1 || cursor == 0)
+					cursor = commandOnlyHistory.length - 1;
+				else
+					cursor -= 1;
+				currentInput = commandOnlyHistory[cursor];
+			}
+		});
+		U.u.addKeyStateListener("down", function(pressed:Bool, released:Bool, list:Array<Dynamic>):Void {
+			if (pressed) {
+				if (commandOnlyHistory == null || commandOnlyHistory.length == 0) return;
+				if (cursor == -1 || cursor == commandOnlyHistory.length - 1)
+					cursor = 0;
+				else
+					cursor += 1;
+				currentInput = commandOnlyHistory[cursor];
 			}
 		});
 	}
@@ -196,6 +222,7 @@ class Log extends SceneScript
                 theFunction = commands.get(args[0]);
                 try {
                     trace(go(theFunction(args.slice(1))));
+					commandOnlyHistory.push(command);
                 } catch(e2 : String){
                     trace(go('Wrong parameters for ${args[0]}'));
                 }

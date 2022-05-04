@@ -43,6 +43,7 @@ import box2D.dynamics.joints.B2Joint;
 
 import com.stencyl.utils.motion.*;
 
+import Std.int;
 
 /*"
 
@@ -76,7 +77,7 @@ import com.stencyl.utils.motion.*;
 
 // A wrapper for ImageX which can hold some data, like speed and age
 // Required for sliding images in ImageX slider part
-class ImageXExtended{
+class ImageXExtended {
 	public var image  : ImageX;
 	public var xSpeed : Float = 0;
 	public var ySpeed : Float = 0;
@@ -89,7 +90,7 @@ class ImageXExtended{
 
 }
 
-class ImageXSlider{
+class ImageXSlider {
 
 	public static var imagesBeingSlid : Array<ImageXExtended>;
 	public static inline var Slide_Frequency = 20;
@@ -142,16 +143,21 @@ class ImageX
 	}
 
 	public var image : BitmapWrapper;
+
 	public var isAttachedToScreen = true;
 	public var layerName : String = "!NONE";
+	public var actorItIsAttachedTo: Actor;
+	public var actorAttachX: Float = 0;
+	public var actorAttachY: Float = 0;
+
+
 	public var isAlive = true;
 	public var isShown = true;
 	private var originalWidth  : Float = 0;
 	private var originalHeight : Float = 0;
-	private var originalPath : String = 'unassigned';
 
-	public function new(?path : String, ?bitmapData : BitmapData, ?layerName : String){
-		if(path != null && bitmapData == null){
+	public function new(?path : String, ?bitmapData : BitmapData, ?layerName : String, ?actorToAttachTo: Actor, ?attachX: Float = 0, ?attachY: Float = 0) {
+		if (path != null && bitmapData == null){
 			image = new BitmapWrapper(new Bitmap(getExternalImage(path)));
 		} else if (bitmapData != null && path == null) {
 			image = new BitmapWrapper(new Bitmap(bitmapData));
@@ -161,19 +167,18 @@ class ImageX
 			throw 'Error loading ImageX: both path and bitmapData given are NULL!';
 		}
 		if (image == null) {
-			var layerMessage = "";
-			if(layerName == null) layerMessage = '(unspecified)';
-			else layerMessage = '($layerName)';
 			if (path != null){
-				throw 'Error loading ImageX "$path" on layer $layerMessage';
+				throw 'Error loading ImageX from path "$path" on layer ${layerName}';
 			} else {
-				throw 'Error loading ImageX from bitmap on layer $layerMessage';
+				throw 'Error loading ImageX from bitmap on layer $layerName';
 			}
 		}
-		if(layerName != null){
+		if (layerName != null) {
 			isAttachedToScreen = false;
 			this.layerName = layerName;
 			attachImageToLayer(image, cast engine.getLayerByName(layerName), 0, 0, 1);
+		} else if (actorToAttachTo != null) {
+			attachToActor(actorToAttachTo, attachX, attachY);
 		} else {
 			isAttachedToScreen = true;
 			attachImageToHUD(image, 0, 0);
@@ -190,34 +195,52 @@ class ImageX
 		var oldY = getY();
 		removeImage(image);
 		image = new BitmapWrapper(new Bitmap(getExternalImage(path)));
-		attachImageToLayer(image, cast engine.getLayerByName(layerName), 0, 0, 1);
 		image.scaleX = image.scaleX * Engine.SCALE;
 		image.scaleY = image.scaleY * Engine.SCALE;
-		setX(oldX);
-		setY(oldY);
+		if (isAttachedToScreen) {
+			attachImageToHUD(image, 0, 0);
+		} else if (actorItIsAttachedTo != null) {
+			attachToActor(actorItIsAttachedTo, actorAttachX, actorAttachY);
+		} else {
+			attachImageToLayer(image, cast engine.getLayerByName(layerName), 0, 0, 1);
+		}
+		if (actorItIsAttachedTo == null) {
+			setX(oldX);
+			setY(oldY);
+		}
 	}
 
 	public function show(){
 		var oldX = getX();
 		var oldY = getY();
-		if(!isAlive || isShown) return;
-		if(isAttachedToScreen) attachImageToHUD(image, 0, 0);
-		else attachImageToLayer(image, cast engine.getLayerByName(layerName), 0, 0, 1);
-		setX(oldX);
-		setY(oldY);
+		if (!isAlive || isShown) return;
+		if (isAttachedToScreen)
+			attachImageToHUD(image, 0, 0);
+		else if (actorItIsAttachedTo != null) {
+			attachToActor(actorItIsAttachedTo, actorAttachX, actorAttachY);
+		} else
+			attachImageToLayer(image, cast engine.getLayerByName(layerName), 0, 0, 1);
+		if (actorItIsAttachedTo == null) {
+			setX(oldX);
+			setY(oldY);
+		}
 		isShown = true;
 	}
 
 	public function hide(){
 		if(!isAlive || !isShown) return;
-		removeImage(image);
+		try {
+			removeImage(image);
+		} catch (e: Any) {
+			trace('BIG WARNING: Failed to remove an image!');
+		}
 		isShown = false;
 	}
 
 	public inline function getX() return image.x / Engine.SCALE;
 	public inline function getY() return image.y / Engine.SCALE;
-	public inline function getXCenter() return getX() - getWidth() / 2;
-	public inline function getYCenter() return getY() - getHeight() / 2;
+	public inline function getXCenter() return getX() + getWidth() / 2;
+	public inline function getYCenter() return getY() + getHeight() / 2;
 	public inline function getZ() return getOrderForImage(image);
 	public inline function setX(x : Float) image.x = x * Engine.SCALE;
 	public inline function setY(y : Float) image.y = y * Engine.SCALE;
@@ -226,27 +249,36 @@ class ImageX
 	public inline function getHeight() return image.height / Engine.SCALE;
 	public inline function setAngle(degrees : Float) image.rotation = degrees;
 	public inline function getAngle() return image.rotation;
+	public inline function getYBottom() return getY() + getHeight();
 
 	public inline function resetWidth() setWidth(originalWidth);
 	public inline function resetHeight() setHeight(originalHeight);
 	public function setWidthScale(scale : Float) image.scaleX = scale;
 	public function setHeightScale(scale : Float) image.scaleY = scale;
-	public function setWidth(w : Float){	// In pixels
+	public function getWidthScale() return image.scaleX;
+	public function getHeightScale() return image.scaleY;
+	public function setWidth(w : Float) {	// In pixels
 		var perc =  w / originalWidth;
 		var currentHeightPerc = getHeight() / originalHeight;
 		growImageTo(image, Engine.SCALE * perc, Engine.SCALE * currentHeightPerc, 0, Easing.linear);
 	}
-	public function setHeight(h : Float){	// In pixels
+	public function setHeight(h : Float) {	// In pixels
 		var perc = h / originalHeight;
 		var currentWidthPerc = getWidth() / originalWidth;
 		growImageTo(image, Engine.SCALE *  currentWidthPerc, Engine.SCALE *  perc, 0, Easing.linear);
 	}
-	public inline function kill(){
+	public function kill() {
+		if (!!!isAlive) return;
+		isAlive = false;
+		if (!!!isShown) return;
 		if (image != null) {
-			removeImage(image);
+			try {
+				removeImage(image);
+			} catch (e: String) {
+				trace('WARNING: Could not remove image, probably because it was already removed or the scene changed maybe? Error: ${e}');
+			}
 		}
 		image = null;
-		isAlive = false;
 	}
 	public function anchorToScreen(){
 		attachImageToHUD(image, Std.int(getX()), Std.int(getY()));
@@ -258,8 +290,8 @@ class ImageX
 		setOriginForImage(image, origin, origin);
 	}
 
-	public inline function getXScreen() return getX() / Engine.SCALE - Std.int(getScreenX());
-	public inline function getYScreen() return getY() / Engine.SCALE - Std.int(getScreenY());
+	public inline function getXScreen() return getX() - Std.int(getScreenX());
+	public inline function getYScreen() return getY() - Std.int(getScreenY());
 	public inline function setXScreen(x : Float) setX(getX() + Std.int(getScreenX()));
 	public inline function setYScreen(y : Float) setY(getY() + Std.int(getScreenY()));
 	public inline function addX(x : Float) setX(getX() + x);
@@ -298,9 +330,45 @@ class ImageX
 		return this;
 	}
 
+	public function growTo(wRatio: Float, hRatio: Float, seconds: Float, ?easing: Dynamic) {
+		if (easing == null)
+			easing = Easing.linear;
+		growImageTo(image, wRatio * Engine.SCALE, hRatio * Engine.SCALE, seconds, easing);
+	}
+	public function slideBy(byx: Float, byy: Float, seconds: Float, ?easing) {
+		if (easing == null)
+			easing = Easing.linear;
+		moveImageBy(image, byx, byy, seconds, easing);
+	}
+
 	public inline function grayOut() {
 		setFilterForImage(image, createSaturationFilter(0));
 	}
+	public inline function removeAllEffects() {
+		clearFiltersForImage(image);
+	}
 
+	public function attachToActor(actor: Actor, x: Float = 0, y: Float = 0) {
+		attachImageToActor(image, actor, int(x), int(y), 1);
+		actorItIsAttachedTo = actor;
+		isAttachedToScreen = false;
+		actorAttachX = x;
+		actorAttachY = y;
+	}
 
+	
+
+	public static function imageExists(path: String): Bool {
+		if (path == null) return false;
+		try {
+			getExternalImage(path);
+			return true;
+		} catch (e: String) {
+			return false;
+		}
+	}
+
+	public inline function fadeTo(alpha: Float, seconds: Float) {
+		fadeImageTo(image, alpha, seconds, Easing.linear);
+	}
 }

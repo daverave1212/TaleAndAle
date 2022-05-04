@@ -64,7 +64,7 @@ class Sayer
 
 	// public static inline var chatBubbleWidth = 90;
 	// public static inline var chatBubbleHeight = 50;
-	public static inline var paddingLeft = 2;
+	public static inline var paddingLeft = 10;
 	public static inline var paddingTop = 5;
 	// public static inline var originYOffset = 50;
 	// public static inline var originXOffset = chatBubbleWidth / 2;
@@ -73,6 +73,8 @@ class Sayer
 	public static var textBoxes : Array<TextBox>;
 	public static var activeActors : Array<Actor>;
 	public static var currentTextBox : Int = 0;
+
+	public static var onSay: TextBox -> Void;
 	
 	public static function init(chatBubbleActorTypeName : String, f : Font){
 		chatBubbleActorType = getActorTypeByName(chatBubbleActorTypeName);
@@ -87,35 +89,41 @@ class Sayer
 		currentTextBox = 0;
 	}
 	
-	private static function sayAt(s : String, x : Float, y : Float, width : Int, height : Int) {
-		if (chatBubbleActorType == null) {
-			trace("ERROR: Sayer not initialized!");
-			return -1;
+	public static function say(s : String, x : Float, y : Float, durationInSeconds : Float, actorTypeName : String, ?options: Dynamic) {
+		function setupNewTextBox(s : String, x : Float, y : Float, width : Int, height : Int) {
+			if (chatBubbleActorType == null) {
+				trace("ERROR: Sayer not initialized!");
+				return -1;
+			}
+			currentTextBox++;
+			if (currentTextBox == textBoxes.length) currentTextBox = 0;
+			if (textBoxes[currentTextBox] == null) {
+				textBoxes[currentTextBox] = new TextBox(width, height, 0, 0, font);
+				textBoxes[currentTextBox].lineSpacing = 10;
+				textBoxes[currentTextBox].centerVertically = true;
+				textBoxes[currentTextBox].centerHorizontally = true;
+			}
+			textBoxes[currentTextBox].setPosition(x, y);
+			textBoxes[currentTextBox].reset();
+			textBoxes[currentTextBox].setText(s);
+			textBoxes[currentTextBox].startDrawing();
+			return currentTextBox;
 		}
-		currentTextBox++;
-		if (currentTextBox == textBoxes.length) currentTextBox = 0;
-		if (textBoxes[currentTextBox] == null) {
-			textBoxes[currentTextBox] = new TextBox(width - paddingLeft, height, 0, 0, font);
-			textBoxes[currentTextBox].lineSpacing = 10;
-			textBoxes[currentTextBox].centerVertically = true;
-			textBoxes[currentTextBox].centerHorizontally = true;
-		}
-		var textX = x - (width / 2) + paddingLeft;
-		textX = x;
-		textBoxes[currentTextBox].setPosition(textX, y - height + paddingTop);
-		textBoxes[currentTextBox].reset();
-		textBoxes[currentTextBox].setText(s);
-		textBoxes[currentTextBox].startDrawing();
-		return currentTextBox;
-	}
-	
-	public static function say(s : String, x : Float, y : Float, durationInSeconds : Float, ?actorTypeName : String) {
-		var cb = createChatBubbleActor(x, y, actorTypeName);
-		activeActors.push(cb);
-		var textBoxWidth  = Std.int(cb.getWidth() - paddingLeft * 2);
-		var textBoxHeight = Std.int(cb.getHeight() - paddingTop * 2);
 		if (durationInSeconds > 10) trace('WARNING: duration given to say (${durationInSeconds}) must be in Seconds, not Miliseconds');
-		var thisTextBox = sayAt(s, x + paddingLeft, y + paddingTop, textBoxWidth, textBoxHeight);
+		if (options == null) options = {};
+		final extraTextOffsetY: Float = if (options.extraTextOffsetY != null) options.extraTextOffsetY else 0;
+		final extraSidePadding: Float = if (options.extraSidePadding != null) options.extraSidePadding else 0;
+		final cb = createChatBubbleActor(x, y, actorTypeName);
+		activeActors.push(cb);
+
+		final middleX = cb.getXCenter();
+		final middleY = cb.getYCenter();
+		final textBoxWidth  = Std.int(cb.getWidth() - paddingLeft * 2 - extraSidePadding);
+		final textBoxHeight = Std.int(cb.getHeight() - paddingTop * 2);
+		final thisTextBox = setupNewTextBox(s, middleX, middleY + extraTextOffsetY, textBoxWidth, textBoxHeight);
+		
+		if (onSay != null)
+			onSay(textBoxes[thisTextBox]);
 		if (durationInSeconds > 0) {
 			runLater(1000 * durationInSeconds, function(timeTask:TimedTask):Void {
 				if (cb == null || !cb.isAlive()) return;

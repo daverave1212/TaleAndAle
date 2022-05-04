@@ -71,15 +71,26 @@ class Effects
 		(from - to) is negative = to go down = must increase
 	*/
 
-	public static function sendArcMissileAndThen(from: Point, to: Point, missileName: String, speed: Float, doThis: Void->Void) {
+	public static function sendArcMissileCustomAndThen(options: {
+		from: Point, to: Point,
+		actorName: String,
+		missileName: String,
+		speed: Float,
+		andThen: Void -> Void,
+		?onActorCreated: Actor -> Void
+	}): Float {	// Returns the total time of the missile
+		var from = options.from, to = options.to, actorName = options.actorName, missileName = options.missileName, speed = options.speed;
+		
 		if (speed == MEDIUM)
 			speed = int(0.66 * MEDIUM);
 		if (speed == FAST)
 			speed = MEDIUM;
-		var missile = createActor("MissileActor", "Particles");
+		var missile = createActor(actorName, "Particles");
 		missile.setAnimation(missileName);
 		missile.setX(from.x);
 		missile.setY(from.y);
+		if (options.onActorCreated != null)
+			options.onActorCreated(missile);
 		var distanceX = int(Math.max(abs(from.x - to.x), 150));
 		var time = int(1000 * distanceX / speed);
 		var missileHeight = 125;
@@ -90,55 +101,72 @@ class Effects
 		});
 		doAfter(time, () -> {
 			recycleActor(missile);
-			if (doThis != null)
-				doThis();
+			if (options.andThen != null)
+				options.andThen();
 		});
+		return time;
+	}
+	public static function sendArcMissileAndThen(from: Point, to: Point, missileName: String, speed: Float, ?doThis: Void->Void = null) {
+		return sendArcMissileCustomAndThen({ from: from, to: to, actorName: 'MissileActor', missileName: missileName, speed: speed, andThen: doThis });
 	}
 	
-	public static function sendMissileAndThen(from : Point, to : Point, missileName : String, speed : Float, doThis : Void->Void) {
+	public static function sendMissileAndThen(from : Point, to : Point, missileName : String, speed : Float, doThis : Void->Void, ?options: {
+		?easingName: String
+	}): Float {
+		if (options == null) 
+			options = {};
 		var missile = createActor("MissileActor", "Particles");
 		missile.setAnimation(missileName);
 		missile.setX(from.x);
 		missile.setY(from.y);
 		var deltaX = from.x - to.x;
 		var deltaY = from.y - to.y;
-		if(abs(deltaX) > abs(deltaY)){			// Point the missile 'towards' the target
-			if(deltaX < 0)									// I know, it can be refactored to work
+		final isMoreHorizontal = abs(deltaX) > abs(deltaY);
+		missile.setActorValue('isFlipped', false);			// Maybe used in SpecialEffectsFluff
+		if(isMoreHorizontal) {	    						// Point the missile 'towards' the target
+			if (from.x < to.x)								// I know, it can be refactored to work
 				missile.setAngle(Utils.RAD * 0);			//  with rounding by 90 or something
-			else if(deltaX > 0)
-				missile.setAngle(Utils.RAD * 180);
+			else if(to.x < from.x) {
+				missile.growTo(-1, 1, 0, Easing.linear);
+				missile.setActorValue('isFlipped', true);
+			}
 		} else if(abs(deltaX) < abs(deltaY)){
 			if(deltaY < 0)
 				missile.setAngle(Utils.RAD * 90);
 			else if(deltaY > 0)
 				missile.setAngle(Utils.RAD * -90);
 		} else {
-			if(deltaX > 0)
+			if (deltaX > 0)
 				missile.setAngle(Utils.RAD * 180);
 		}
-		var maxDistance = max(abs(deltaX), abs(deltaY));	// 60 - 360 px
-		var time =  maxDistance / speed;
-		missile.moveTo(to.x, to.y, time, Easing.quadIn);
+		final maxDistance = max(abs(deltaX), abs(deltaY));	// 60 - 360 px
+		final time =  maxDistance / speed;
+		final easingType: String = if (options.easingName == null) 'quadIn' else options.easingName;
+		final easing =
+			if (easingType == 'quadIn') Easing.quadIn
+			else Easing.linear;
+		missile.moveTo(to.x, to.y, time, easing);
 		doAfter(Std.int(1000 * time), function(){
-			trace('  Ended missile journey at ${missile.getX()}, ${missile.getY()}');
+			// trace('  Ended missile journey at ${missile.getX()}, ${missile.getY()}');
 			recycleActor(missile);
 			if(doThis != null) doThis();
 		});
+		return time;
 	}
 	
 	/*
 		This uses an ActorType (SpecialEffectActor) which it spawns and plays that specific animation once.
 		The actual particles with ParticleSpawner are coded inside the SpecialEffectActor.
 	*/
-	public static function playParticleAndThen(from : Point, at : Point, effectName : String, durationInMiliseconds : Int, ?doThis : Void->Void){
-		trace('Playing effect named "${effectName}"');
-		playParticleCustomActorAndThen(from, at, "SpecialEffectActor", effectName, durationInMiliseconds, doThis);
+	public static function playParticleAndThen(from : Point, at : Point, effectName : String, durationInMiliseconds : Int, ?doThis : Void->Void): Actor {
+		// trace('Playing effect named "${effectName}"');
+		return playParticleCustomActorAndThen(from, at, "SpecialEffectActor", effectName, durationInMiliseconds, doThis);
 	}
 	public static function playParticleCustomActorAndThen(from : Point, at : Point, actorTypeName : String, effectName : String, durationInMiliseconds, ?doThis : Void->Void) {
 		var flipHorizontally = false;
 		var flipVertically = false;
 		var direction = 'no-direction';
-		trace('Sure, continuing with effect name = ${effectName}');
+		// trace('Sure, continuing with effect name = ${effectName}');
 		if (from != null) {
 			if (from.x <= at.x) {
 				if (from.y >= at.y) {
@@ -164,9 +192,16 @@ class Effects
 			flipVertically: flipVertically,
 			durationInMiliseconds: durationInMiliseconds
 		};
-		trace('Creating special effect...');
 		var specialEffect = playActorParticle(actorTypeName, effectName, options, () -> { if (doThis != null) doThis(); });
 		specialEffect.setActorValue('direction', direction);	// For potential in-actor scripts
+		return specialEffect;
+	}
+
+	public static function playOnlyParticleAt(x: Float, y: Float, effectName: String) {
+		playParticleAndThen(new Point(x, y), new Point(x, y), effectName, 150, () -> {});
+	}
+	public static function playEffectAt(x: Float, y: Float, effectName: String, duration: Int = 150) {
+		playParticleAndThen(new Point(x, y), new Point(x, y), effectName, duration, () -> {});
 	}
 
 
@@ -180,7 +215,6 @@ class Effects
 	}
 	public static function playActorParticle(actorTypeName: String, animationName: String, options: Dynamic, ?doThis: Void->Void) {
 		createLayerIfDoesntExist("Particles", 50);
-		trace('Creating actor named ${actorTypeName} with animation ${animationName}');
 		var specialEffect = createActor(actorTypeName, "Particles", 0, 0);
 		specialEffect.setAnimation(animationName);
 		setXCenter(specialEffect, options.xCenter);

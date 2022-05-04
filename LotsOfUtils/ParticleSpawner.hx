@@ -67,6 +67,8 @@ class ParticleSpawner {
 
     var timeSinceLastSpawn: Float = 0;
 
+    public static var _isDisabled = false;
+
     public var isEnabled = true;
 
     public var centerX: Float = 0;
@@ -87,14 +89,17 @@ class ParticleSpawner {
     public var opacityEnd: Float = 1;
     public var gravityX: Float = 0;
     public var gravityY: Float = 0;
+    public var hasRandomHorizontalFlip: Bool = false;
 
     var bitmapData: BitmapData;
 
     var imagesQueue: Array<ParticleImage>;
 
     function spawnImage() {
+        if (_isDisabled) return;
         function sin(angle: Float) return Math.sin(angle * Utils.RAD);
         function cos(angle: Float) return Math.cos(angle * Utils.RAD);
+        if (hasRandomHorizontalFlip) if (U.percentChance(50)) Script.flipImageHorizontal(bitmapData);
         var img = new ImageX(bitmapData, 'Particles');
         var particle = new ParticleImage(img);
         var spawnRadius = radius;//randomFloatBetween(0, radius);
@@ -179,21 +184,16 @@ class ParticleSpawner {
         if (settings.imageLifetime != null) imageLifetime = settings.imageLifetime;
         if (settings.direction != null) direction = -settings.direction;
         if (settings.directionVariance != null) directionVariance = settings.directionVariance;
-        trace('Direction spreads: ${directionSpreads}');
         if (settings.directionSpreads != null) {
-            trace('Direction spreads settings NOT NULL: ${settings.directionSpreads}');
             directionSpreads = settings.directionSpreads;
         }
-        trace('Direction spreads: ${directionSpreads}');
         if (settings.speedMin != null) speedMin = settings.speedMin;
         if (settings.speedMax != null) speedMax = settings.speedMax;
         if (settings.opacityStart != null) opacityStart = settings.opacityStart;
         if (settings.opacityEnd != null) opacityEnd = settings.opacityEnd;
         if (settings.gravityX != null) gravityX = settings.gravityX;
         if (settings.gravityY != null) gravityY = settings.gravityY;
-        trace('Settings:');
-        trace(settings);
-        trace('Getting image: ${settings.imagePath}');
+        if (settings.hasRandomHorizontalFlip != null) hasRandomHorizontalFlip = settings.hasRandomHorizontalFlip;
         bitmapData          = getExternalImage(settings.imagePath);
     }
 

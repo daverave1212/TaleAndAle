@@ -70,34 +70,46 @@ using U;
 		.getWidth(_)
 		.getHeight(_)
 
+		.setText(text, font)
+
 "*/
 
 class SUIButton extends SUIComponent
 {
 	
+	public static var onCreate: SUIButton -> Void;
 	public static var defaultFont : Font;
+	public static var defaultAudioName: String;
 
 	public var click   : Void -> Void;
 	public var release : Void -> Void;
 
-	public var isEnabled = true;	// Prevents clicking
+	public var isEnabled = true;				// Prevents clicking
 	public var hasText = false;
 	public var text : String;
 	public var font : Font;
 	public var textWidth : Float;
 	public var textHeight : Float;
+	public var textYOffset = 0;
 	
-	public function new(actorTypeName : String, layer : String, ?anim : String){
+	public function new(actorTypeName : String, layer : String, ?anim : String, ?options: Dynamic) {
 		super(actorTypeName, layer, anim);
+		if (options == null) options = {};
 		if(defaultFont != null) font = defaultFont;
-		onClick(function(){
-			if(isEnabled && isShown && click != null)
+		onClick(function() {
+			if(isEnabled && isShown && click != null) {
+				if (defaultAudioName != null)
+					playAudio(defaultAudioName);
 				click();
+			}
 		}, actor);
 		onRelease(function(){
 			if(isEnabled && isShown && release != null)
 				release();
 		}, actor);
+		if (SUIButton.onCreate != null && options.enablePopAnimations != false) {
+			SUIButton.onCreate(this);
+		}
 	}
 	
 	override public function setAnimation(animationName) {
@@ -119,7 +131,7 @@ class SUIButton extends SUIComponent
 	function drawText(g : G){
 		if(isShown){
 			var textX = actor.getXCenter() - textWidth / 2;
-			var textY = actor.getYCenter() - textHeight / 2;
+			var textY = actor.getYCenter() - textHeight / 2 + textYOffset;
 			g.setFont(font);
 			g.drawString(text, textX, textY);
 		}
@@ -153,6 +165,10 @@ class SUIButton extends SUIComponent
 		isEnabled = true;
 	}
 
+	public function kill() {
+		hide();
+		recycleActor(actor);
+	}
 	public override function hide(){
 		if(isShown){
 			isShown = false;

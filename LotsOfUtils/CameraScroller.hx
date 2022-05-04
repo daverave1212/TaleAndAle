@@ -70,6 +70,10 @@ class CameraScroller extends SceneScript
 		}
 	}
 
+	public static function cancelCameraDragging() {
+		cameraScroller.isDraggingCamera = false;
+	}
+
 	public static function unlock(){
 		cameraScroller.isVerticalScrollEnabled = true;
 		cameraScroller.isHorizontalScrollEnabled	= true;
@@ -146,7 +150,6 @@ class CameraScroller extends SceneScript
 	}
 	
 	private function enableScroll(){
-		trace("enabling scroll. Should work");
 		addMousePressedListener(function(list:Array<Dynamic>):Void{
 			clickCameraX = getScreenXCenter();
 			clickCameraY = getScreenYCenter();
@@ -163,8 +166,8 @@ class CameraScroller extends SceneScript
 		});
 		addMouseReleasedListener(function(list:Array<Dynamic>):Void{
 			isDraggingCamera = false;
-			if(isCameraSmoothingEnabled){
-				if(timeSinceClick < 300){
+			if (isCameraSmoothingEnabled) {
+				if (timeSinceClick < 300) {
 					speedX = deltaX / timeSinceClick * 20;
 					speedY = deltaY / timeSinceClick * 20;
 					if(speedX < 0) isSpeedXPositive = false;
@@ -178,7 +181,6 @@ class CameraScroller extends SceneScript
 						isSpeedXFaster = false;
 						isSpeedYFaster = true;
 					}
-					trace("SpeedX: " + speedX + ", SpeedY: " + speedY);
 					timeSinceSmoothingCamera = 0;
 					isSmoothingCamera = true;
 				}
@@ -207,7 +209,6 @@ class CameraScroller extends SceneScript
 							isSmoothingCamera = false;
 						}
 					}
-					trace(speedX);
 					if(isSpeedYPositive){
 						speedY -= speedY * 0.02;
 						if(isSpeedYFaster && speedY < 0.1){

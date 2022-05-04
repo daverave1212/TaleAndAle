@@ -70,9 +70,13 @@ import com.stencyl.graphics.shaders.BloomShader;
  * You can also set .centerVertically .centerHorizontally and .drawOutline to true!
  *
  * NOTE: Don't forget to uncomment the package at the top of the code!
+ * NOTE: The coordinates are SCENE COORDINATES!
  */
  
  /* API:
+
+	.centerHorizontally = true	-- Aligns text center AND centers text on x
+	.centerVertically   = true	-- Centers text on y
  
 	new(width, height, x, y, font)
 	.startDrawing()
@@ -119,6 +123,12 @@ class TextBox extends SceneScript{
 			draw(g);
 		});
 	}
+
+	public function getActualHeight(): Float {
+		if (nLines == 0) return 0;
+		if (nLines == 1) return font.getHeight() / Engine.SCALE;
+		return (nLines - 1) * lineSpacing + font.getHeight() / Engine.SCALE;
+	}
 	
 	public function reset(){
 		isDrawing = false;
@@ -146,7 +156,8 @@ class TextBox extends SceneScript{
 		var oldIsDrawing = isDrawing;
 		reset();
 		text = t;
-		var wordList: Array<String> = text.split(" ");
+		var wordList: Array<String> = U.smartSplitString(text, [' '], ['\n']);
+		// var wordList: Array<String> = text.split(" ");
 		nLines = 0;
 		var currentLine = '';
 
@@ -158,10 +169,10 @@ class TextBox extends SceneScript{
 			} else if (getLineWidth(currentLine + ' ' + word) >= w) {
 				lines.push(currentLine);
 				currentLine = word;
-			} else if (i != 0) {
-				currentLine += ' ' + word;
+			} else if (i == 0 || wordList[i-1] == '\n') {
+				currentLine = word;
 			} else {
-				currentLine += word;
+				currentLine += ' ' + word;
 			}
 		}
 		if (currentLine != '') lines.push(currentLine);
@@ -177,19 +188,20 @@ class TextBox extends SceneScript{
 		if (drawOutline) {
 			g.strokeColor = Utils.getColorRGB(255,200,0);
 			g.strokeSize = 4;
-			g.drawRect(x, y, w, h);
+			final rectX = x - getScreenX() - if (centerHorizontally) w/2 else 0;
+			final rectY = y - getScreenY() - if (centerVertically) h/2 else 0;
+			g.drawRect(rectX, rectY, w, h);
 		}
 		var oldFont = g.font;
 		g.setFont(font);
 		for (currentLine in 0...nLines) {
 			var drawx = x - getScreenX();
-			var drawy = y;
-			if(centerHorizontally){
+			if (centerHorizontally){
 				drawx = x - getLineWidth(lines[currentLine]) / 2  - getScreenX();
 			}
-			drawy = y + lineSpacing * currentLine;
+			var drawy = y + lineSpacing * currentLine - getScreenY();
 			if (centerVertically) {
-				final offsetY = nLines * lineSpacing / 2;
+				final offsetY = nLines * lineSpacing / 2 + lineSpacing / 2;
 				drawy -= offsetY;
 			}
 			g.drawString(lines[currentLine], drawx, drawy);

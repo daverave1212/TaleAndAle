@@ -70,9 +70,7 @@ import Math.*;
 		
 		stringContains(string, substring)
 		splitString(string, delimiters)
-		
-		first(array)
-		last(array)
+
 		randomOf(array)
 		getFirstNull(arr) : Int		= -1 if no null found, else its index
 		
@@ -113,19 +111,38 @@ class U extends SceneScript
 	public static function readFile(fileName : String) : String {
 		return nme.Assets.getText("assets/data/" + fileName);
 	}
-	
 	public static function parseJSON(jsonString : String) {
 		return haxe.Json.parse(jsonString);
 	}
-	
 	public static function readJSON(fileName : String) {
 		var text = readFile(fileName);
 		return parseJSON(text);
 	}
-
-
+	public static function gameAttributeExists(name): Bool {
+		try {
+			final attr: Any = getGameAttribute(name);
+			if (attr == null || attr == '') return false;
+			return true;
+		} catch (e: Any) {
+			return false;
+		}
+		return false;
+	}
+	public static function getStringGameAttributeOr(name: String, or: String) {
+		var value: String = null;
+		try {
+			value = getGameAttribute(name);
+		} catch (e: Any) {
+			return or;
+		}
+		if (value == null || value == '') return or;
+		return value;
+	}
 
 	// Scene functionality
+	public static function getLayer(layerName: String) {
+		return engine.getLayerByName(layerName);
+	}
 	public static function layerExists(layerName){
 		return engine.getLayerByName(layerName) != null;
 	}
@@ -189,8 +206,30 @@ class U extends SceneScript
 	public static function toInt(f : Float){
 		return Std.int(f);
 	}
-	public static function randomOf(a : Array<Dynamic>) : Dynamic {
+	// public static function randomOf(a : Array<Dynamic>) : Dynamic {
+	// 	return (a[randomInt(0, a.length - 1)]);
+	// }
+	@:generic public static function randomOf<T>(a: Array<T>): T {
 		return (a[randomInt(0, a.length - 1)]);
+	}
+	@:generic public static function last<T>(a: Array<T>): T {
+		return a[a.length - 1];
+	}
+
+	@:generic public static function flattenOnce<T>(a: Array<Array<T>>): Array<T> {
+		return null;
+	}
+	@:generic public static function times<T>(what: T, nTimes: Int): Array<T> {
+		if (nTimes <= 0) return [];
+		return [for (_ in 0...nTimes) what];
+	}
+	@:generic public static function pushTimes<T>(array: Array<T>, what: T, nTimes: Int): Void {
+		for (_ in 0...nTimes) {
+			array.push(what);
+		}
+	}
+	@:generic public static function indices<T>(array: Array<T>): Array<Int> {
+		return [for (i in 0...array.length) i];
 	}
 	public static function randomIndex(a : Array<Dynamic>) {
 		return randomInt(0, a.length - 1);
@@ -203,8 +242,17 @@ class U extends SceneScript
 		for (elem in a) sum += elem;
 		return sum;
 	}
+	@:generic public static function isOutOfBounds<T>(array: Array<T>, index: Int) {
+		return index < 0 || index >= array.length;
+	}
 	public static function angleBetweenPoints(x1 : Float, y1 : Float, x2 : Float, y2 : Float){
 		return Utils.DEG * Math.atan2(y1-y2, x1-x2);
+	}
+	public static function distanceBetweenPoints(x1: Float, y1: Float, x2: Float, y2: Float) {
+		return Math.sqrt((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1));
+	}
+	public static function getMiddlePoint(x1: Float, y1: Float, x2: Float, y2: Float) {
+		return new Point((x1 + x2)/2, (y1 + y2)/2);
 	}
 	public static inline function isBetween(i : Float, a : Float, b : Float) return a <= i && i < b;
 	public static inline function floatSum(a : Array<Float>){
@@ -224,6 +272,15 @@ class U extends SceneScript
 		return c;
 	}
 
+	public static function warnLog(msg: String) {
+		if (!Log.isOpen) {
+			Log.toggle();
+		}
+		Log.go('WARNING: ${msg}');
+		trace('WARNING: ${msg}');
+		return 'WARNING: ${msg}';
+
+	}
 	public static inline function throwAndLogError(msg: String) {
 		if (!Log.isOpen) {
 			Log.toggle();
@@ -315,6 +372,17 @@ class U extends SceneScript
 			});
 		}
 	}
+	static var _lastClickedActor: Actor;
+	public static function onClickAndRelease(func: Void -> Void, actor: Actor) {
+		onClick(function(): Void {
+			_lastClickedActor = actor;
+		}, actor);
+		onRelease(function(): Void {
+			if (_lastClickedActor == actor) {
+				func();
+			}
+		}, actor);
+	}
 	public static function onKeyPress(func){
 		if(u == null) throwAndLogError("ERROR: U not initialized!!");
 		u.addAnyKeyPressedListener(function(event:KeyboardEvent, list:Array<Dynamic>){
@@ -327,17 +395,68 @@ class U extends SceneScript
 			func();
 		});
 	}
+	public static function onEscapeKeyPress(func) {
+		u.addKeyStateListener("escape", function(pressed:Bool, released:Bool, list:Array<Dynamic>):Void {
+			if (pressed) {
+				func();
+			}
+		});
+	}
 	public static function getScreenXCenter() return getScreenX() + getScreenWidth() / 2;
 	public static function getScreenYCenter() return getScreenY() + getScreenHeight() / 2;
+	public static function getScreenYBottom() return getScreenY() + getScreenHeight();
+	public static function getScreenXRight() return getScreenX() + getScreenWidth();
+
+	public static var defaultMusicVolume: Float = 0.33;
+	public static function playAudio(audioName: String, ?channelNumber: Int = -1): Int {
+		final MUSIC_CHANNEL = 1;
+		if (channelNumber != -1) {
+			if (channelNumber == MUSIC_CHANNEL) {
+				fadeOutSoundOnChannel(channelNumber, 0.5);
+				doAfter(500, () -> {
+					trace('Setting volume of channel ${channelNumber} to ${defaultMusicVolume}');
+					stopSoundOnChannel(channelNumber);
+					playSoundOnChannel(getSoundByName(audioName), channelNumber);
+					setVolumeForChannel(defaultMusicVolume, channelNumber);
+				});
+			} else {
+				playSoundOnChannel(getSoundByName(audioName), channelNumber);
+			}
+		} else {
+			playSound(getSoundByName(audioName));
+		}
+		final durationInMiliseconds = int(getSoundLength(getSoundByName(audioName)));
+		return durationInMiliseconds;
+	}
+
+	public static function playMusic(audioName: String) {
+		final MUSIC_CHANNEL = 1;
+		fadeOutSoundOnChannel(MUSIC_CHANNEL, 0.25);
+		doAfter(250, () -> {
+			stopSoundOnChannel(MUSIC_CHANNEL);
+			loopSoundOnChannel(getSoundByName(audioName), MUSIC_CHANNEL);
+			setVolumeForChannel(defaultMusicVolume, MUSIC_CHANNEL);
+		});
+	}
+	public static function stopMusic() {
+		final MUSIC_CHANNEL = 1;
+		fadeOutSoundOnChannel(MUSIC_CHANNEL, 0.5);
+		doAfter(500, () -> {
+			stopSoundOnChannel(MUSIC_CHANNEL);
+		});
+	}
+	public static function setChannelVolume(channelNumber: Int, volume: Float) {
+		setVolumeForChannel(volume, channelNumber);
+	}
 
 
 	
 	// General utilities
 	public static inline function repeat(func, interval) return doEvery(interval, func);
-	public static function doEvery(interval: Int, funcToRepeat : Void->Void) {
+	public static function doEvery(interval: Int, funcToRepeat : Void->Void, ?actor: Actor = null) {
 		return runPeriodically(interval, function(timeTask:TimedTask):Void{
 			funcToRepeat();
-		}, null);
+		}, actor);
 	}
 
 	public static function doEveryUntil(miliseconds: Int, untilMiliseconds: Int, ?funcTakesTime: Int->Void, ?func: Void->Void) {
@@ -361,26 +480,75 @@ class U extends SceneScript
 			doThis();
 		}, null);
 	}
+	public static function doAfterSafe(miliseconds: Int, doThis: Void -> Void) {	// A 'safe' version of doAfter; Only does it if it's the same scene and if it's not a null function.
+		final sceneName = getCurrentSceneName();
+		return doAfter(miliseconds, () -> {
+			if (getCurrentSceneName() != sceneName) return;
+			if (doThis != null) doThis();
+		});
+	}
 
-	public static function doSequence(sequence: Array<{time: Int, func: Void -> Void}>, ?andThen: Void -> Void) {
+	public static function doSequence(sequence: Array<{time: Int, func: Void -> Void}>, ?andThen: Void -> Void): Dynamic {
 		if (sequence.length == 0) {
 			if (andThen != null) andThen();
+			return {};
 		} else {
-			trace('Sequence.length: ${sequence.length}');
+			var isStopped = false;
+			function stopSequence() {
+				isStopped = true;
+			}
 			final firstPair = sequence.shift();
 			final timeToWait: Int = firstPair.time;
 			final funcToDo: Void -> Void = firstPair.func;
-			trace('Got function as: ${funcToDo}');
-			trace('Alright; doing after ${timeToWait}');
-			doAfter(timeToWait, () -> {
-				trace('Doing..');
+			doAfter(timeToWait, function(): Void {
+				if (isStopped) return;
 				funcToDo();
 				doSequence(sequence, andThen);
 			});
+			return {
+				stop: stopSequence
+			};
 		}
 
 	}
 
+	public static function isStringNumber(str: String) {
+		final digits = '0123456789';
+		var foundDot = false;
+		for (char in str.split('')) {
+			if (char == '.') {
+				if (foundDot == false) {
+					foundDot = true;
+				} else {
+					return false;
+				}
+			} else if (digits.indexOf(char) != -1) {
+				continue;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+	public static function setObjectFieldSmart(object: Dynamic, fieldName: String, value: String) {
+		if (value == 'true' || value == 'false') {
+			Reflect.setField(object, fieldName, if (value == 'true') true else false);
+			return;
+		}
+		if (!isStringNumber(value)) {
+			Reflect.setField(object, fieldName, value);
+			return;
+		}
+		if (value.indexOf('.') == -1) {
+			final intValue: Int = Std.parseInt(value);
+			Reflect.setField(object, fieldName, intValue);
+		} else {
+			final floatValue: Float = Std.parseFloat(value);
+			Reflect.setField(object, fieldName, floatValue);
+		}
+
+
+	}
 	public static function pass() trace('Pass...');
 	public static function getFontByName(fontName : String) : Font {
 		for (res in Data.get().resources) {
@@ -441,15 +609,54 @@ class U extends SceneScript
 		trace(returnedArray);
 		return returnedArray;
 	}
+	static inline var READING_WORD = 0;
+	static inline var DELIMITING = 1;
+	public static function smartSplitString(s: String, excludeDelimiters: Array<String>, includeDelimiters: Array<String>) {
+		
+		var state = READING_WORD;
+		var currentWordStart = 0;
+		var currentWords: Array<String> = [];
+		for (i in 0...s.length) {
+			final char = s.charAt(i);
+			final foundExcludeDelimiter = () -> {
+				return excludeDelimiters.indexOf(char) != -1;
+			};
+			final foundIncludeDelimiter = () -> includeDelimiters.indexOf(char) != -1;
+			switch (state) {
+				case READING_WORD:
+					if (foundExcludeDelimiter()) {
+						currentWords.push(s.substring(currentWordStart, i));
+						currentWordStart = -1;
+						state = DELIMITING;
+					} else if (foundIncludeDelimiter()) {
+						currentWords.push(s.substring(currentWordStart, i));
+						currentWords.push(char);
+						currentWordStart = -1;
+						state = DELIMITING;
+					} else {
+						// pass
+					}
+				case DELIMITING:
+					if (foundIncludeDelimiter()) {
+						currentWords.push(char);
+					} else if (foundExcludeDelimiter()) {
+						// pass
+					} else {
+						currentWordStart = i;
+						state = READING_WORD;
+					}
+			}
+		}
+		if (state == READING_WORD && currentWordStart != -1) {
+		currentWords.push(s.substring(currentWordStart, s.length));
+		}
+		return currentWords;
+	}
+	
 	public static function first<T>(a : Array<T>){
 		if(a == null) return null;
 		if(a.length == 0) return null;
 		return a[0];
-	}
-	public static function last<T>(a : Array<T>){
-		if(a == null) return null;
-		if(a.length == 0) return null;
-		return a[a.length - 1];
 	}
 	public static function getBitmapDataSize(b : BitmapData) : Vector2Int{
 		var img = new ImageX(b, "UI");
@@ -470,6 +677,29 @@ class U extends SceneScript
 		}
 		return finalArray;
 	}
+	@:generic public static function removeDuplicates<T>(array: Array<T>): Array<T> {
+		final elementsMap: Map<T, Bool> = [];
+		for (elem in array) {
+			elementsMap[elem] = true;
+		}
+		final arrayNoDupes: Array<T> = [];
+		for (elem in elementsMap.keys()) {
+			arrayNoDupes.push(elem);
+		}
+		return arrayNoDupes;
+	}
+	@:generic public static function shuffle<T>(array: Array<T>): Void {
+		for (i in 0...array.length) {
+			final aux = array[i];
+			final indexToSwap = randomIntBetween(0, array.length - 1);
+			array[i] = array[indexToSwap];
+			array[indexToSwap] = aux;
+		}
+	}
+
+	public static function alterJSONValue(key: String, value: String) {
+
+	}
 
 	public static function nullOr(maybeNull: Any, notNull: Any): Any {
 		if (maybeNull == null) return notNull;
@@ -483,22 +713,31 @@ class U extends SceneScript
 		a.setXCenter(getScreenXCenter());
 		a.setYCenter(getScreenYCenter());
 	}
-	public static function flipActorHorizontally(a : Actor) a.growTo(-1, 1, 0, Easing.linear);
-	public static function unflipActorHorizontally(a : Actor) a.growTo(1, 1, 0, Easing.linear);
+	public static function flipActorHorizontally(a : Actor, seconds: Float = 0) a.growTo(-1, 1, seconds, Easing.expoOut);
+	public static function unflipActorHorizontally(a : Actor, seconds: Float = 0) a.growTo(1, 1, seconds, Easing.expoOut);
 	public static function flipActorVertically(a : Actor) a.growTo(1, -1, 0, Easing.linear);
 	public static function flipActorToLeft(a : Actor) a.growTo(1, 1, 0, Easing.linear);
 	public static function flipActorToRight(a : Actor) a.growTo(-1, 1, 0, Easing.linear);
 	public static function setXCenter(a : Actor, x : Float) a.setX(x - a.getWidth() / 2);
 	public static function setYCenter(a : Actor, y : Float) a.setY(y - a.getHeight() / 2);
-	public static function createActor(?actorTypeName : String, ?actorType : ActorType, layerName : String, ?_x : Float, ?_y : Float){
-		if(actorTypeName != null){
+	public static function killActor(a: Actor) {
+		recycleActor(a);
+	}
+	public static function setYBottom(a: Actor, y: Float) {
+		a.setY(y - a.getHeight());
+	}
+	public static function getActorCenterPoint(a: Actor) {
+		return new Point(a.getXCenter(), a.getYCenter());
+	}
+	public static function createActor(?actorTypeName : String, ?actorType : ActorType, layerName : String, ?_x : Float, ?_y : Float) {
+		if (actorTypeName != null){
 			actorType = getActorTypeByName(actorTypeName);
 		}
 		var a : Actor = null;
 		try {
 			a = createRecycledActorOnLayer(actorType, 0, 0, engine.getLayerByName(layerName));
 		} catch (e : String) {
-			trace('ERROR: Failed to create unit');
+			throw 'ERROR: Failed to create unit of type name ${actorTypeName} on layer ${layerName}';
 		}
 		if(_x != null) a.setX(_x);
 		if(_y != null) a.setY(_y);
@@ -507,6 +746,13 @@ class U extends SceneScript
 	public static function flashWhite(actor : Actor, durationInMiliseconds: Int, ?callback : Void -> Void) {
 		actor.setFilter([createBrightnessFilter(100)]);
 		doAfter(durationInMiliseconds, () -> {
+			actor.clearFilters();
+			if (callback != null) callback();
+		});
+	}
+	public static function flashColor(actor : Actor, r: Float, g: Float, b: Float, ?callback : Void -> Void) {
+		actor.setFilter([createTintFilter(Utils.getColorRGB(int(r),int(g),int(b)), 100/100)]);
+		doAfter(500, () -> {
 			actor.clearFilters();
 			if (callback != null) callback();
 		});
@@ -529,6 +775,22 @@ class U extends SceneScript
 			a.setX(a.getX() + directionXModifier * xStepSize);
 		});
 	}
+	public static function animateValue(fromValue: Float, toValue: Float, overMiliseconds: Int, setValue: Float -> Void) {
+		final stepTime = 50;
+		final nSteps = overMiliseconds / stepTime;
+		doEveryUntil(10, overMiliseconds, (currentMiliseconds: Int) -> {
+			setValue(getAnimatedValue(fromValue, toValue, overMiliseconds, currentMiliseconds));
+		});
+	}
+	public static function getAnimatedValue(from: Float, to: Float, overMiliseconds: Int, atTime: Int) {
+		final distance = from - to;
+		final directionModifier = if (distance >= 0) -1 else 1;
+		function getStepExponentialDistancePassed(currentMiliseconds) {
+			var distancePassed = (1 - pow(1 - currentMiliseconds * (1/overMiliseconds), 2)) * abs(distance);
+			return distancePassed;
+		}
+		return from + getStepExponentialDistancePassed(atTime) * directionModifier;
+	}
 	public static function slideActorYCubic(a: Actor, from: Float, to: Float, overMiliseconds: Int, ?reverseExpo = false) {	// Slides the actor with an easing function
 		var distanceY = from - to;
 		var directionYModifier = if (distanceY >= 0) -1 else 1;
@@ -536,12 +798,10 @@ class U extends SceneScript
 		var time = overMiliseconds;
 		var nSteps = int(time / everyMilisecondsStep);
 		function getStepExponentialYDistancePassed(currentMiliseconds) {
-			// var distancePassed = (1 - pow(2, (-10 * currentMiliseconds) / time)) * abs(distanceY);
 			var distancePassed = (1 - pow(1 - currentMiliseconds * (1/time), 2)) * abs(distanceY);
 			return distancePassed;
 		}
 		function getStepExponentialYDistancePassedReverse(currentMiliseconds) {
-			// var distancePassed = pow(2, 10 * currentMiliseconds * (1 / time) - 10) * abs(distanceY);
 			var distancePassed = pow((currentMiliseconds/time), 2) * abs(distanceY);
 			return distancePassed;
 		}
@@ -550,7 +810,58 @@ class U extends SceneScript
 			a.setY(from + expoFunction(currentMiliseconds) * directionYModifier);
 		});
 	}
+	public static function setActorScreenRight(a: Actor, r: Float) {
+		a.setX(getScreenX() + getScreenWidth() - a.getWidth() - r);
+	}
+	public static function rotateActorCCWAroundPointFacingPoint(options: {
+		actor: Actor,
+		x: Float,
+		y: Float,
+		degrees: Float,
+		?radius: Float
+	}) {
+		
+		final actor = options.actor;
 
+		// Because the origin/rotation point of an actor is its center and we move it to the left side
+		// So xPoint is the final rotation radius; width/2 means the left-most point of the actor = 0 radius
+		final xPoint = actor.getWidth() / 2 + if (options.radius != null) options.radius else 0;
+
+		actor.setX(options.x);
+		actor.setY(options.y);
+		actor.rotate(-Utils.RAD * options.degrees);
+
+		final alpha = actor.getAngle() * Utils.DEG;
+		final xOffset = Math.cos(alpha * Utils.RAD) * xPoint;
+		final yOffset = Math.sin(alpha * Utils.RAD) * xPoint;
+
+		actor.setX(actor.getX() + xOffset - actor.getWidth()/2);
+		actor.setY(actor.getY() + yOffset - actor.getHeight()/2);
+	}
+	public static function setActorSaturation(actor: Actor, percentage: Float) {
+		if (percentage > 0 && percentage < 1) trace('WARNING: In setActorSaturation, was expecting percentage ${percentage} between 0 and 100, not between 0 and 1.');
+		actor.setFilter([createSaturationFilter(percentage)]);
+	}
+	public static function tintActorByAmount(actor: Actor, color: String, percentage: Float) {
+		if (percentage > 0 && percentage < 1) trace('WARNING: In tintActorByAmount, was expecting percentage ${percentage} between 0 and 100, not between 0 and 1.');
+		final red = hexStringToInt(color.substring(0, 2));
+		final green = hexStringToInt(color.substring(2, 4));
+		final blue = hexStringToInt(color.substring(4, 6));
+		actor.setFilter([createTintFilter(Utils.getColorRGB(red, green, blue), percentage / 100)]);
+	}
+	public static function stretchActorBetweenPoints(actor: Actor, x1: Float, y1: Float, x2: Float, y2: Float) {
+		final angle = angleBetweenPoints(x1, y1, x2, y2);
+		final width = distanceBetweenPoints(x1, y1, x2, y2);
+		final middlePoint = getMiddlePoint(x1, y1, x2, y2);
+		final xScale = width / actor.getWidth();
+		actor.setXCenter(middlePoint.x);
+		actor.setYCenter(middlePoint.y);
+		actor.setAngle(Utils.RAD * angle);
+		actor.growTo(xScale, 1, 0.04, Easing.linear);
+	}
+	
+	
+	
 	public static function slideCameraXCubic(to: Float, overMiliseconds: Int) {
 		final from = getScreenXCenter();
 		final distanceX = from - to;
@@ -566,16 +877,8 @@ class U extends SceneScript
 			engine.moveCamera(from + getStepExponentialXDistancePassed(currentMiliseconds) * directionXModifier, getScreenY());
 		});
 	}
-	public static function setActorSaturation(actor: Actor, percentage: Float) {
-		if (percentage > 0 && percentage < 1) trace('WARNING: In setActorSaturation, was expecting percentage ${percentage} between 0 and 100, not between 0 and 1.');
-		actor.setFilter([createSaturationFilter(percentage)]);
-	}
-	public static function tintActorByAmount(actor: Actor, color: String, percentage: Float) {
-		if (percentage > 0 && percentage < 1) trace('WARNING: In tintActorByAmount, was expecting percentage ${percentage} between 0 and 100, not between 0 and 1.');
-		final red = hexStringToInt(color.substring(0, 2));
-		final green = hexStringToInt(color.substring(2, 4));
-		final blue = hexStringToInt(color.substring(4, 6));
-		actor.setFilter([createTintFilter(Utils.getColorRGB(red, green, blue), percentage / 100)]);
+	public static function centerCameraInScene() {
+		engine.moveCamera(getSceneWidth() / 2, getSceneHeight() / 2);
 	}
 
 	// Other

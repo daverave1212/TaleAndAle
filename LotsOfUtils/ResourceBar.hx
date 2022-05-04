@@ -83,6 +83,8 @@ class ResourceBar
 	public inline function hide() actor.disableActorDrawing();
 	public inline function getX() return actor.getX();
 	public inline function getY() return actor.getY();
+	public inline function getWidth() return actor.getWidth();
+	public inline function getHeight() return actor.getHeight();
 
 	public function new(actorName : String, layerName : String, max : Float, ?options: Dynamic) {
 		if (options == null) options = {};

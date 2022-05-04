@@ -55,7 +55,7 @@ class Inventory<T>
 		return getFirstEmpty() == null;
 	}
 	
-	public function remove(i : Int, j : Int){
+	public function remove(i : Int, j : Int) {
 		matrix.set(i, j, null);
 	}
 
@@ -81,11 +81,11 @@ class Inventory<T>
 	}
 	
 	// Returns a Vector2Int 
-	public function find(t : T) : Vector2Int{
+	public function find(t : T) : Position {
 		for(i in 0...nRows){
 			for(j in 0...nCols){
 				if(matrix.get(i, j) == t){
-					return new Vector2Int(j, i);
+					return new Position(i, j);
 				}
 			}
 		}
@@ -102,10 +102,10 @@ class Inventory<T>
 		return null;
 	}
 
-	public function findAndRemove(t : T) {
+	public function findAndRemove(t : T): Bool {
 		var tPos = find(t);
 		if (tPos == null) return false;
-		remove(tPos.y, tPos.x);
+		remove(tPos.i, tPos.j);
 		return true;
 	}
 	
@@ -134,6 +134,10 @@ class Inventory<T>
 		return true;
 	}
 	
+	public function filterToArray(func: T -> Bool) {
+		return matrix.filterToArray(func);
+	}
+
 	// For debug
 	public static function printFloat(inv : Inventory<Float>){
 		var ret = "";

@@ -12,10 +12,11 @@ class Matrix<T>
 		matrix = [for (x in 0...nRows) [for (y in 0...nCols) null]];
 	}
 	
-	public inline function get(i : Int, j : Int){
+	public inline function get(i : Int, j : Int) {
 		return matrix[i][j];
 	}
 
+	public inline function getRow(i: Int) return matrix[i];
 	public inline function getByPos(p : Position) return matrix[p.i][p.j];
 	
 	public inline function set(i : Int, j : Int, t : T){
@@ -48,13 +49,19 @@ class Matrix<T>
 		forEachIndices((i, j) -> if (func(i, j)) indices.push(new Position(i, j)));
 		return indices;
 	}
+	public function filterToArrayIndicesToT(func : Int -> Int -> Bool) {
+		var elems : Array<T> = [];
+		forEachIndices((i, j) -> if (func(i, j)) elems.push(get(i, j)));
+		return elems;
+	}
 
 	public function setAll(t : T){
-		for(i in 0...nRows){
+		for (i in 0...nRows) {
 			for(j in 0...nCols){
 				matrix[i][j] = t;
 			}
 		}
+		return this;
 	}
 	
 	public function push(t : T){	// Can probably be heavily optimized
@@ -91,14 +98,19 @@ class Matrix<T>
 		if(j < 0 || j >= nCols) return false;
 		return true;
 	}
+	public inline function isOutOfBounds(i: Int, j: Int) return !isInBounds(i, j);
 	
-	public static function traceIntMatrix(m : Matrix<Int>){
-		for(i in 0...m.nRows){
+	public static function traceIntMatrix(m : Matrix<Int>, ?message: String) {
+		for (i in 0...m.nRows) {
 			var line = "";
 			for(j in 0...m.nCols){
 				line += m.get(i, j) + " ";
 			}
-			trace(line);
+			if (i == 0 && message != null) {
+				trace(line + '\t| ${message}');
+			} else {
+				trace(line);
+			}
 		}
 	}
 	

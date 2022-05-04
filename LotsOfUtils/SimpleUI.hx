@@ -61,6 +61,7 @@ class SimpleUI
 	public var name : String = "NOT SET";
 	
 	public function open(?metaData : Array<Dynamic>){}		// When the UI is opened, with a parameter, do what you want with it
+	public function openWith(?options: Dynamic){}			// When the UI is opened with openWith, open with parameters
 	public function close(){}						// When the UI is closed
 	public function load(){}						// When the UI loads into the scene for the first time
 	

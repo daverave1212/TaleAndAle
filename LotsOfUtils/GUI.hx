@@ -27,6 +27,10 @@ class GUI {
 		simpleUINames	= [];
 		openUIs			= [];
 	}
+
+	public static function startBeforeLoading() {
+		openUIs = [];
+	}
 	
 	public static function load(name : String){
 		var ui = simpleUIs[name];
@@ -47,17 +51,27 @@ class GUI {
 	}
 	
 	public static function open(simpleUIName : String, ?metaData : Array<Dynamic>){
+		trace('- - - - - Opening ${simpleUIName}');
+		if (isOpen(simpleUIName)) {
+			trace('- - - - - Is already open.');
+			return;
+		}
 		simpleUIs[simpleUIName].open(metaData);
-		var lastOpenedUI = getLastOpenedUI();
-		if (isOpen(simpleUIName)) 
-			close(simpleUIName);
+		openUIs.push(simpleUIs[simpleUIName]);
+		trace('- - - - - Done!');
+	}
+	public static function openWith(simpleUIName: String, ?options: Dynamic) {
+		if (isOpen(simpleUIName)) return;
+		simpleUIs[simpleUIName].openWith(options);
 		openUIs.push(simpleUIs[simpleUIName]);
 	}
 	
-	public static function close(simpleUIName : String){
+	public static function close(simpleUIName : String) {
 		var ui = simpleUIs[simpleUIName];
-		if(ui == null) throwAndLogError("ERROR: No ui found called" + simpleUIName);
-		if( ! isOpen(ui.name)) return;
+		if (ui == null) throwAndLogError("ERROR: No ui found called" + simpleUIName);
+		if( ! isOpen(ui.name)) {
+			return;
+		}
 		ui.close();
 		openUIs.remove(ui);
 	}
@@ -69,10 +83,11 @@ class GUI {
 		open(simpleUIName, if(metaData == null) null else [metaData]);
 	}
 
-	public static function isOpen(simpleUIName : String){
-		for (ui in openUIs)
+	public static function isOpen(simpleUIName : String) {
+		for (ui in openUIs) {
 			if (ui.name == simpleUIName)
 				return true;
+		}
 		return false;
 	}
 	
@@ -84,6 +99,9 @@ class GUI {
 		} else {
 			return null;
 		}
+	}
+	public static function traceOpenUIs() {
+		trace('${openUIs.map(ui -> ui.name).join(", ")}');
 	}
 
 	

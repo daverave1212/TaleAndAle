@@ -58,13 +58,15 @@ import com.stencyl.graphics.shaders.HueShader;
 import com.stencyl.graphics.shaders.TintShader;
 import com.stencyl.graphics.shaders.BloomShader;
 
+
+import U.*;
 /*
 	new TextLine(text, font, x, y)			NOTE: x and y are relative to the screen, not scene!
 
 	.x
 	.y
-	.setX(x)
-	.setY(y)
+	.setSceneX(x)/setScreenX(x)
+	.setSceneY(y)/setScreenY(y)
 
 	.alignLeft()
 	.alignRight()
@@ -91,11 +93,14 @@ class TextLine {
 	public var x : Float = 0;
 	public var y : Float = 0;
 	public var font : Font;
+	public var opacity: Float = 1;
 
 	public var isDrawing = true;
 
 	var alignment = ALIGN_RIGHT;
 	var alignOffsetX : Float = 0;
+
+	public var preventDrawing: Void -> Bool;	// Will NOT draw when this returns true
 
 	public function new(text, ?font, ?_x, ?_y) {
 		this.text = text;
@@ -109,8 +114,12 @@ class TextLine {
 		if (_y != null) y = _y;
 		U.onDraw(function(g : G){
 			if (!isDrawing) return;
+			if (preventDrawing != null && preventDrawing()) return;
+			final oldOpacity = g.alpha;
+			g.alpha = opacity;
 			g.setFont(this.font);
 			g.drawString(this.text, this.x + alignOffsetX, this.y);
+			g.alpha = oldOpacity;
 		});
 	}
 
@@ -127,9 +136,29 @@ class TextLine {
 	public function alignLeft() alignment = ALIGN_LEFT;
 	public function alignCenter() alignment = ALIGN_CENTER;
 	public function alignRight() alignment = ALIGN_RIGHT;
-	public inline function setX(x) this.x = x;
-	public inline function setY(y) this.y = y;
+	public inline function setScreenX(x) this.x = x;
+	public inline function setScreenY(y) this.y = y;
+	public inline function setSceneX(x: Float) this.x = x - getScreenX();
+	public inline function setSceneY(y: Float) this.y = y - getScreenY();
 	public inline function disable() isDrawing = false;
 	public inline function enable() isDrawing = true;
 
+	public function fadeIn(miliseconds: Int) {
+		final stepSize = 50;
+		final nIterations = miliseconds / stepSize;
+		final opacityPerIteration = 1 / nIterations;
+		opacity = 0;
+		doEveryUntil(25, miliseconds, () -> {
+			opacity += opacityPerIteration;
+		});
+	}
+	public function fadeOut(miliseconds: Int) {
+		final stepSize = 50;
+		final nIterations = miliseconds / stepSize;
+		final opacityPerIteration = 1 / nIterations;
+		opacity = 1.0;
+		doEveryUntil(25, miliseconds, () -> {
+			opacity -= opacityPerIteration;
+		});
+	}
 }

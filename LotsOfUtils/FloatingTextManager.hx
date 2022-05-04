@@ -39,7 +39,7 @@ import com.stencyl.utils.motion.*;
 */
 
 
-class _Text{
+class _Text {
 	public var x : Float;
 	public var y : Float;
 	public var text : String = "";
@@ -79,56 +79,50 @@ class FloatingTextManager extends SceneScript
 	
 	var screenHeight : Float;
 	var gravityIncrementY : Float = 0.1;
-	var gravityDefaultY : Float = -2;
+	var gravityDefaultY : Float = -4;
 	var gravityDefaultX : Float = -2;
 	private var font : Font = null;
 	
-	public function new(f : Font, ?bouncinessIncrement : Float){
+	public function new(f : Font, ?bouncinessIncrement : Float) {
 		super();
 		font = f;
 		texts = new Array<_Text>();
-		if(bouncinessIncrement != null){
+		if (bouncinessIncrement != null) {
 			gravityIncrementY = gravityIncrementY * (bouncinessIncrement + 1);
 			gravityDefaultY = gravityDefaultY * (bouncinessIncrement + 1);
 			gravityDefaultX = gravityDefaultX * (bouncinessIncrement/2 + 1);
 		}
 		screenHeight = getScreenHeight();
-		runPeriodically(10, function(timeTask:TimedTask):Void{
+		runPeriodically(5, function(timeTask:TimedTask):Void{
 			updateGravities();
 		}, null);
-		addWhenDrawingListener(null, function(g:G, x:Float, y:Float, list:Array<Dynamic>):Void{
+		addWhenDrawingListener(null, function(g:G, x:Float, y:Float, list:Array<Dynamic>):Void {
 			drawTexts(g);
 		});
 	}
 	
-	public function pump(?nr: Float, ?s : String, x : Float, y : Float, ?right : Bool){
+	public function pump(?nr: Float, ?s : String, x : Float, y : Float, ?right : Bool = false) {
 		var txt : String = "";
-		if(nr != null){
-			if(nr - Math.floor(nr) == 0){
+		if (nr != null) {
+			if (nr - Math.floor(nr) == 0) {
 				txt = "" + Std.int(nr);
 			} else {
 				txt = "" + nr;
 			}
 		} else {
-			if(s != null){
+			if (s != null) {
 				txt = s;
 			}
 		}
-		var t : _Text = null;
-		if(right != null){
-			if(right == true){
-				t = new _Text(txt, x, y, gravityDefaultY, (-1) * gravityDefaultX);
-			}
-		} else {
-			t = new _Text(txt, x, y, gravityDefaultY, gravityDefaultX);
-		}
+		final gravityXModifier = if (right) -1 else 1;
+		final t: _Text = new _Text(txt, x, y, gravityDefaultY, gravityXModifier * gravityDefaultX);
 		addText(t);
 	}
 	
 	private function addText(t : _Text){
-		for(i in 0...texts.length){
-			if(texts[i] != null){
-				if(texts[i].isAlive == false){
+		for (i in 0...texts.length) {
+			if (texts[i] != null) {
+				if (texts[i].isAlive == false) {
 					texts[i] = t;
 					return;
 				}
@@ -138,17 +132,18 @@ class FloatingTextManager extends SceneScript
 	}
 	
 	private function updateGravities(){
-		for(i in 0...texts.length){
+		for (i in 0...texts.length) {
+			if (texts[i].isAlive == false) continue;
 			texts[i].updatePositionsAndGravity(gravityIncrementY);
-			if(texts[i].y > screenHeight){
+			if (texts[i].y > screenHeight) {
 				texts[i].isAlive = false;
 			}
 		}
 	}
 	
-	private function drawTexts(g : G){
+	private function drawTexts(g : G) {
 		g.setFont(font);
-		for(i in 0...texts.length){
+		for (i in 0...texts.length) {
 			texts[i].draw(g);
 		}
 	}
